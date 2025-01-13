@@ -205,5 +205,275 @@ export const products = [
         priceIDR: 1300000,
         stock: 25,
         thumbnailURL: "https://picsum.photos/1000/1000?Heavy%20Duty%20Chair"
-    }
+    },
+    {
+        productName: "Heavy Duty Drill",
+        category: "Tools",
+        type: "Power Drill",
+        sizes: null,
+        priceIDR: 1250000,
+        stock: 15,
+        thumbnailURL: "https://picsum.photos/1000/1000?Drill"
+      },
+      {
+        productName: "Concrete Mixer 5000",
+        category: "Construction",
+        type: "Concrete Mixer",
+        sizes: null,
+        priceIDR: 3200000,
+        stock: 10,
+        thumbnailURL: "https://picsum.photos/1000/1000?Mixer"
+      },
+      {
+        productName: "Steel Hammer Pro",
+        category: "Tools",
+        type: "Hammer",
+        sizes: null,
+        priceIDR: 750000,
+        stock: 30,
+        thumbnailURL: "https://picsum.photos/1000/1000?Hammer"
+      },
+      {
+        productName: "Professional Welding Machine",
+        category: "Industrial",
+        type: "Welding Machine",
+        sizes: null,
+        priceIDR: 5400000,
+        stock: 8,
+        thumbnailURL: "https://picsum.photos/1000/1000?Welding"
+      },
+      {
+        productName: "Industrial Fan 3000",
+        category: "Industrial",
+        type: "Industrial Fan",
+        sizes: null,
+        priceIDR: 2300000,
+        stock: 20,
+        thumbnailURL: "https://picsum.photos/1000/1000?Fan"
+      },
+      {
+        productName: "Heavy Duty Ladder",
+        category: "Construction",
+        type: "Ladder",
+        sizes: ["6ft", "8ft", "10ft"],
+        priceIDR: 950000,
+        stock: 25,
+        thumbnailURL: "https://picsum.photos/1000/1000?Ladder"
+      },
+      {
+        productName: "Electric Chainsaw X",
+        category: "Tools",
+        type: "Chainsaw",
+        sizes: null,
+        priceIDR: 2100000,
+        stock: 12,
+        thumbnailURL: "https://picsum.photos/1000/1000?Chainsaw"
+      },
+      {
+        productName: "Heavy Load Trolley",
+        category: "Transportation",
+        type: "Trolley",
+        sizes: ["Small", "Medium", "Large"],
+        priceIDR: 1700000,
+        stock: 18,
+        thumbnailURL: "https://picsum.photos/1000/1000?Trolley"
+      },
+      {
+        productName: "High Power Generator",
+        category: "Energy",
+        type: "Generator",
+        sizes: null,
+        priceIDR: 12000000,
+        stock: 5,
+        thumbnailURL: "https://picsum.photos/1000/1000?Generator"
+      },
+      {
+        productName: "Concrete Vibrator Max",
+        category: "Construction",
+        type: "Concrete Vibrator",
+        sizes: null,
+        priceIDR: 4800000,
+        stock: 7,
+        thumbnailURL: "https://picsum.photos/1000/1000?Vibrator"
+      },
+      {
+        productName: "Compact Air Compressor",
+        category: "Tools",
+        type: "Air Compressor",
+        sizes: null,
+        priceIDR: 2800000,
+        stock: 10,
+        thumbnailURL: "https://picsum.photos/1000/1000?Compressor"
+      },
+      {
+        productName: "Luxury Leather Sofa",
+        category: "Home Decor",
+        type: "Sofa",
+        sizes: ["2-Seater", "3-Seater", "L-Shaped"],
+        priceIDR: 7500000,
+        stock: 5,
+        thumbnailURL: "https://picsum.photos/1000/1000?Sofa"
+      },
+      {
+        productName: "Outdoor Camping Tent",
+        category: "Outdoor",
+        type: "Tent",
+        sizes: ["2-Person", "4-Person", "6-Person"],
+        priceIDR: 1200000,
+        stock: 25,
+        thumbnailURL: "https://picsum.photos/1000/1000?Tent"
+      },
+      {
+        productName: "Gaming Mouse Pro",
+        category: "Electronics",
+        type: "Gaming Mouse",
+        sizes: null,
+        priceIDR: 950000,
+        stock: 50,
+        thumbnailURL: "https://picsum.photos/1000/1000?Mouse"
+      },
+      {
+        productName: "Smartwatch Active",
+        category: "Wearable Tech",
+        type: "Smartwatch",
+        sizes: ["Small", "Medium", "Large"],
+        priceIDR: 2500000,
+        stock: 30,
+        thumbnailURL: "https://picsum.photos/1000/1000?Smartwatch"
+      },
+      {
+        productName: "Professional DSLR Camera",
+        category: "Photography",
+        type: "Camera",
+        sizes: null,
+        priceIDR: 14500000,
+        stock: 8,
+        thumbnailURL: "https://picsum.photos/1000/1000?Camera"
+      },
+      {
+        productName: "Eco-Friendly Water Bottle",
+        category: "Lifestyle",
+        type: "Water Bottle",
+        sizes: ["500ml", "750ml", "1L"],
+        priceIDR: 150000,
+        stock: 100,
+        thumbnailURL: "https://picsum.photos/1000/1000?Bottle"
+      },
+      {
+        productName: "Electric Guitar Pro",
+        category: "Music",
+        type: "Guitar",
+        sizes: null,
+        priceIDR: 5500000,
+        stock: 12,
+        thumbnailURL: "https://picsum.photos/1000/1000?Guitar"
+      },
+      {
+        productName: "Kitchen Blender Max",
+        category: "Appliances",
+        type: "Blender",
+        sizes: null,
+        priceIDR: 1200000,
+        stock: 15,
+        thumbnailURL: "https://picsum.photos/1000/1000?Blender"
+      },
+      {
+        productName: "Ergonomic Office Chair",
+        category: "Furniture",
+        type: "Office Chair",
+        sizes: null,
+        priceIDR: 1750000,
+        stock: 20,
+        thumbnailURL: "https://picsum.photos/1000/1000?Chair"
+      },
+      {
+        productName: "Running Shoes Max",
+        category: "Footwear",
+        type: "Running Shoes",
+        sizes: ["6", "7", "8", "9", "10"],
+        priceIDR: 850000,
+        stock: 40,
+        thumbnailURL: "https://picsum.photos/1000/1000?Shoes"
+      },
+      {
+        productName: "4K Ultra HD TV",
+        category: "Electronics",
+        type: "Television",
+        sizes: ["40-inch", "50-inch", "60-inch"],
+        priceIDR: 8900000,
+        stock: 10,
+        thumbnailURL: "https://picsum.photos/1000/1000?Television"
+      },
+      {
+        productName: "Premium Yoga Mat",
+        category: "Fitness",
+        type: "Yoga Mat",
+        sizes: null,
+        priceIDR: 350000,
+        stock: 60,
+        thumbnailURL: "https://picsum.photos/1000/1000?YogaMat"
+      },
+      {
+        productName: "Travel Backpack 50L",
+        category: "Travel",
+        type: "Backpack",
+        sizes: null,
+        priceIDR: 900000,
+        stock: 25,
+        thumbnailURL: "https://picsum.photos/1000/1000?Backpack"
+      },
+      {
+        productName: "Vintage Wall Clock",
+        category: "Home Decor",
+        type: "Wall Clock",
+        sizes: null,
+        priceIDR: 750000,
+        stock: 15,
+        thumbnailURL: "https://picsum.photos/1000/1000?Clock"
+      },
+      {
+        productName: "Professional Tripod Stand",
+        category: "Photography",
+        type: "Tripod",
+        sizes: null,
+        priceIDR: 1250000,
+        stock: 20,
+        thumbnailURL: "https://picsum.photos/1000/1000?Tripod"
+      },
+      {
+        productName: "Cordless Vacuum Cleaner",
+        category: "Appliances",
+        type: "Vacuum Cleaner",
+        sizes: null,
+        priceIDR: 3400000,
+        stock: 10,
+        thumbnailURL: "https://picsum.photos/1000/1000?Vacuum"
+      },
+      {
+        productName: "Stainless Steel Cookware Set",
+        category: "Kitchen",
+        type: "Cookware",
+        sizes: null,
+        priceIDR: 2200000,
+        stock: 18,
+        thumbnailURL: "https://picsum.photos/1000/1000?Cookware"
+      },
+      {
+        productName: "Bluetooth Wireless Headphones",
+        category: "Audio",
+        type: "Headphones",
+        sizes: null,
+        priceIDR: 1250000,
+        stock: 50,
+        thumbnailURL: "https://picsum.photos/1000/1000?Headphones"
+      },
+      {
+        productName: "Smart Home Assistant",
+        category: "Smart Devices",
+        type: "Home Assistant",
+        sizes: null,
+        priceIDR: 1950000,
+        stock: 15,
+        thumbnailURL: "https://picsum.photos/1000/1000?SmartHome"
+      }
 ];
