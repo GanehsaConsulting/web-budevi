@@ -52,7 +52,7 @@ export const Navbar = ({ children }) => {
             <div className={`fixed z-[999] navbar2 h-[55px]
                 ${isScrolled ? "bg-white bg-opacity-50 backdrop-blur-3xl" : "bg-white"}
                 `}>
-                <div className="navbar-start ml-[30px]">
+                <div className="navbar-start md:ml-[30px] -ml-[3px]">
                     <div className="dropdown">
                         <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
                             <svg
@@ -99,7 +99,7 @@ export const Navbar = ({ children }) => {
                         <li><a>Item 3</a></li>
                     </ul>
                 </div>
-                <div className="navbar-end mr-[30px]">
+                <div className="navbar-end md:mr-[30px] mr-[15px]">
                     <a className="">Button</a>
                 </div>
             </div>
