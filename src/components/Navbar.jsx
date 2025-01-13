@@ -50,7 +50,8 @@ export const Navbar = ({ children }) => {
     return (
         <>
             <div className={`fixed z-[999] navbar2 h-[55px]
-                ${isScrolled ? "bg-white bg-opacity-50 backdrop-blur-3xl" : "bg-white"}
+            ${visible ? "translate-y-0" : "-translate-y-full"}
+                ${isScrolled ? "bg-white bg-opacity-80 backdrop-blur-xl" : "bg-transparent"}
                 `}>
                 <div className="navbar-start md:ml-[30px] -ml-[3px]">
                     <div className="dropdown">

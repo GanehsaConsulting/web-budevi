@@ -1,13 +1,19 @@
 import Image from "next/image"
-import { products } from "../../public/DB"
+// import { products } from "../../public/DB"
 import { formatToRupiah } from "@/helper/formatToRupiah"
 import { IoCopyOutline } from "react-icons/io5";
-export const Card = () => {
+export const Card = ({ products, visibleCount, setVisibleCount, isSearching }) => {
+    const dataDisplayed = products.slice(0, visibleCount);
+
+    // Handle load more functionality
+    const handleLoadMore = () => {
+        setVisibleCount((prevCount) => prevCount + 6); // Increment count by 6
+    };
     return (
         <>
             <section className="md:mx-10 mx-5 py-10">
                 <div className={`grid grid-cols-2 md:grid-cols-5 md:gap-7 gap-y-7`}>
-                    {products.map((el, idx) => (
+                    {dataDisplayed.map((el, idx) => (
                         <a
                             className="hover:md:p-3 hover:p-[5px] flex flex-col rounded-lg duration-300 ease-in-out md:hover:shadow-mainShadow md:hover:-translate-y-1 space-y-2"
                             key={idx}
@@ -72,6 +78,16 @@ export const Card = () => {
                         </a>
                     ))}
                 </div>
+                {/* Kondisi tombol Load More */}
+                {visibleCount < products.length && (
+                    <div className="py-5 w-full flex justify-center items-center">
+                        <button
+                            onClick={handleLoadMore}
+                            className="active:scale-95 hover:brightness-90 duration-300 px-4 py-2 bg-black dark:bg-white text-bgLight dark:text-darkColor rounded-full font-semibold">
+                            Load More
+                        </button>
+                    </div>
+                )}
             </section>
         </>
     )

@@ -22,9 +22,17 @@ body {
 .patternSquare {
   background-color: rgba(0, 0, 0, 0);
   opacity: 100;
-  background-image: linear-gradient(#72727238 1.3px, transparent 1.3px),
-    linear-gradient(to right, #72727238 1.3px, #00000000 0px);
+  background-image: linear-gradient(#96909038 1.3px, transparent 1.3px),
+    linear-gradient(to right, #99999938 1.3px, #00000000 0px);
   background-size: 45px 45px;
+}
+.patternDots {
+  background-color: #24243400;
+  opacity: 100;
+  background-image: radial-gradient(#000000 0.5px, transparent 0.5px),
+    radial-gradient(#000000 0.5px, #df9daf00 0.5px);
+    background-size: 42px 42px;
+    background-position: 0 0,21px 21px;
 }
 
 .truncate-last {
@@ -105,13 +113,13 @@ body {
 }
 
 .navbar2 {
-    display: flex;
-    align-items: center;
-    padding: var(--navbar-padding, 0.5rem /* 8px */);
-    min-height: 55px /* 64px */;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  padding: var(--navbar-padding, 0.5rem /* 8px */);
+  min-height: 55px /* 64px */;
+  width: 100%;
 }
 :where(.navbar2 > *:not(script, style)) {
-    display: inline-flex;
-    align-items: center;
+  display: inline-flex;
+  align-items: center;
 }
