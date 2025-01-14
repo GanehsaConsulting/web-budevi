@@ -1,3 +1,22 @@
+export const NavbarItems = [
+    {
+        label: "Home",
+        href: "/"
+    },
+    {
+        label: "Products",
+        href: "/products"
+    },
+    {
+        label: "About",
+        href: "/about-us"
+    },
+    {
+        label: "Contact",
+        href: "/contact"
+    },
+]
+
 export const brandIdentity = {
     banner: {
         imageURL: "https://source.unsplash.com/random/1920x600?ecommerce",

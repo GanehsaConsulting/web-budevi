@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Banner } from "@/components/Banner";
 import { Card } from "@/components/Card";
 import { Filter } from "@/components/Filter";
@@ -8,16 +8,19 @@ import { useState } from "react";
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortCriteria, setSortCriteria] = useState("cheapest"); // Default sorting
-  const [visibleCount, setVisibleCount] = useState(6);
+  const [visibleCount, setVisibleCount] = useState(15);
+  const [selectedCategory, setSelectedCategory] = useState("All"); // New state for selected category
 
   const allProducts = products;
 
-  // Filter articles based on the search term
-  const filteredProducts = allProducts.filter((product) =>
-    product.productName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter products based on the search term and selected category
+  const filteredProducts = allProducts.filter((product) => {
+    const matchesSearch = product.productName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
-  // Sort filtered articles based on the sortCriteria
+  // Sort filtered products based on the sortCriteria
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     if (sortCriteria === "cheapest") {
       return a.priceIDR - b.priceIDR; // Sort by ascending price (low to high)
@@ -31,12 +34,26 @@ export default function Home() {
   const handleSort = (criteria) => {
     setSortCriteria(criteria); // Update sort criteria
   };
+
+  // Handle category filter change
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category); // Update selected category
+  };
+
+  // Reset filters
+  const handleResetFilters = () => {
+    setSearchTerm(""); // Reset search term
+    setSelectedCategory("All"); // Reset category to "All"
+  };
+
   return (
     <>
       <Banner />
       <Filter
         onSearch={setSearchTerm}
         onSort={handleSort}
+        onCategoryChange={handleCategoryChange}
+        onResetFilters={handleResetFilters} // Pass reset function to Filter component
       />
       {sortedProducts.length === 0 ? (
         <div className="h-[30lvh] flex items-center justify-center">
@@ -52,7 +69,6 @@ export default function Home() {
           products={sortedProducts}
         />
       )}
-
     </>
   );
 }

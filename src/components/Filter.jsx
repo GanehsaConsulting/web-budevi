@@ -1,27 +1,21 @@
-"use client"
+"use client";
 import { useEffect, useState } from "react";
 import { products } from "../../public/DB";
 import { usePathname } from "next/navigation";
+import { IoIosCloseCircle } from "react-icons/io";
 
-export const Filter = ({ onSearch, onSort }) => {
+export const Filter = ({ onSearch, onSort, onCategoryChange, onResetFilters }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [visible, setVisible] = useState(true);
     const [prevScrollPos, setPrevScrollPos] = useState(0);
     const [isScrolled, setIsScrolled] = useState(false);
-    const [hovering, setHovering] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState("All"); // Start with "All" as default selected category
 
     const handleToggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
 
     const pathname = usePathname();
-
-    // Fungsi untuk mengecek apakah link aktif
-    const isActive = (path) => {
-        if (path === '/') return pathname === '/';
-        return pathname.startsWith(path);
-    };
-
 
     useEffect(() => {
         const handleScroll = () => {
@@ -58,7 +52,7 @@ export const Filter = ({ onSearch, onSort }) => {
     });
 
     const [searchTerm, setSearchTerm] = useState("");
-    const [sortCriteria, setSortCriteria] = useState("cheapest"); // Default sort: newest
+    const [sortCriteria, setSortCriteria] = useState("cheapest"); // Default sort: cheapest
 
     // Handle search input changes
     const handleSearchChange = (e) => {
@@ -78,17 +72,29 @@ export const Filter = ({ onSearch, onSort }) => {
         onSort(criteria); // Pass sort criteria to parent component
     };
 
+    // Handle category selection
+    const handleCategoryChange = (category) => {
+        setSelectedCategory(category);
+        onCategoryChange(category); // Pass category selection to parent component
+    };
+
+    // Reset filters (reset category filter to "All")
+    const handleResetFilters = () => {
+        setSelectedCategory("All");
+        onCategoryChange("All"); // Reset category in parent component
+    };
+
     return (
         <>
             <section className={`
-                ${visible && isScrolled ? "translate-y-[52px] top-0" : "-translate-y-[50%] top-[54px]"}
+                ${visible && isScrolled ? "translate-y-[52px] top-0" : "-translate-y-[50%] md:top-[54px] top-[48px]"}
                 ${!isScrolled && "-translate-y-0"}
-                duration-300 sticky z-[888] bg-white bg-opacity-80 backdrop-blur-xl py-2`}>
+                duration-300 sticky z-[888] bg-white bg-opacity-80 backdrop-blur-xl py-2 mt-10 md:mt-0`}>
                 <div className="md:mx-10 mx-5 mb-1">
                     <div className="flex gap-2 items-center w-full">
                         <label className={`
                              ${isScrolled && "bg-opacity-50 bg-white border border-neutral-300"}
-                            input input-bordered rounded-full w-full flex items-center gap-2`}>
+                            input input-sm md:input-md input-bordered rounded-full w-full flex items-center gap-2`}>
                             <input
                                 value={searchTerm}
                                 onChange={handleSearchChange}
@@ -104,7 +110,7 @@ export const Filter = ({ onSearch, onSort }) => {
                                     fillRule="evenodd"
                                     d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
                                     clipRule="evenodd" />
-                            </svg>
+                            </svg>          
                         </label>
                         <div className="dropdown dropdown-end">
                             <div
@@ -112,7 +118,7 @@ export const Filter = ({ onSearch, onSort }) => {
                                 role="button"
                                 className={`
                               ${isScrolled && "bg-opacity-50 bg-white border border-neutral-300"}
-                             btn rounded-full m-1`}>
+                             btn btn-sm md:btn-md rounded-full m-1`}>
                                 Sort
                             </div>
                             <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
@@ -133,24 +139,42 @@ export const Filter = ({ onSearch, onSort }) => {
                         </div>
                     </div>
                 </div>
+                {/* Category Carousel */}
                 <div className="relative">
                     <div className="carousel2 w-full gap-2">
                         {uniqueCategories.map((category, idx) => (
                             <button
                                 key={idx}
+                                onClick={() => handleCategoryChange(category)}
                                 className={`
-                        ${idx === 0 ? "ml-5 md:ml-10" : ""} ${idx === uniqueCategories.length - 1 ? "mr-5 md:mr-10" : ""}
-                        ${isScrolled && "bg-opacity-50 bg-white border border-neutral-300"}
-                        px-4 py-2 carousel-item text-sm bg-bgLight rounded-full font-medium`}
+                                ${category === selectedCategory && "!bg-mainColor text-white bg-opacity-100"} 
+                                ${idx === 0 ? "ml-5 md:ml-10" : ""} 
+                                ${idx === uniqueCategories.length - 1 ? "mr-5 md:mr-10" : ""}
+                                ${isScrolled && "bg-opacity-50 bg-white border border-neutral-300"}
+                                relative px-4 py-2 carousel-item text-xs md:text-sm bg-bgLight rounded-full font-medium flex gap-2 items-center`}
                             >
                                 {category}
+                                {/* Show the 'X' icon next to the selected category */}
+                                {category === selectedCategory && category !== "All" && (
+                                    <>
+                                        <span
+                                            className="text-white ml-2 cursor-pointer"
+                                        >
+                                            <IoIosCloseCircle />
+                                        </span>
+                                        <div
+                                            onClick={(e) => {
+                                                e.stopPropagation(); // Prevent the button's click event from triggering
+                                                handleResetFilters(); // Reset the category filter
+                                            }}
+                                            className="w-10 h-full absolute right-0 top-0"></div>
+                                    </>
+                                )}
                             </button>
                         ))}
-                        {/* <div className="absolute right-0 top-0 w-12 h-full pointer-events-none bg-gradient-to-l from-white via-white to-transparent z-10"></div> */}
-                        {/* <div className="absolute left-0 top-0 w-12 h-full pointer-events-none bg-gradient-to-r from-white via-white to-transparent z-10"></div> */}
                     </div>
                 </div>
             </section>
         </>
-    )
-}
+    );
+};
