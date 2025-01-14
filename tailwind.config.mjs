@@ -14,13 +14,13 @@ module.exports = {
         foreground: "var(--foreground)",
       },
       colors: {
-        mainColor: "#FF4191",
-        secondaryColor: "#E90074",
-        mainColorD: "#df9daf",
-        secondaryColorD: "#f7dcf3",
-        baseColor: '#3B1C32',
+        mainColor: "#005874",
+        secondaryColor: "#D9EAFD",
+        mainColorD: "#1C819E",
+        secondaryColorD: "#BCCCDC",
+        baseColor: '#E6E6D4',
         darkColor: '#232323',
-        secondaryBase: "#FFD6E8",
+        secondaryBase: "#9AA6B2",
         highlightYellow: "#FFD700",
         bgLight: "#efefef"
       },
@@ -35,7 +35,7 @@ module.exports = {
     require('daisyui'),
     require('@tailwindcss/typography'),
   ],
-  // darkMode: 'class',
+  darkMode: 'class',
   daisyui: {
     themes: ["light", "dark"], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]
     darkTheme: "", // name of one of the included themes for dark mode

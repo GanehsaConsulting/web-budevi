@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { NavbarItems } from "../../public/System";
+import ThemeSwitch from "./ThemeSwitch";
 
 export const Navbar = ({ children }) => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -52,7 +53,7 @@ export const Navbar = ({ children }) => {
         <>
             <div className={`fixed z-[999] navbar2 h-[55px]
             ${visible ? "translate-y-0" : "-translate-y-full"}
-                ${isScrolled ? "bg-white bg-opacity-80 backdrop-blur-xl" : "bg-transparent"}
+                ${isScrolled ? "bg-white dark:bg-black dark:bg-opacity-80 bg-opacity-80 backdrop-blur-xl" : "bg-transparent"}
                 `}>
                 <div className="navbar-start md:ml-[30px] -ml-[3px]">
                     <div className="dropdown">
@@ -100,7 +101,7 @@ export const Navbar = ({ children }) => {
                     </ul>
                 </div>
                 <div className="navbar-end md:mr-[30px] mr-[15px]">
-                    <a className="">Button</a>
+                    <ThemeSwitch />
                 </div>
             </div>
         </>

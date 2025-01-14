@@ -73,14 +73,14 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
 
     return (
         <>
-            <section className="md:mx-10 mx-5 pb-10">
+            <section className="md:mx-10 mx-5 pb-10 mt-5">
                 <div className="grid grid-cols-2 md:grid-cols-5 md:gap-7 gap-3 gap-y-7">
                     {dataDisplayed.map((el, idx) => (
                         <div
                             key={idx}
-                            className={`hover:md:p-3 hover:p-[5px] flex flex-col rounded-lg duration-300 ease-in-out md:hover:shadow-mainShadow md:hover:-translate-y-1 space-y-2 
+                            className={`md:hover:p-[5px] flex flex-col rounded-2xl duration-300 ease-in-out md:hover:shadow-mainShadow md:dark:hover:shadow-[0px_0px_30px_#b8b8b86e] md:hover:-translate-y-1 space-y-2 
                                 ${selectedProducts.some((p) => p.productName === el.productName)
-                                    ? "ring-offset-4 ring ring-blue-500 p-3 bg-blue-500 text-white"
+                                    ? "ring-offset-4 dark:ring-offset-black ring ring-mainColor p-3 bg-mainColor dark:ring-mainColorD dark:bg-mainColorD text-white"
                                     : ""
                                 }`}
                         >
@@ -106,7 +106,7 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
                                                 {el.sizes.map((size, idx) => (
                                                     <p
                                                         key={idx}
-                                                        className={`px-[4px] py-[1px] flex items-center justify-center font-medium bg-secondaryBase rounded-md
+                                                        className={`px-[4px] py-[1px] flex items-center justify-center font-medium bg-secondaryBase dark:bg-secondaryColorD dark:text-black rounded-md
                                                              ${selectedProducts.some((p) => p.productName === el.productName)
                                                                 ? "bg-white !text-neutral-800"
                                                                 : ""
@@ -123,8 +123,8 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
                                 <div className="flex flex-col gap-2 w-full mt-auto md:flex-row text-sm md:mt-5">
                                     <button
                                         onClick={() => handleBatchSelect(el)}
-                                        className={`hover:bg-blue-500 hover:text-white duration-300 active:scale-90 px-4 py-1 w-full border border-neutral-200 rounded-full ${selectedProducts.some((p) => p.productName === el.productName)
-                                            ? "bg-blue-500 text-white"
+                                        className={`hover:bg-blue-500 hover:text-white duration-300 active:scale-90 px-4 py-1 w-full border border-neutral-200 dark:border-neutral-500 dark:text-bgLight rounded-full ${selectedProducts.some((p) => p.productName === el.productName)
+                                            ? "dark:bg-darkColor bg-bgLight text-black dark:text-white dark:!border-neutral-800 border-neutral-200 font-medium"
                                             : "text-neutral-600"
                                             }`}
                                     >
@@ -132,13 +132,37 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
                                             ? "Dipilih"
                                             : "Pilih"}
                                     </button>
-                                    <button
-                                        onClick={() => handleCopyProduct(el)}
-                                        className="hover:bg-neutral-200 duration-300 active:scale-90 px-4 py-1 w-full justify-center flex gap-2 items-center bg-neutral-100 text-neutral-600 truncate rounded-full"
-                                    >
-                                        <IoCopyOutline className="md:hidden block" />
-                                        Copy Produk
-                                    </button>
+                                    <div className="md:block hidden">
+                                        {selectedProducts.some((p) => p.productName === el.productName) ?
+                                            (
+                                                <button
+                                                    onClick={() => handleCopyProduct(el)}
+                                                    className="hover:bg-neutral-200 dark:hover:bg-neutral-900 duration-300 active:scale-90 btn btn-circle btn-sm justify-center flex gap-2 items-center bg-bgLight dark:text-white dark:bg-darkColor text-neutral-600 truncate rounded-full"
+                                                >
+                                                    <IoCopyOutline className="block" />
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    onClick={() => handleCopyProduct(el)}
+                                                    className="hover:bg-neutral-200 dark:hover:bg-neutral-900 duration-300 active:scale-90 px-4 py-1 w-full justify-center flex gap-2 items-center bg-bgLight dark:text-white dark:bg-darkColor text-neutral-600 truncate rounded-full"
+                                                >
+                                                    <IoCopyOutline className="md:hidden block" />
+                                                    Copy Produk
+                                                </button>
+
+                                            )
+                                        }
+                                    </div>
+                                    <div className="block md:hidden">
+
+                                        <button
+                                            onClick={() => handleCopyProduct(el)}
+                                            className="hover:bg-neutral-200 dark:hover:bg-neutral-900 duration-300 active:scale-90 px-4 py-1 w-full justify-center flex gap-2 items-center bg-bgLight dark:text-white dark:bg-darkColor text-neutral-600 truncate rounded-full"
+                                        >
+                                            <IoCopyOutline className="md:hidden block" />
+                                            Copy Produk
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -148,7 +172,7 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
                     <div className="py-5 w-full flex justify-center items-center">
                         <button
                             onClick={handleLoadMore}
-                            className="active:scale-95 hover:brightness-90 duration-300 px-4 py-2 bg-black text-white rounded-full font-semibold"
+                            className="active:scale-95 hover:brightness-90 duration-300 px-4 py-2 dark:invert bg-black text-white rounded-full font-semibold"
                         >
                             Load More
                         </button>

@@ -2,13 +2,19 @@
 import { useEffect, useState } from "react";
 import { products } from "../../public/DB";
 import { IoIosCloseCircle, IoIosSearch } from "react-icons/io";
+import { HiAdjustmentsHorizontal } from "react-icons/hi2";
 
-export const Filter = ({ onSearch, onSort, onCategoryChange, onResetFilters }) => {
+export const Filter = ({
+    onSearch,
+    onSort,
+    onCategoryChange,
+    onResetFilters,
+    selectedCategories,
+}) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [visible, setVisible] = useState(true);
     const [prevScrollPos, setPrevScrollPos] = useState(0);
     const [isScrolled, setIsScrolled] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState("All"); // Start with "All" as default selected category
 
     const handleToggleExpand = () => {
         setIsExpanded(!isExpanded);
@@ -20,10 +26,10 @@ export const Filter = ({ onSearch, onSort, onCategoryChange, onResetFilters }) =
             setIsScrolled(scrollPosition > 200);
         };
 
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener("scroll", handleScroll);
 
         return () => {
-            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener("scroll", handleScroll);
         };
     }, []);
 
@@ -34,8 +40,8 @@ export const Filter = ({ onSearch, onSort, onCategoryChange, onResetFilters }) =
     };
 
     useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
     }, [prevScrollPos, visible]);
 
     const data = products;
@@ -69,108 +75,165 @@ export const Filter = ({ onSearch, onSort, onCategoryChange, onResetFilters }) =
         onSort(criteria); // Pass sort criteria to parent component
     };
 
-    // Handle category selection
-    const handleCategoryChange = (category) => {
-        setSelectedCategory(category);
-        onCategoryChange(category); // Pass category selection to parent component
+    // Handle multi-category selection
+    const handleCategoryToggle = (category) => {
+        let updatedCategories = [...selectedCategories];
+        if (updatedCategories.includes(category)) {
+            updatedCategories = updatedCategories.filter((cat) => cat !== category);
+        } else {
+            updatedCategories.push(category);
+        }
+        onCategoryChange(updatedCategories); // Pass updated categories to parent component
     };
 
-    // Reset filters (reset category filter to "All")
-    const handleResetFilters = () => {
-        setSelectedCategory("All");
-        onCategoryChange("All"); // Reset category in parent component
+    // Reset filters
+    const handleResetFiltersLocal = () => {
+        setSearchTerm(""); // Reset search term locally
+        onResetFilters(); // Call parent reset function
     };
 
     return (
         <>
-            <section className={`
-                ${visible && isScrolled ? "translate-y-[52px] top-0" : "-translate-y-[50%] md:top-[54px] top-[45px]"}
-                ${!isScrolled && "-translate-y-0"}
-                duration-300 sticky z-[888] bg-white bg-opacity-80 backdrop-blur-xl py-2 mt-10 md:mt-0`}>
-                <div className="md:mx-10 mx-5 mb-1">
+            <section
+                className={`
+                    ${visible && isScrolled ? "translate-y-[50px]" : "-translate-y-[0%]"} 
+                    ${!isScrolled && "-translate-y-0"}
+                     duration-300 sticky z-[888] bg-white dark:bg-black dark:bg-opacity-80 bg-opacity-80 backdrop-blur-xl py-2 top-0`}
+            >
+                <div className="md:mx-10 mx-5">
                     <div className="flex gap-2 items-center w-full">
-                        <label className={`
-                             ${isScrolled && "bg-opacity-50 bg-white border border-neutral-300"}
-                            input input-sm md:input-md input-bordered rounded-full w-full flex items-center gap-2`}>
+                        <label
+                            className={`${isScrolled &&
+                                "bg-opacity-50 bg-white dark:bg-black dark:border-neutral-700 dark:bg-opacity-50 border border-neutral-300"
+                                } bg-bgLight dark:bg-darkColor input input-sm md:input-md rounded-full w-full flex items-center gap-2`}
+                        >
                             <IoIosSearch className={`${searchTerm === "" && "opacity-45"}`} />
                             <input
                                 value={searchTerm}
                                 onChange={handleSearchChange}
                                 type="text"
                                 className={`grow`}
-                                placeholder="Search" />
-
+                                placeholder="Search"
+                            />
                             <button
                                 onClick={handleResetSearch}
                                 className="active:scale-90 duration-300"
                             >
                                 <IoIosCloseCircle
-                                    className={`${searchTerm !== "" ? "block  md:text-2xl -mr-1 opacity-40" : "hidden"}`} />
+                                    className={`${searchTerm !== ""
+                                        ? "block  md:text-2xl -mr-1 opacity-40"
+                                        : "hidden"
+                                        }`}
+                                />
                             </button>
                         </label>
-                        <div className="dropdown dropdown-end">
-                            <div
-                                tabIndex={0}
-                                role="button"
-                                className={`
-                              ${isScrolled && "bg-opacity-50 bg-white border border-neutral-300"}
-                             btn btn-sm md:btn-md rounded-full m-1`}>
-                                Sort
-                            </div>
-                            <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-
-                                <li
-                                    className={`${sortCriteria === "cheapest" ? "bg-mainColor dark:bg-mainColorD rounded-lg dark:text-darkColor text-white" : ""
-                                        }`}
-                                >
-                                    <a onClick={() => handleSortChange("cheapest")}>Termurah</a>
-                                </li>
-                                <li
-                                    className={`${sortCriteria === "expensive" ? "bg-mainColor dark:bg-mainColorD rounded-lg dark:text-darkColor text-white" : ""
-                                        }`}
-                                >
-                                    <a onClick={() => handleSortChange("expensive")}>Termahal</a>
-                                </li>
-                            </ul>
+                        <div>
+                            <button
+                                onClick={() =>
+                                    document.getElementById("my_modal_5").showModal()
+                                }
+                                className={`${isScrolled &&
+                                    "bg-opacity-50 bg-white border !border-neutral-300 dark:bg-black dark:bg-opacity-50 dark:!border-neutral-700"
+                                    } btn btn-sm md:btn-md border-transparent hover:bg-neutral-300 dark:hover:bg-neutral-900 duration-300 rounded-full m-1 bg-bgLight dark:bg-darkColor text-neutral-800 dark:text-neutral-400`}
+                            >
+                                <span className="flex gap-2 items-center">
+                                    Filter
+                                    <HiAdjustmentsHorizontal />
+                                </span>
+                            </button>
+                            <dialog
+                                id="my_modal_5"
+                                className="modal modal-bottom sm:modal-middle"
+                            >
+                                <div className="modal-box dark:bg-darkColor bg-bgLight space-y-5">
+                                    <div className="space-y-3">
+                                        <p className="opacity-70 font-medium">Kategori Produk</p>
+                                        <div className="flex flex-wrap justify-between w-full gap-2">
+                                            {uniqueCategories.map((category, idx) => (
+                                                <button
+                                                    key={idx}
+                                                    onClick={() => handleCategoryToggle(category)}
+                                                    className={`
+                                                ${selectedCategories.includes(category) && "!bg-mainColor dark:!bg-mainColorD text-white bg-opacity-100"} 
+                                                relative px-4 py-2 text-xs md:text-sm grow bg-white dark:bg-black rounded-full font-medium flex gap-2 items-center justify-center border border-neutral-300 dark:border-neutral-700`}
+                                                >
+                                                    {category}
+                                                </button>
+                                            ))}
+                                            <button
+                                                onClick={handleResetFiltersLocal}
+                                                className={`relative px-4 py-2 text-xs md:text-sm grow bg-white dark:bg-black invert rounded-full font-medium flex gap-2 items-center justify-center border border-neutral-300 dark:border-neutral-700`}
+                                            >
+                                                Reset Filter
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-3">
+                                        <p className="opacity-70 font-medium">Urutkan Produk</p>
+                                        <ul className="flex gap-2">
+                                            <li
+                                                className={`${sortCriteria === "cheapest"
+                                                    ? "!bg-mainColor dark:!bg-mainColorD text-white bg-opacity-100"
+                                                    : ""
+                                                    } px-4 py-2 text-xs md:text-sm grow bg-white dark:bg-black rounded-full font-medium flex gap-2 items-center justify-center border border-neutral-300 dark:border-neutral-700`}
+                                            >
+                                                <a onClick={() => handleSortChange("cheapest")}>
+                                                    Termurah
+                                                </a>
+                                            </li>
+                                            <li
+                                                className={`${sortCriteria === "expensive"
+                                                    ? "!bg-mainColor dark:!bg-mainColorD text-white bg-opacity-100"
+                                                    : ""
+                                                    } px-4 py-2 text-xs md:text-sm grow bg-white dark:bg-black rounded-full font-medium flex gap-2 items-center justify-center border border-neutral-300 dark:border-neutral-700`}
+                                            >
+                                                <a onClick={() => handleSortChange("expensive")}>
+                                                    Termahal
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div className="modal-action">
+                                        <form method="dialog">
+                                            {/* if there is a button in form, it will close the modal */}
+                                            <button className="btn wf bg-red-500 dark:bg-red-900 rounded-full border-none text-white">Close</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </dialog>
                         </div>
                     </div>
                 </div>
-                {/* Category Carousel */}
-                <div className="relative">
-                    <div className="carousel2 w-full gap-2">
-                        {uniqueCategories.map((category, idx) => (
-                            <button
+            </section>
+            {selectedCategories.length > 0 && (
+                <div className={`duration-300 sticky z-[888] bg-white dark:bg-black dark:bg-opacity-80 bg-opacity-80 backdrop-blur-xl py-2 top-[56px] md:top-[72px]
+                    ${visible && isScrolled ? "translate-y-[50px]" : "-translate-y-[0%]"} 
+                
+                `}>
+
+                    <div className="md:mt-[3px] carousel2 w-full gap-2">
+                        {selectedCategories.map((category, idx) => (
+                            <span
                                 key={idx}
-                                onClick={() => handleCategoryChange(category)}
-                                className={`
-                                ${category === selectedCategory && "!bg-mainColor text-white bg-opacity-100"} 
-                                ${idx === 0 ? "ml-5 md:ml-10" : ""} 
-                                ${idx === uniqueCategories.length - 1 ? "mr-5 md:mr-10" : ""}
-                                ${isScrolled && "bg-opacity-50 bg-white border border-neutral-300"}
-                                relative px-4 py-2 carousel-item text-xs md:text-sm bg-bgLight rounded-full font-medium flex gap-2 items-center`}
+                                className={`${idx === 0 && "md:ml-10 ml-5"} 
+                        carousel-item flex items-center gap-2 px-3 py-1 bg-mainColor btn btn-xs text-white rounded-full`}
                             >
                                 {category}
-                                {/* Show the 'X' icon next to the selected category */}
-                                {category === selectedCategory && category !== "All" && (
-                                    <>
-                                        <span
-                                            className="text-white ml-2 cursor-pointer"
-                                        >
-                                            <IoIosCloseCircle />
-                                        </span>
-                                        <div
-                                            onClick={(e) => {
-                                                e.stopPropagation(); // Prevent the button's click event from triggering
-                                                handleResetFilters(); // Reset the category filter
-                                            }}
-                                            className="w-10 h-full absolute right-0 top-0"></div>
-                                    </>
-                                )}
-                            </button>
+                                <IoIosCloseCircle
+                                    className="cursor-pointer"
+                                    onClick={() => handleCategoryToggle(category)}
+                                />
+                            </span>
                         ))}
+                        <button
+                            onClick={handleResetFiltersLocal}
+                            className={`carousel-item md:mr-10 mr-5 flex items-center gap-2 px-3 py-1 bg-black btn btn-xs text-white dark:invert rounded-full`}
+                        >
+                            Reset Filter
+                        </button>
                     </div>
                 </div>
-            </section>
+            )}
         </>
     );
 };

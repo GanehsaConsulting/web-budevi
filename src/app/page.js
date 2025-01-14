@@ -9,14 +9,15 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortCriteria, setSortCriteria] = useState("cheapest"); // Default sorting
   const [visibleCount, setVisibleCount] = useState(15);
-  const [selectedCategory, setSelectedCategory] = useState("All"); // New state for selected category
+  const [selectedCategories, setSelectedCategories] = useState([]); // Multi-category selection
 
   const allProducts = products;
 
-  // Filter products based on the search term and selected category
+  // Filter products based on the search term and selected categories
   const filteredProducts = allProducts.filter((product) => {
     const matchesSearch = product.productName.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
+    const matchesCategory =
+      selectedCategories.length === 0 || selectedCategories.includes(product.category);
     return matchesSearch && matchesCategory;
   });
 
@@ -35,15 +36,15 @@ export default function Home() {
     setSortCriteria(criteria); // Update sort criteria
   };
 
-  // Handle category filter change
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category); // Update selected category
+  // Handle category filter changes (multi-category support)
+  const handleCategoryChange = (categories) => {
+    setSelectedCategories(categories); // Update selected categories
   };
 
   // Reset filters
   const handleResetFilters = () => {
     setSearchTerm(""); // Reset search term
-    setSelectedCategory("All"); // Reset category to "All"
+    setSelectedCategories([]); // Reset categories to empty
   };
 
   return (
@@ -54,6 +55,7 @@ export default function Home() {
         onSort={handleSort}
         onCategoryChange={handleCategoryChange}
         onResetFilters={handleResetFilters} // Pass reset function to Filter component
+        selectedCategories={selectedCategories} // Pass selected categories to Filter
       />
       {sortedProducts.length === 0 ? (
         <div className="h-[30lvh] flex items-center justify-center">
