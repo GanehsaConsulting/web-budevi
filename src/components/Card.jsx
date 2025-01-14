@@ -3,6 +3,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { formatToRupiah } from "@/helper/formatToRupiah";
 import { IoClose, IoCopyOutline } from "react-icons/io5";
+import Toastify from 'toastify-js'; // Import Toastify
+import 'toastify-js/src/toastify.css'; // Import Toastify CSS
 
 export const Card = ({ products, visibleCount, setVisibleCount }) => {
     const [selectedProducts, setSelectedProducts] = useState([]);
@@ -15,6 +17,7 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
         Nama Produk: ${product.productName}
         Kategori: ${product.category}
         Tipe: ${product.type || "Tidak tersedia"}
+        Ukuran: ${product.sizes || "Tidak tersedia"}
         Harga: ${formatToRupiah(product.priceIDR)}
         Stok: ${product.stock}
         URL Gambar: ${product.thumbnailURL}
@@ -24,7 +27,14 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
     const handleCopyProduct = (product) => {
         const productText = formatProductText(product);
         navigator.clipboard.writeText(productText);
-        alert("Produk berhasil disalin!");
+        Toastify({
+            text: "Produk berhasil disalin!",
+            duration: 3000,
+            gravity: "top", // can be "top" or "bottom"
+            position: 'right', // can be "left", "center" or "right"
+            backgroundColor: "#4caf50", // Success color
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+        }).showToast();
     };
 
     const handleBatchSelect = (product) => {
@@ -47,7 +57,14 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
 
         const batchText = selectedProducts.map(formatProductText).join("\n\n");
         navigator.clipboard.writeText(batchText);
-        alert("Semua produk terpilih berhasil disalin!");
+        Toastify({
+            text: "Semua produk terpilih berhasil disalin!",
+            duration: 3000,
+            gravity: "top", // can be "top" or "bottom"
+            position: 'right', // can be "left", "center" or "right"
+            backgroundColor: "#4caf50", // Success color
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+        }).showToast();
     };
 
     const handleLoadMore = () => {
@@ -81,12 +98,32 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
                                     </p>
                                     <h1 className="md:text-lg">{el.productName}</h1>
                                     <p className="md:text-lg font-bold">{formatToRupiah(el.priceIDR)}</p>
-                                    <p className="text-sm opacity-70">Stock: {el.stock}</p>
+                                    <div className="text-sm opacity-70 flex gap-2 flex-wrap">
+                                        <p>Stock : {el.stock}</p>
+                                        {el.sizes ? (
+                                            <div className="flex flex-wrap items-center gap-1">
+                                                <p>Size:</p>
+                                                {el.sizes.map((size, idx) => (
+                                                    <p
+                                                        key={idx}
+                                                        className={`px-[4px] py-[1px] flex items-center justify-center font-medium bg-secondaryBase rounded-md
+                                                             ${selectedProducts.some((p) => p.productName === el.productName)
+                                                                ? "bg-white !text-neutral-800"
+                                                                : ""
+                                                            }
+                                                            `}
+                                                    >
+                                                        {size}
+                                                    </p>
+                                                ))}
+                                            </div>
+                                        ) : null}
+                                    </div>
                                 </div>
                                 <div className="flex flex-col gap-2 w-full mt-auto md:flex-row text-sm md:mt-5">
                                     <button
                                         onClick={() => handleBatchSelect(el)}
-                                        className={`px-4 py-1 w-full border border-neutral-200 rounded-full ${selectedProducts.some((p) => p.productName === el.productName)
+                                        className={`hover:bg-blue-500 hover:text-white duration-300 active:scale-90 px-4 py-1 w-full border border-neutral-200 rounded-full ${selectedProducts.some((p) => p.productName === el.productName)
                                             ? "bg-blue-500 text-white"
                                             : "text-neutral-600"
                                             }`}
@@ -97,7 +134,7 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
                                     </button>
                                     <button
                                         onClick={() => handleCopyProduct(el)}
-                                        className="px-4 py-1 w-full justify-center flex gap-2 items-center bg-neutral-100 text-neutral-600 truncate rounded-full"
+                                        className="hover:bg-neutral-200 duration-300 active:scale-90 px-4 py-1 w-full justify-center flex gap-2 items-center bg-neutral-100 text-neutral-600 truncate rounded-full"
                                     >
                                         <IoCopyOutline className="md:hidden block" />
                                         Copy Produk

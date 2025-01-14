@@ -1,8 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { products } from "../../public/DB";
-import { usePathname } from "next/navigation";
-import { IoIosCloseCircle } from "react-icons/io";
+import { IoIosCloseCircle, IoIosSearch } from "react-icons/io";
 
 export const Filter = ({ onSearch, onSort, onCategoryChange, onResetFilters }) => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -14,8 +13,6 @@ export const Filter = ({ onSearch, onSort, onCategoryChange, onResetFilters }) =
     const handleToggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
-
-    const pathname = usePathname();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -87,7 +84,7 @@ export const Filter = ({ onSearch, onSort, onCategoryChange, onResetFilters }) =
     return (
         <>
             <section className={`
-                ${visible && isScrolled ? "translate-y-[52px] top-0" : "-translate-y-[50%] md:top-[54px] top-[48px]"}
+                ${visible && isScrolled ? "translate-y-[52px] top-0" : "-translate-y-[50%] md:top-[54px] top-[45px]"}
                 ${!isScrolled && "-translate-y-0"}
                 duration-300 sticky z-[888] bg-white bg-opacity-80 backdrop-blur-xl py-2 mt-10 md:mt-0`}>
                 <div className="md:mx-10 mx-5 mb-1">
@@ -95,22 +92,21 @@ export const Filter = ({ onSearch, onSort, onCategoryChange, onResetFilters }) =
                         <label className={`
                              ${isScrolled && "bg-opacity-50 bg-white border border-neutral-300"}
                             input input-sm md:input-md input-bordered rounded-full w-full flex items-center gap-2`}>
+                            <IoIosSearch className={`${searchTerm === "" && "opacity-45"}`} />
                             <input
                                 value={searchTerm}
                                 onChange={handleSearchChange}
                                 type="text"
                                 className={`grow`}
                                 placeholder="Search" />
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 16 16"
-                                fill="currentColor"
-                                className="h-4 w-4 opacity-70">
-                                <path
-                                    fillRule="evenodd"
-                                    d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                                    clipRule="evenodd" />
-                            </svg>          
+
+                            <button
+                                onClick={handleResetSearch}
+                                className="active:scale-90 duration-300"
+                            >
+                                <IoIosCloseCircle
+                                    className={`${searchTerm !== "" ? "block  md:text-2xl -mr-1 opacity-40" : "hidden"}`} />
+                            </button>
                         </label>
                         <div className="dropdown dropdown-end">
                             <div
