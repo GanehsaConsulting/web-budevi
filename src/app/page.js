@@ -58,8 +58,8 @@ export default function Home() {
         selectedCategories={selectedCategories} // Pass selected categories to Filter
       />
       {sortedProducts.length === 0 ? (
-        <div className="h-[30lvh] flex items-center justify-center">
-          <p className="text-xl text-center">
+        <div className="h-[10lvh] md:h-[30lvh] flex items-center justify-center">
+          <p className="md:text-xl text-center mx-5">
             No product found for <span className="font-semibold text text-mainColor dark:text-mainColorD">{searchTerm}</span>. Please try a different search term.
           </p>
         </div>
