@@ -54,6 +54,9 @@ export const Filter = ({
         }
     });
 
+    // Sort Categoris by Aplhabet
+    uniqueCategories.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+
     const [searchTerm, setSearchTerm] = useState("");
     const [sortCriteria, setSortCriteria] = useState("cheapest"); // Default sort: cheapest
 
@@ -160,12 +163,14 @@ export const Filter = ({
                                                     {category}
                                                 </button>
                                             ))}
-                                            <button
-                                                onClick={handleResetFiltersLocal}
-                                                className={`relative px-4 py-2 text-xs md:text-sm grow bg-white dark:bg-black invert rounded-full font-medium flex gap-2 items-center justify-center border border-neutral-300 dark:border-neutral-700`}
-                                            >
-                                                Reset Filter
-                                            </button>
+                                            {selectedCategories.length > 0 && (
+                                                <button
+                                                    onClick={handleResetFiltersLocal}
+                                                    className={`relative px-4 py-2 text-xs md:text-sm grow bg-white dark:bg-black invert rounded-full font-medium flex gap-2 items-center justify-center border border-neutral-300 dark:border-neutral-700`}
+                                                >
+                                                    Reset Filter
+                                                </button>
+                                            )}
                                         </div>
                                     </div>
                                     <div className="space-y-3">
@@ -206,7 +211,7 @@ export const Filter = ({
                 </div>
             </section>
             {selectedCategories.length > 0 && (
-                <div className={`duration-300 sticky z-[888] bg-white dark:bg-black dark:bg-opacity-80 bg-opacity-80 backdrop-blur-xl py-2 top-[56px] md:top-[72px]
+                <div className={`duration-300 sticky z-[888] bg-white dark:bg-black dark:bg-opacity-80 bg-opacity-80 backdrop-blur-xl pb-1 pt-[1px] top-[56px] md:top-[72px]
                     ${visible && isScrolled ? "translate-y-[50px]" : "-translate-y-[0%]"} 
                 
                 `}>
@@ -216,7 +221,7 @@ export const Filter = ({
                             <span
                                 key={idx}
                                 className={`${idx === 0 && "md:ml-10 ml-5"} 
-                        carousel-item flex items-center gap-2 px-3 py-1 bg-mainColor btn btn-xs text-white rounded-full`}
+                        carousel-item flex items-center gap-2 px-3 py-1 bg-mainColor btn btn-xs text-white rounded-full border border-transparent`}
                             >
                                 {category}
                                 <IoIosCloseCircle

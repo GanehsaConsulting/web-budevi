@@ -78,7 +78,7 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
                     {dataDisplayed.map((el, idx) => (
                         <div
                             key={idx}
-                            className={`md:hover:p-[5px] flex flex-col rounded-2xl duration-300 ease-in-out md:hover:shadow-mainShadow md:dark:hover:shadow-[0px_0px_30px_#b8b8b86e] md:hover:-translate-y-1 space-y-2 
+                            className={`md:hover:p-3 flex flex-col rounded-2xl duration-300 ease-in-out md:hover:shadow-mainShadow md:dark:hover:shadow-[0px_0px_30px_#b8b8b86e] md:hover:-translate-y-1 space-y-2 
                                 ${selectedProducts.some((p) => p.productName === el.productName)
                                     ? "ring-offset-4 dark:ring-offset-black ring ring-mainColor p-3 bg-mainColor dark:ring-mainColorD dark:bg-mainColorD text-white"
                                     : ""

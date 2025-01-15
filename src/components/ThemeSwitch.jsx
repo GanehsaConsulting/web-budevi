@@ -16,20 +16,20 @@ export default function ThemeSwitch() {
 
   return (
     <div className="flex gap-2">
-      <div className='flex gap-2 p-[6px] border border-neutral-400 rounded-full relative group'>
+      <div className='flex gap-2 p-[6px] border border-neutral-400 rounded-full group relative'>
         <button
           onClick={() => setTheme('system')}
-          className={`${theme === 'system' && 'dark:text-black text-white'} z-20 duration-300 group-active:scale-90`}>
+          className={`${theme === 'system' && 'dark:text-black text-white'} z-20 duration-300 active:scale-90`}>
           <TbAdjustmentsFilled />
         </button>
         <button
           onClick={() => setTheme('light')}
-          className={`${theme === 'light' && 'dark:text-black text-white'} z-20 duration-300 group-active:scale-90`}>
+          className={`${theme === 'light' && 'dark:text-black text-white'} z-20 duration-300 active:scale-90`}>
           <TbSunFilled />
         </button>
         <button
           onClick={() => setTheme('dark')}
-          className={`${theme === 'dark' && 'dark:text-black text-white'} z-20 duration-300 group-active:scale-90`}>
+          className={`${theme === 'dark' && 'dark:text-black text-white'} z-20 duration-300 active:scale-90`}>
           <TbMoonFilled />
         </button>
         <div className={`w-[22px] h-[22px] rounded-full z-10 bg-mainColor dark:bg-secondaryColorD absolute inset-[3px] ease-in-out duration-300 group-active:scale-90

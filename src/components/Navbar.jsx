@@ -5,23 +5,9 @@ import { NavbarItems } from "../../public/System";
 import ThemeSwitch from "./ThemeSwitch";
 
 export const Navbar = ({ children }) => {
-    const [isExpanded, setIsExpanded] = useState(false);
     const [visible, setVisible] = useState(true);
     const [prevScrollPos, setPrevScrollPos] = useState(0);
     const [isScrolled, setIsScrolled] = useState(false);
-    const [hovering, setHovering] = useState(false);
-
-    const handleToggleExpand = () => {
-        setIsExpanded(!isExpanded);
-    };
-
-    const pathname = usePathname();
-
-    // Fungsi untuk mengecek apakah link aktif
-    const isActive = (path) => {
-        if (path === '/') return pathname === '/';
-        return pathname.startsWith(path);
-    };
 
 
     useEffect(() => {
@@ -51,7 +37,7 @@ export const Navbar = ({ children }) => {
 
     return (
         <>
-            <div className={`fixed z-[999] navbar2 h-[55px]
+            <div className={`fixed z-[999] navbar2 h-[50px]
             ${visible ? "translate-y-0" : "-translate-y-full"}
                 ${isScrolled ? "bg-white dark:bg-black dark:bg-opacity-80 bg-opacity-80 backdrop-blur-xl" : "bg-transparent"}
                 `}>
