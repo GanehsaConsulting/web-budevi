@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
-import { TbMoonFilled, TbSunFilled, TbAdjustmentsFilled, TbAd } from "react-icons/tb";
+import { TbMoonFilled, TbSunFilled, TbAdjustmentsFilled } from "react-icons/tb";
 
 export default function ThemeSwitch() {
   const { theme, setTheme } = useTheme('system');
@@ -16,28 +16,33 @@ export default function ThemeSwitch() {
 
   return (
     <div className="flex gap-2">
-      <div className='flex gap-2 p-[6px] border border-neutral-400 rounded-full group relative'>
-        <button
-          onClick={() => setTheme('system')}
-          className={`${theme === 'system' && 'dark:text-black text-white'} z-20 duration-300 active:scale-90`}>
-          <TbAdjustmentsFilled />
-        </button>
-        <button
-          onClick={() => setTheme('light')}
-          className={`${theme === 'light' && 'dark:text-black text-white'} z-20 duration-300 active:scale-90`}>
-          <TbSunFilled />
-        </button>
-        <button
-          onClick={() => setTheme('dark')}
-          className={`${theme === 'dark' && 'dark:text-black text-white'} z-20 duration-300 active:scale-90`}>
-          <TbMoonFilled />
-        </button>
-        <div className={`w-[22px] h-[22px] rounded-full z-10 bg-mainColor dark:bg-secondaryColorD absolute inset-[3px] ease-in-out duration-300 group-active:scale-90
-          ${theme === 'light' && "translate-x-6"}
-          ${theme === 'dark' && "translate-x-12"}
-          `}></div>
-      </div>
+      <div className="flex items-center space-x-4">
+        {/* DaisyUI Theme Switch */}
+        <label className="swap swap-rotate group">
+          <input
+            type="checkbox"
+            checked={theme === 'dark'}
+            onChange={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="hidden"
+          />
+          {/* Sun icon for light mode */}
+          <div className="swap-on">
+            <TbSunFilled className="text-xl text-neutral-500 dark:text-neutral-300 group-hover:rotate-90 duration-300" />
+          </div>
+          {/* Moon icon for dark mode */}
+          <div className="swap-off">
+            <TbMoonFilled className="text-xl text-neutral-500 dark:text-neutral-300 group-hover:rotate-90 duration-300" />
+          </div>
+        </label>
 
+        {/* Optional settings icon */}
+        {/* <button 
+          onClick={() => setTheme('system')} 
+          className={`z-20 duration-300 ${theme === 'system' ? 'text-black' : 'text-gray-500'} text-xl`}
+        >
+          <TbAdjustmentsFilled />
+        </button> */}
+      </div>
     </div>
   );
 }

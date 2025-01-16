@@ -123,3 +123,34 @@ body {
   display: inline-flex;
   align-items: center;
 }
+
+.burger-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 40px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.burger-button div {
+  width: 30px;
+  height: 3px;
+  background-color: #000;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.burger-button.open div:nth-child(1) {
+  transform: rotate(45deg) translateY(8px);
+}
+
+.burger-button.open div:nth-child(2) {
+  opacity: 0;
+}
+
+.burger-button.open div:nth-child(3) {
+  transform: rotate(-45deg) translateY(-8px);
+}

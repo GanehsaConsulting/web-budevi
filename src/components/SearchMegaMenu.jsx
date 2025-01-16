@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import { IoIosSearch } from "react-icons/io";
 import { usePathname } from "next/navigation";
+import { IoSearch } from "react-icons/io5";
 
 export const SearchMegaMenu = ({ isExpanded }) => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -26,14 +26,18 @@ export const SearchMegaMenu = ({ isExpanded }) => {
     return (
         <>
             <section>
-                <form onSubmit={handleSearchSubmit} className="flex items-center gap-2">
+                <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 md:mx-0 mx-5">
+                   <div className="">
+
+                   </div>
+                   
                     <label className="input dark:bg-black w-full bg-white z-[60] input-md md:input-lg rounded-none !px-0 dark:focus-within:border-opacity-40 focus-within:border-opacity-40 bg-opacity-0 focus:border-none focus:bg-none focus-within:outline-none outline-none border-0 focus:outline-transparent focus:outline-offset-0 text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                        <IoIosSearch className="text-2xl opacity-70" />
+                        <IoSearch className="text-xl md:text-2xl opacity-70" />
                         <input
                             value={searchTerm}
                             onChange={handleSearchChange}
                             type="text"
-                            className="grow text-2xl font-medium"
+                            className="grow text-xl md:text-2xl font-medium"
                             placeholder="Search"
                         />
                     </label>

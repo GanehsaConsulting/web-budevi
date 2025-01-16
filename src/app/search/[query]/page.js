@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { IoIosCloseCircle, IoIosSearch } from "react-icons/io";
 import { useState, useEffect } from "react";
 import { products } from "../../../../public/DB";
+import { IoSearch } from "react-icons/io5";
 
 export default function SearchPage() {
     const pathname = usePathname();
@@ -41,7 +42,7 @@ export default function SearchPage() {
         <div className="py-24 min-h-screen">
             <form onSubmit={handleSearch} className="flex mb-5 md:mb-10 md:mx-10 mx-5">
                 <label className="bg-bgLight dark:bg-darkColor input input-sm md:input-md rounded-full w-full flex items-center gap-2">
-                    <IoIosSearch />
+                    <IoSearch />
                     <input
                         value={query}
                         onChange={(e) => setQuery(e.target.value)} // Update query while typing

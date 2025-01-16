@@ -1,20 +1,32 @@
 'use client'
 import { IoIosArrowDown } from 'react-icons/io';
 
-export const MegaMenuNavbar = ({ index, title, links, isExpanded, setIsExpanded, children, arrowVisibility, label, icon }) => {
+export const MegaMenuNavbar = ({ index, title, links, isExpanded, setIsExpanded, children, arrowVisibility, label, icon, className, burger }) => {
 
     const handleToggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
 
     return (
-        <div className="relative group flex items-center overflow-visible">
+        <div className={` relative group flex items-center overflow-visible`}>
+            {burger && (
+                 <>
+                 <div
+                     onClick={handleToggleExpand}
+                     className="z-[9999]">
+                     <div className={`${className} duration-300 ease-in-out`}>
+                         {burger}
+                     </div>
+                 </div>
+
+             </>
+            )}
             {icon && (
                 <>
                     <div
                         onClick={handleToggleExpand}
-                        className="z-[999] md:w-[35px] w-[32px] md:h-[35px] h-[32px] flex items-center justify-center duration-300 ease-in-out rounded-full">
-                        <div className={`group-hover:rotate-90 duration-300 ease-in-out`}>
+                        className="z-[9999] md:w-[35px] w-[32px] md:h-[35px] h-[32px] flex items-center justify-center duration-300 ease-in-out rounded-full">
+                        <div className={`${className} duration-300 ease-in-out`}>
                             {icon}
                         </div>
                     </div>
