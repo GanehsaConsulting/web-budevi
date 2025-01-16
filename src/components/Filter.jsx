@@ -101,7 +101,7 @@ export const Filter = ({
                 className={`
                     ${visible && isScrolled ? "translate-y-[50px]" : "-translate-y-[0%]"} 
                     ${!isScrolled && "-translate-y-0"}
-                     duration-300 sticky z-[888] bg-white dark:bg-black dark:bg-opacity-80 bg-opacity-80 backdrop-blur-xl py-2 top-0`}
+                     duration-300 sticky z-[888] bg-white dark:bg-black dark:bg-opacity-80 bg-opacity-80 backdrop-blur-xl py-1 md:py-2 top-0`}
             >
                 <div className="md:mx-10 mx-5">
                     <div className="flex gap-2 items-center w-full">

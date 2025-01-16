@@ -78,7 +78,7 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
                     {dataDisplayed.map((el, idx) => (
                         <div
                             key={idx}
-                            className={`md:hover:p-3 flex flex-col rounded-2xl duration-300 ease-in-out md:hover:shadow-mainShadow md:dark:hover:shadow-[0px_0px_30px_#b8b8b86e] md:hover:-translate-y-1 space-y-2 
+                            className={`group hover:overflow-hidden md:hover:p-3 hover:p-2 flex flex-col rounded-2xl duration-300 ease-in-out md:hover:shadow-mainShadow md:dark:hover:shadow-[0px_0px_30px_#b8b8b86e] md:hover:-translate-y-1 space-y-2 
                                 ${selectedProducts.some((p) => p.productName === el.productName)
                                     ? "ring-offset-4 dark:ring-offset-black ring ring-mainColor p-3 bg-mainColor dark:ring-mainColorD dark:bg-mainColorD text-white"
                                     : ""
@@ -107,7 +107,7 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
                                                     {el.sizes.map((size, idx) => (
                                                         <p
                                                             key={idx}
-                                                            className={`px-[4px] py-[1px] flex items-center justify-center font-medium bg-secondaryBase dark:bg-secondaryColorD dark:text-black rounded-md
+                                                            className={`px-[4px] py-[1px] flex items-center justify-center font-medium bg-baseColor dark:bg-secondaryBase dark:text-black rounded-md
                                                              ${selectedProducts.some((p) => p.productName === el.productName)
                                                                     ? "bg-white !text-neutral-800"
                                                                     : ""
@@ -122,17 +122,18 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
                                         </div>
                                     </div>
                                 </div>
+                                <div className="absolute w-full h-full bg-white dark:bg-black group-hover:opacity-30 opacity-0 duration-200 scale-125 inset-0 z-[15]"></div>
                                 <Image
-                                    className="absolute w-full scale-90 dark:scale-[.8] translate-y-10 rounded-lg md:h-[30lvh] z-10 object-cover blur-xl dark:blur-2xl dark:brightness-125 dark:opacity-40 opacity-30"
+                                    className="absolute w-full group-hover:h-full duration-100 group-hover:opacity-60 group-hover:scale-150 scale-90 dark:scale-[.8] translate-y-10 rounded-lg md:h-[30lvh] z-10 object-cover blur-xl dark:blur-2xl dark:brightness-125 dark:opacity-40 opacity-30"
                                     width={1}
                                     height={1}
                                     src={el.thumbnailURL}
                                     alt={el.productName}
                                 />
-                                <div className="flex flex-col gap-2 w-full mt-auto md:flex-row text-sm md:mt-5">
+                                <div className="flex flex-col gap-2 w-full mt-auto md:flex-row text-sm md:mt-5 z-20">
                                     <button
                                         onClick={() => handleBatchSelect(el)}
-                                        className={`hover:bg-blue-500 hover:text-white duration-300 active:scale-90 px-4 py-1 w-full border border-neutral-200 dark:border-neutral-500 dark:text-bgLight rounded-full ${selectedProducts.some((p) => p.productName === el.productName)
+                                        className={`hover:bg-blue-500 hover:text-white text-darkColor group-hover:border-neutral-500 duration-300 active:scale-90 px-4 py-1 w-full border border-neutral-200 dark:border-neutral-500 dark:text-bgLight rounded-full ${selectedProducts.some((p) => p.productName === el.productName)
                                             ? "dark:bg-darkColor bg-bgLight text-black dark:text-white dark:!border-neutral-800 border-neutral-200 font-medium"
                                             : "text-neutral-600"
                                             }`}
@@ -146,14 +147,14 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
                                             (
                                                 <button
                                                     onClick={() => handleCopyProduct(el)}
-                                                    className="hover:bg-neutral-200 dark:hover:bg-neutral-900 duration-300 active:scale-90 btn btn-circle btn-sm justify-center flex gap-2 items-center bg-bgLight dark:text-white dark:bg-darkColor text-neutral-600 truncate rounded-full"
+                                                    className="hover:bg-neutral-200 bg-opacity-60 dark:hover:bg-neutral-900 duration-300 active:scale-90 btn btn-circle btn-sm justify-center flex gap-2 items-center bg-bgLight dark:text-white dark:bg-darkColor text-neutral-600 truncate rounded-full"
                                                 >
                                                     <IoCopyOutline className="block" />
                                                 </button>
                                             ) : (
                                                 <button
                                                     onClick={() => handleCopyProduct(el)}
-                                                    className="hover:bg-neutral-200 dark:hover:bg-neutral-900 duration-300 active:scale-90 px-4 py-1 w-full justify-center flex gap-2 items-center bg-bgLight dark:text-white dark:bg-darkColor text-neutral-600 truncate rounded-full"
+                                                    className="hover:bg-neutral-200 bg-opacity-60 dark:hover:bg-neutral-900 duration-300 active:scale-90 px-4 py-1 w-full justify-center flex gap-2 items-center bg-bgLight dark:text-white dark:bg-darkColor text-neutral-600 truncate rounded-full"
                                                 >
                                                     <IoCopyOutline className="md:hidden block" />
                                                     Copy Produk
@@ -190,7 +191,7 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
             </section>
 
             {selectedProducts.length > 0 && (
-                <div className="fixed bottom-5 right-5 flex md:flex-row flex-col gap-2 md:items-center">
+                <div className="fixed bottom-5 right-5 flex md:flex-row flex-col gap-2 md:items-center z-40">
                     <button
                         onClick={handleCancelSelect}
                         className="bg-red-500 rounded-full p-1 text-white text-2xl self-end md:block hidden">

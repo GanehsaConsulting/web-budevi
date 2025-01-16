@@ -3,12 +3,16 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { NavbarItems } from "../../public/System";
 import ThemeSwitch from "./ThemeSwitch";
+import { ProductsMegaMenu } from "./ProductsMegaMenu";
+import { MegaMenuNavbar } from "./MegaMenuNavbar";
+import { IoIosSearch } from "react-icons/io";
+// import { MegaMenuNavbar } from "./MegaMenuNavbar";
 
 export const Navbar = ({ children }) => {
     const [visible, setVisible] = useState(true);
     const [prevScrollPos, setPrevScrollPos] = useState(0);
     const [isScrolled, setIsScrolled] = useState(false);
-
+    const [isExpanded, setIsExpanded] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -38,9 +42,10 @@ export const Navbar = ({ children }) => {
     return (
         <>
             <div className={`fixed z-[999] navbar2 h-[50px]
-            ${visible ? "translate-y-0" : "-translate-y-full"}
-                ${isScrolled ? "bg-white dark:bg-black dark:bg-opacity-80 bg-opacity-80 backdrop-blur-xl" : "bg-transparent"}
-                `}>
+                            ${isExpanded && "translate-y-0"}
+                            ${visible ? "translate-y-0" : "-translate-y-full"}
+                            ${isScrolled ? "bg-white dark:bg-black dark:bg-opacity-80 bg-opacity-80 backdrop-blur-xl" : "bg-transparent"}
+                            `}>
                 <div className="navbar-start md:ml-[30px] -ml-[3px]">
                     <div className="dropdown">
                         <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -71,11 +76,28 @@ export const Navbar = ({ children }) => {
                             <li><a>Item 3</a></li>
                         </ul>
                     </div>
-                    <a className="text-xl">Shupi</a>
+                    <a className="text-xl z-[888]">Shupi</a>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">
-                        {NavbarItems.map((el, idx) => (
+                        {NavbarItems.slice(0, 1).map((el, idx) => (
+                            <li key={idx} className="z-[888]">
+                                <a
+                                    href={el.href}
+                                >
+                                    {el.label}
+                                </a>
+                            </li>
+                        ))}
+                        <MegaMenuNavbar
+                            title="Product"
+                            isExpanded={isExpanded}
+                            setIsExpanded={setIsExpanded}
+                            children={
+                                <ProductsMegaMenu isExpanded={isExpanded} />
+                            }
+                        />
+                        {NavbarItems.slice(2, 4).map((el, idx) => (
                             <li key={idx}>
                                 <a
                                     href={el.href}
@@ -86,10 +108,25 @@ export const Navbar = ({ children }) => {
                         ))}
                     </ul>
                 </div>
-                <div className="navbar-end md:mr-[30px] mr-[15px]">
+                <div className="navbar-end md:mr-[30px] mr-[15px] space-x-2">
+                    <MegaMenuNavbar
+                        title={
+                            <div className="p-[6px] border border-neutral-400 rounded-full text-white group">
+                                <IoIosSearch className="group-active:rotate-90 duration-300 ease-in-out" />
+                            </div>
+                        }
+                        arrowVisibility={'hidden'}
+                        isExpanded={isExpanded}
+                        setIsExpanded={setIsExpanded}
+                        children={
+                            <ProductsMegaMenu isExpanded={isExpanded} />
+                        }
+                    />
                     <ThemeSwitch />
                 </div>
             </div>
+            <div className={`fixed z-[80] ${isExpanded ? "opacity-100 backdrop-blur-xl md:backdrop-blur-[30px] w-screen h-screen" : "opacity-0"} bg-white bg-opacity-30 dark:bg-black dark:bg-opacity-30 transition-opacity duration-300`}></div>
+
         </>
     )
 }

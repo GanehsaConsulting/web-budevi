@@ -20,7 +20,7 @@ module.exports = {
         secondaryColorD: "#BCCCDC",
         baseColor: '#E6E6D4',
         darkColor: '#232323',
-        secondaryBase: "#9AA6B2",
+        secondaryBase: "#E6E6D4",
         highlightYellow: "#FFD700",
         bgLight: "#efefef"
       },
