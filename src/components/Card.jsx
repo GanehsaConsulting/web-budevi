@@ -78,9 +78,9 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
                     {dataDisplayed.map((el, idx) => (
                         <div
                             key={idx}
-                            className={`group hover:overflow-hidden md:hover:p-3 hover:p-2 flex flex-col rounded-2xl duration-300 ease-in-out md:hover:shadow-mainShadow md:dark:hover:shadow-[0px_0px_30px_#b8b8b86e] md:hover:-translate-y-1 space-y-2 
+                            className={`group  flex flex-col rounded-lg duration-300 ease-in-out md:hover:-translate-y-1 space-y-2 
                                 ${selectedProducts.some((p) => p.productName === el.productName)
-                                    ? "ring-offset-4 dark:ring-offset-black ring ring-mainColor p-3 bg-mainColor dark:ring-mainColorD dark:bg-mainColorD text-white"
+                                    ? "ring-offset-4 dark:ring-offset-black ring ring-darkColor dark:ring-bgLight dark:ring-opacity-20 ring-opacity-20 md:p-3 p-2 !rounded-2xl overflow-hidden mx-[3px] md:mx-0"
                                     : ""
                                 }`}
                         >
@@ -122,9 +122,15 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="absolute w-full h-full bg-white dark:bg-black group-hover:opacity-30 opacity-0 duration-200 scale-125 inset-0 z-[15]"></div>
+                                {selectedProducts.some((p) => p.productName === el.productName) && (
+                                    <>
+                                        <div className="absolute w-full h-full bg-white dark:bg-black opacity-10 duration-200 scale-125 inset-0 z-[15]"></div>
+                                    </>
+                                )}
                                 <Image
-                                    className="absolute w-full group-hover:h-full duration-100 group-hover:opacity-60 group-hover:scale-150 scale-90 dark:scale-[.8] translate-y-10 rounded-lg md:h-[30lvh] z-10 object-cover blur-xl dark:blur-2xl dark:brightness-125 dark:opacity-40 opacity-30"
+                                    className={`
+                                    ${selectedProducts.some((p) => p.productName === el.productName) && "!w-full !h-full !scale-150 !opacity-50"}
+                                    absolute w-full duration-100 scale-90 dark:scale-[.8] translate-y-10 rounded-lg md:h-[30lvh] z-10 object-cover blur-xl dark:blur-2xl dark:brightness-125 dark:opacity-40 opacity-30`}
                                     width={1}
                                     height={1}
                                     src={el.thumbnailURL}

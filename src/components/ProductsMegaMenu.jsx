@@ -27,6 +27,11 @@ export const ProductsMegaMenu = ({ isExpanded }) => {
     // Convert grouped categories into columns
     const groupedColumns = Object.entries(groupedCategories);
 
+    // Function to get the number of items in a category
+    const getCategoryItemCount = (category) => {
+        return data.filter((item) => item.category === category).length;
+    };
+
     return (
         <>
             <div className="space-y-4">
@@ -46,11 +51,14 @@ export const ProductsMegaMenu = ({ isExpanded }) => {
                             {categories.map((cat, idx) => (
                                 <a
                                     key={cat}
-                                    className={`${isExpanded ? `-translate-y-0 opacity-100` : `-translate-y-10 opacity-0`} ease-in-out block text-sm hover:scale-105 duration-300 origin-left w-fit hover:font-medium`}
+                                    className={`${isExpanded ? `-translate-y-0 opacity-100` : `-translate-y-10 opacity-0`} ease-in-out text-sm hover:scale-105 duration-300 origin-left w-fit hover:font-medium flex items-center gap-2`}
                                     style={{ transitionDelay: `${idx * 20}ms` }}
-                                    href={"/product" + "/" + cat.toLowerCase()}
+                                    href={"/search" + "/" + cat.toLowerCase()}
                                 >
                                     {cat}
+                                    <span className="opacity-50 text-xs">
+                                        ({getCategoryItemCount(cat)} items)
+                                    </span>
                                 </a>
                             ))}
                         </div>

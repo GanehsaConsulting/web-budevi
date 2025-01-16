@@ -35,7 +35,7 @@ export default function SearchPage() {
     };
 
     return (
-        <div className="h-screen py-24 md:mx-10 mx-5">
+        <div className="h-screen py-24 md:mx-10 mx-5 min-h-screen">
             <form onSubmit={handleSearch} className="flex">
                 <label className="bg-bgLight dark:bg-darkColor input input-sm md:input-md rounded-full w-full flex items-center gap-2">
                     <IoIosSearch />

@@ -13,11 +13,9 @@ export const MegaMenuNavbar = ({ index, title, links, isExpanded, setIsExpanded,
                 <>
                     <div
                         onClick={handleToggleExpand}
-                        className="z-[1000] overflow-hidden md:w-[35px] w-[32px] md:h-[35px] h-[32px] flex items-center justify-center duration-300 ease-in-out shadow-custom swap-on rounded-full">
-                        <div className={`md:flex flex-col hidden`}>
-                            <span className={`group-hover:rotate-90 duration-300 ease-in-out`}>
-                                {icon}
-                            </span>
+                        className="z-[999] md:w-[35px] w-[32px] md:h-[35px] h-[32px] flex items-center justify-center duration-300 ease-in-out rounded-full">
+                        <div className={`group-hover:rotate-90 duration-300 ease-in-out`}>
+                            {icon}
                         </div>
                     </div>
 
