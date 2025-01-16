@@ -147,7 +147,7 @@ export const Card = ({ products, visibleCount, setVisibleCount }) => {
                                             (
                                                 <button
                                                     onClick={() => handleCopyProduct(el)}
-                                                    className="hover:bg-neutral-200 bg-opacity-60 dark:hover:bg-neutral-900 duration-300 active:scale-90 btn btn-circle btn-sm justify-center flex gap-2 items-center bg-bgLight dark:text-white dark:bg-darkColor text-neutral-600 truncate rounded-full"
+                                                    className="hover:bg-neutral-200 dark:hover:bg-neutral-900 duration-300 active:scale-90 btn btn-circle btn-sm border-transparent justify-center flex gap-2 items-center bg-bgLight dark:text-white dark:bg-darkColor text-neutral-600 truncate rounded-full"
                                                 >
                                                     <IoCopyOutline className="block" />
                                                 </button>

@@ -6,6 +6,7 @@ import ThemeSwitch from "./ThemeSwitch";
 import { ProductsMegaMenu } from "./ProductsMegaMenu";
 import { MegaMenuNavbar } from "./MegaMenuNavbar";
 import { IoIosSearch } from "react-icons/io";
+import { SearchMegaMenu } from "./SearchMegaMenu";
 // import { MegaMenuNavbar } from "./MegaMenuNavbar";
 
 export const Navbar = ({ children }) => {
@@ -41,7 +42,7 @@ export const Navbar = ({ children }) => {
 
     return (
         <>
-            <div className={`fixed z-[999] navbar2 h-[50px]
+            <div className={`fixed z-[999] navbar2 h-[50px] duration-300 ease-in-out
                             ${isExpanded && "translate-y-0"}
                             ${visible ? "translate-y-0" : "-translate-y-full"}
                             ${isScrolled ? "bg-white dark:bg-black dark:bg-opacity-80 bg-opacity-80 backdrop-blur-xl" : "bg-transparent"}
@@ -98,7 +99,7 @@ export const Navbar = ({ children }) => {
                             }
                         />
                         {NavbarItems.slice(2, 4).map((el, idx) => (
-                            <li key={idx}>
+                            <li key={idx} className="z-[888]">
                                 <a
                                     href={el.href}
                                 >
@@ -110,22 +111,22 @@ export const Navbar = ({ children }) => {
                 </div>
                 <div className="navbar-end md:mr-[30px] mr-[15px] space-x-2">
                     <MegaMenuNavbar
-                        title={
-                            <div className="p-[6px] border border-neutral-400 rounded-full text-white group">
-                                <IoIosSearch className="group-active:rotate-90 duration-300 ease-in-out" />
+                        icon={
+                            <div className="p-[6px] border border-neutral-400 rounded-full group">
+                                <IoIosSearch />
                             </div>
                         }
                         arrowVisibility={'hidden'}
                         isExpanded={isExpanded}
                         setIsExpanded={setIsExpanded}
                         children={
-                            <ProductsMegaMenu isExpanded={isExpanded} />
+                            <SearchMegaMenu isExpanded={isExpanded} />
                         }
                     />
                     <ThemeSwitch />
                 </div>
             </div>
-            <div className={`fixed z-[80] ${isExpanded ? "opacity-100 backdrop-blur-xl md:backdrop-blur-[30px] w-screen h-screen" : "opacity-0"} bg-white bg-opacity-30 dark:bg-black dark:bg-opacity-30 transition-opacity duration-300`}></div>
+            <div className={`fixed z-[990] ${isExpanded ? "opacity-100 backdrop-blur-xl md:backdrop-blur-[30px] w-screen h-screen" : "opacity-0"} bg-white bg-opacity-30 dark:bg-black dark:bg-opacity-30 transition-opacity duration-300`}></div>
 
         </>
     )

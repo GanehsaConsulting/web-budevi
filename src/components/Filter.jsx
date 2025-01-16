@@ -57,8 +57,8 @@ export const Filter = ({
     // Sort Categoris by Aplhabet
     uniqueCategories.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
 
-    const [searchTerm, setSearchTerm] = useState("");
     const [sortCriteria, setSortCriteria] = useState("cheapest"); // Default sort: cheapest
+    const [searchTerm, setSearchTerm] = useState("");
 
     // Handle search input changes
     const handleSearchChange = (e) => {
@@ -106,9 +106,7 @@ export const Filter = ({
                 <div className="md:mx-10 mx-5">
                     <div className="flex gap-2 items-center w-full">
                         <label
-                            className={`${isScrolled &&
-                                "bg-opacity-50 bg-white dark:bg-black dark:border-neutral-700 dark:bg-opacity-50 border border-neutral-300"
-                                } bg-bgLight dark:bg-darkColor input input-sm md:input-md rounded-full w-full flex items-center gap-2`}
+                            className={`${isScrolled && "bg-opacity-50 bg-white dark:bg-black dark:border-neutral-700 dark:bg-opacity-50 border border-neutral-300"} bg-bgLight dark:bg-darkColor input input-sm md:input-md rounded-full w-full flex items-center gap-2`}
                         >
                             <IoIosSearch className={`${searchTerm === "" && "opacity-45"}`} />
                             <input

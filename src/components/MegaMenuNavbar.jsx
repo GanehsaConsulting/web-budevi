@@ -1,9 +1,7 @@
 'use client'
-import Link from 'next/link';
 import { IoIosArrowDown } from 'react-icons/io';
-import { RxCross2 } from "react-icons/rx";
 
-export const MegaMenuNavbar = ({ setIsHovering, index, title, links, isExpanded, setIsExpanded, children, arrowVisibility, label}) => {
+export const MegaMenuNavbar = ({ index, title, links, isExpanded, setIsExpanded, children, arrowVisibility, label, icon }) => {
 
     const handleToggleExpand = () => {
         setIsExpanded(!isExpanded);
@@ -11,14 +9,28 @@ export const MegaMenuNavbar = ({ setIsHovering, index, title, links, isExpanded,
 
     return (
         <div className="relative group flex items-center overflow-visible">
+            {icon && (
+                <>
+                    <div
+                        onClick={handleToggleExpand}
+                        className="z-[1000] overflow-hidden md:w-[35px] w-[32px] md:h-[35px] h-[32px] flex items-center justify-center duration-300 ease-in-out shadow-custom swap-on rounded-full">
+                        <div className={`md:flex flex-col hidden`}>
+                            <span className={`group-hover:rotate-90 duration-300 ease-in-out`}>
+                                {icon}
+                            </span>
+                        </div>
+                    </div>
+
+                </>
+            )}
             <div
                 className="relative group cursor-pointer gap-1 flex items-center text-gray-800 dark:text-white rounded md:p-0">
                 <div className={`flex flex-col justify-center items-center hover:opacity-100`}>
                     <div
-                        onClick={handleToggleExpand} // Toggle on click
+                        onClick={handleToggleExpand}
                         onMouseEnter={() => setIsExpanded(true)}
                         onMouseLeave={() => setIsExpanded(false)}
-                        className={`${setIsHovering ? "opacity-50" : "opacity-100"} z-[999] duration-300 hover:!opacity-100 group-hover:opacity-100`}>
+                        className={`z-[999]`}>
                         {title}
                     </div>
                 </div>
