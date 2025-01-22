@@ -116,7 +116,6 @@ body {
   display: flex;
   align-items: center;
   padding: var(--navbar-padding, 0.5rem /* 8px */);
-  min-height: 50px /* 64px */;
   width: 100%;
 }
 :where(.navbar2 > *:not(script, style)) {

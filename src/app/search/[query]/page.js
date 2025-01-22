@@ -9,21 +9,30 @@ import { IoSearch } from "react-icons/io5";
 export default function SearchPage() {
     const pathname = usePathname();
     const router = useRouter();
-    const [query, setQuery] = useState(pathname.split("/").pop() || ""); // Input query
+
+    // Decode URL part and replace '-' with space
+    const [query, setQuery] = useState(
+        decodeURIComponent(pathname.split("/").pop() || "").replace(/-/g, " ")
+    );
+
     const [searchQuery, setSearchQuery] = useState(query); // Query for search results
     const [visibleCount, setVisibleCount] = useState(6);
 
     useEffect(() => {
         // Update the pathname when searchQuery changes
         if (searchQuery) {
-            router.push(`/search/${searchQuery}`);
+            // Replace spaces with dashes for URL
+            const formattedQuery = searchQuery.trim().replace(/\s+/g, "-");
+            // Manually encode only special characters except "&"
+            const customEncodedQuery = formattedQuery.replace(/%/g, "%25").replace(/\?/g, "%3F").replace(/#/g, "%23");
+            router.push(`/search/${customEncodedQuery}`);
         } else {
-            router.push('/search'); // Reset to search page if searchQuery is empty
+            router.push("/search"); // Reset to search page if searchQuery is empty
         }
     }, [searchQuery, router]);
 
     // Filter products based on searchQuery
-    const filteredProducts = products.filter(product =>
+    const filteredProducts = products.filter((product) =>
         product.productName.toLowerCase().includes(query.toLowerCase()) ||
         product.category.toLowerCase().includes(query.toLowerCase()) ||
         product.type.toLowerCase().includes(query.toLowerCase())
@@ -39,7 +48,10 @@ export default function SearchPage() {
     };
 
     return (
-        <div className="py-24 min-h-screen">
+        <div className="py-14 md:py-24 min-h-screen">
+            <p className="md:mx-10 mx-5 mb-5 text-2xl md:text-3xl font-semibold opacity-80">
+                Search Product
+            </p>
             <form onSubmit={handleSearch} className="flex mb-5 md:mb-10 md:mx-10 mx-5">
                 <label className="bg-bgLight dark:bg-darkColor input input-sm md:input-md rounded-full w-full flex items-center gap-2">
                     <IoSearch />
@@ -56,21 +68,22 @@ export default function SearchPage() {
                         className="active:scale-90 duration-300"
                     >
                         <IoIosCloseCircle
-                            className={`${query !== ""
-                                ? "block md:text-2xl -mr-1 opacity-40"
-                                : "hidden"
-                                }`}
+                            className={`${
+                                query !== ""
+                                    ? "block md:text-2xl -mr-1 opacity-40"
+                                    : "hidden"
+                            }`}
                         />
                     </button>
                 </label>
                 <button
                     type="submit"
-                    className="ml-2 bg-bgLight border-none dark:bg-darkColor font-medium btn md:btn-md btn-sm text-black dark:text-white rounded-full px-4 py-2"
+                    className="ml-2 bg-bgLight border-none dark:bg-darkColor hover:bg-neutral-300 dark:hover:bg-neutral-700 font-medium btn md:btn-md btn-sm text-black dark:text-white rounded-full px-4 py-2"
                 >
                     Search
                 </button>
             </form>
-            <dov>
+            <div>
                 {filteredProducts.length > 0 ? (
                     <Card
                         visibleCount={visibleCount}
@@ -82,7 +95,7 @@ export default function SearchPage() {
                         <p>No products found for "{searchQuery}".</p>
                     </div>
                 )}
-            </dov>
+            </div>
         </div>
     );
 }

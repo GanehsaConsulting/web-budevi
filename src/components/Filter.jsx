@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
-import { products } from "../../public/DB";
+
 import { IoIosCloseCircle, IoIosSearch } from "react-icons/io";
 import { HiAdjustmentsHorizontal } from "react-icons/hi2";
+import { prod } from "../../public/DB";
+import { SwitchView } from "./SwitchView";
 
 export const Filter = ({
     onSearch,
@@ -10,6 +12,9 @@ export const Filter = ({
     onCategoryChange,
     onResetFilters,
     selectedCategories,
+    child,
+    toggle,
+    updateToggle
 }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [visible, setVisible] = useState(true);
@@ -44,7 +49,7 @@ export const Filter = ({
         return () => window.removeEventListener("scroll", handleScroll);
     }, [prevScrollPos, visible]);
 
-    const data = products;
+    const data = prod;
 
     // Extract unique categories
     const uniqueCategories = [];
@@ -99,14 +104,14 @@ export const Filter = ({
         <>
             <section
                 className={`
-                    ${visible && isScrolled ? "translate-y-[50px]" : "-translate-y-[0%]"} 
+                    ${visible && isScrolled ? "translate-y-[40px] md:translate-y-[50px]" : "-translate-y-[0%]"} 
                     ${!isScrolled && "-translate-y-0"}
-                     duration-300 sticky z-[888] bg-white dark:bg-black dark:bg-opacity-80 bg-opacity-80 backdrop-blur-xl py-1 md:py-2 top-0`}
+                     duration-300 sticky z-[888] bg-white dark:bg-black dark:bg-opacity-80 bg-opacity-80 backdrop-blur-xl py-1 md:py-1 top-0`}
             >
                 <div className="md:mx-10 mx-5">
-                    <div className="flex gap-2 items-center w-full">
+                    <div className={`${isScrolled && "pt-1 md:pt-0"} flex md:flex-row flex-col gap-1 md:gap-2 items-center w-full`}>
                         <label
-                            className={`${isScrolled && "bg-opacity-50 bg-white dark:bg-black dark:border-neutral-700 dark:bg-opacity-50 border border-neutral-300"} bg-bgLight dark:bg-darkColor input input-sm md:input-md rounded-full w-full flex items-center gap-2`}
+                            className={`${isScrolled && "bg-opacity-50 bg-white dark:bg-black dark:border-neutral-700 dark:bg-opacity-50 border border-neutral-300"} bg-bgLight dark:bg-darkColor input input-sm md:input-md md:h-[40px] rounded-full w-full flex items-center gap-2`}
                         >
                             <IoIosSearch className={`${searchTerm === "" && "opacity-45"}`} />
                             <input
@@ -128,88 +133,91 @@ export const Filter = ({
                                 />
                             </button>
                         </label>
-                        <div>
-                            <button
-                                onClick={() =>
-                                    document.getElementById("my_modal_5").showModal()
-                                }
-                                className={`${isScrolled &&
-                                    "bg-opacity-50 bg-white border !border-neutral-300 dark:bg-black dark:bg-opacity-50 dark:!border-neutral-700"
-                                    } btn btn-sm md:btn-md border-transparent hover:bg-neutral-300 dark:hover:bg-neutral-900 duration-300 rounded-full m-1 bg-bgLight dark:bg-darkColor text-neutral-800 dark:text-neutral-400`}
-                            >
-                                <span className="flex gap-2 items-center">
-                                    Filter
-                                    <HiAdjustmentsHorizontal />
-                                </span>
-                            </button>
-                            <dialog
-                                id="my_modal_5"
-                                className="modal modal-bottom sm:modal-middle"
-                            >
-                                <div className="modal-box dark:bg-darkColor bg-bgLight space-y-5">
-                                    <div className="space-y-3">
-                                        <p className="opacity-70 font-medium">Kategori Produk</p>
-                                        <div className="flex flex-wrap justify-between w-full gap-2">
-                                            {uniqueCategories.map((category, idx) => (
-                                                <button
-                                                    key={idx}
-                                                    onClick={() => handleCategoryToggle(category)}
-                                                    className={`
+                        <div className="flex md:flex-row items-center md:w-fit w-full gap-1 md:gap-1">
+                            <SwitchView
+                                isScrolled={isScrolled}
+                                toggle={toggle}
+                                updateToggle={updateToggle} />
+                            <div>
+                                <button
+                                    onClick={() => document.getElementById("my_modal_5").showModal()}
+                                    className={`${isScrolled && "bg-opacity-50 bg-white border !border-neutral-300 dark:bg-black dark:bg-opacity-50 dark:!border-neutral-700"}
+                                    md:h-[40px] h-[32px] w-full px-4 md:w-[100px] flex  items-center justify-center border-transparent hover:bg-neutral-300 dark:hover:bg-neutral-900 duration-300 rounded-full m-1 bg-bgLight dark:bg-darkColor text-neutral-800 dark:text-neutral-400`}
+                                >
+                                    <span className="flex gap-2 items-center">
+                                        Filter
+                                        <HiAdjustmentsHorizontal />
+                                    </span>
+                                </button>
+                                <dialog
+                                    id="my_modal_5"
+                                    className="modal modal-bottom sm:modal-middle"
+                                >
+                                    <div className="modal-box dark:bg-darkColor bg-bgLight space-y-5">
+                                        <div className="space-y-3">
+                                            <p className="opacity-70 font-medium">Kategori Produk</p>
+                                            <div className="flex flex-wrap justify-between w-full gap-2">
+                                                {uniqueCategories.map((category, idx) => (
+                                                    <button
+                                                        key={idx}
+                                                        onClick={() => handleCategoryToggle(category)}
+                                                        className={`
                                                 ${selectedCategories.includes(category) && "!bg-mainColor dark:!bg-mainColorD text-white bg-opacity-100"} 
                                                 relative px-4 py-2 text-xs md:text-sm grow bg-white dark:bg-black rounded-full font-medium flex gap-2 items-center justify-center border border-neutral-300 dark:border-neutral-700`}
+                                                    >
+                                                        {category}
+                                                    </button>
+                                                ))}
+                                                {selectedCategories.length > 0 && (
+                                                    <button
+                                                        onClick={handleResetFiltersLocal}
+                                                        className={`relative px-4 py-2 text-xs md:text-sm grow bg-white dark:bg-black invert rounded-full font-medium flex gap-2 items-center justify-center border border-neutral-300 dark:border-neutral-700`}
+                                                    >
+                                                        Reset Filter
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="space-y-3">
+                                            <p className="opacity-70 font-medium">Urutkan Produk</p>
+                                            <ul className="flex gap-2">
+                                                <li
+                                                    className={`${sortCriteria === "cheapest"
+                                                        ? "!bg-mainColor dark:!bg-mainColorD text-white bg-opacity-100"
+                                                        : ""
+                                                        } px-4 py-2 text-xs md:text-sm grow bg-white dark:bg-black rounded-full font-medium flex gap-2 items-center justify-center border border-neutral-300 dark:border-neutral-700`}
                                                 >
-                                                    {category}
-                                                </button>
-                                            ))}
-                                            {selectedCategories.length > 0 && (
-                                                <button
-                                                    onClick={handleResetFiltersLocal}
-                                                    className={`relative px-4 py-2 text-xs md:text-sm grow bg-white dark:bg-black invert rounded-full font-medium flex gap-2 items-center justify-center border border-neutral-300 dark:border-neutral-700`}
+                                                    <a onClick={() => handleSortChange("cheapest")}>
+                                                        Termurah
+                                                    </a>
+                                                </li>
+                                                <li
+                                                    className={`${sortCriteria === "expensive"
+                                                        ? "!bg-mainColor dark:!bg-mainColorD text-white bg-opacity-100"
+                                                        : ""
+                                                        } px-4 py-2 text-xs md:text-sm grow bg-white dark:bg-black rounded-full font-medium flex gap-2 items-center justify-center border border-neutral-300 dark:border-neutral-700`}
                                                 >
-                                                    Reset Filter
-                                                </button>
-                                            )}
+                                                    <a onClick={() => handleSortChange("expensive")}>
+                                                        Termahal
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div className="modal-action">
+                                            <form method="dialog">
+                                                {/* if there is a button in form, it will close the modal */}
+                                                <button className="btn wf bg-red-500 dark:bg-red-900 rounded-full border-none text-white">Close</button>
+                                            </form>
                                         </div>
                                     </div>
-                                    <div className="space-y-3">
-                                        <p className="opacity-70 font-medium">Urutkan Produk</p>
-                                        <ul className="flex gap-2">
-                                            <li
-                                                className={`${sortCriteria === "cheapest"
-                                                    ? "!bg-mainColor dark:!bg-mainColorD text-white bg-opacity-100"
-                                                    : ""
-                                                    } px-4 py-2 text-xs md:text-sm grow bg-white dark:bg-black rounded-full font-medium flex gap-2 items-center justify-center border border-neutral-300 dark:border-neutral-700`}
-                                            >
-                                                <a onClick={() => handleSortChange("cheapest")}>
-                                                    Termurah
-                                                </a>
-                                            </li>
-                                            <li
-                                                className={`${sortCriteria === "expensive"
-                                                    ? "!bg-mainColor dark:!bg-mainColorD text-white bg-opacity-100"
-                                                    : ""
-                                                    } px-4 py-2 text-xs md:text-sm grow bg-white dark:bg-black rounded-full font-medium flex gap-2 items-center justify-center border border-neutral-300 dark:border-neutral-700`}
-                                            >
-                                                <a onClick={() => handleSortChange("expensive")}>
-                                                    Termahal
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div className="modal-action">
-                                        <form method="dialog">
-                                            {/* if there is a button in form, it will close the modal */}
-                                            <button className="btn wf bg-red-500 dark:bg-red-900 rounded-full border-none text-white">Close</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </dialog>
+                                </dialog>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
             {selectedCategories.length > 0 && (
-                <div className={`duration-300 sticky z-[888] bg-white dark:bg-black dark:bg-opacity-80 bg-opacity-80 backdrop-blur-xl pb-1 pt-[1px] top-[56px] md:top-[72px]
+                <div className={`duration-300 sticky z-[888] bg-white dark:bg-black dark:bg-opacity-80 bg-opacity-80 backdrop-blur-xl pb-1 pt-[1px] top-[48px] md:top-[50px]
                     ${visible && isScrolled ? "translate-y-[50px]" : "-translate-y-[0%]"} 
                 
                 `}>

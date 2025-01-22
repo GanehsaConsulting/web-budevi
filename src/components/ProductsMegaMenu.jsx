@@ -1,7 +1,7 @@
-import { products } from "../../public/DB";
+import { prod, products } from "../../public/DB";
 
 export const ProductsMegaMenu = ({ isExpanded }) => {
-    const data = products;
+    const data = prod;
 
     // Extract unique categories
     const uniqueCategories = [];

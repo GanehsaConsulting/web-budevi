@@ -10,16 +10,16 @@ export const MegaMenuNavbar = ({ index, title, links, isExpanded, setIsExpanded,
     return (
         <div className={` relative group flex items-center overflow-visible`}>
             {burger && (
-                 <>
-                 <div
-                     onClick={handleToggleExpand}
-                     className="z-[9999]">
-                     <div className={`${className} duration-300 ease-in-out`}>
-                         {burger}
-                     </div>
-                 </div>
+                <>
+                    <div
+                        onClick={handleToggleExpand}
+                        className="z-[9999]">
+                        <div className={`${className} duration-300 ease-in-out`}>
+                            {burger}
+                        </div>
+                    </div>
 
-             </>
+                </>
             )}
             {icon && (
                 <>
@@ -48,6 +48,13 @@ export const MegaMenuNavbar = ({ index, title, links, isExpanded, setIsExpanded,
                     <IoIosArrowDown />
                 </span>
             </div>
+
+            {isExpanded && (
+                <>
+                    {/* Fixed header */}
+                    <div className="fixed top-0 left-0 right-0 h-[43px] bg-white dark:bg-black bg-opacity-30 dark:bg-opacity-30 backdrop-blur-sm w-full z-[40]"></div>
+                </>
+            )}
 
             {/* Mega Menu Dropdown */}
             <div

@@ -10,6 +10,7 @@ import { SearchMegaMenu } from "./SearchMegaMenu";
 import { BsSearch } from "react-icons/bs";
 import { IoSearch } from "react-icons/io5";
 import BurgerButton from "./BurgerButton";
+import { MobileDrawer } from "./MobileDrawer";
 // import { MegaMenuNavbar } from "./MegaMenuNavbar";
 
 export const Navbar = ({ children }) => {
@@ -49,13 +50,13 @@ export const Navbar = ({ children }) => {
 
     return (
         <>
-            <div className={`fixed z-[999] navbar2 h-[50px] duration-300 ease-in-out
+            <div className={`fixed z-[999] navbar2 h-[40px] md:h-[50px] duration-300 ease-in-out
                             ${isExpanded && "translate-y-0"}
                             ${visible ? "translate-y-0" : "-translate-y-full"}
                             ${isScrolled ? "bg-white dark:bg-black dark:bg-opacity-80 bg-opacity-80 backdrop-blur-xl" : "bg-transparent"}
                             `}>
-                <div className="navbar-start md:ml-[30px] ml-[10px]">
-                    <a className="md:text-xl z-[888]">Shupi</a>
+                <div className={`navbar-start md:ml-[30px] ml-[10px]`}>
+                    <a href="/" className="md:text-xl z-[888] font-medium">Shupi</a>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">
@@ -113,11 +114,11 @@ export const Navbar = ({ children }) => {
                             isExpanded={isExpanded}
                             setIsExpanded={setIsExpanded}
                             children={
-                                <SearchMegaMenu isExpanded={isExpanded} />
+                                <MobileDrawer isExpanded={isExpanded} />
                             }
                         />
                     </div>
-                    <div className="order-first md:order-none">
+                    <div className="order-first md:order-none z-[999]">
                         <ThemeSwitch />
                     </div>
                 </div>
