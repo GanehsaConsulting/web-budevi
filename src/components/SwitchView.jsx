@@ -1,5 +1,5 @@
 "use client"
-import { TbBoxMultiple2, TbBoxMultiple4, TbBoxMultiple6, TbList } from "react-icons/tb";
+import { TbBoxMultiple2, TbBoxMultiple3, TbBoxMultiple4, TbBoxMultiple6, TbList } from "react-icons/tb";
 
 export const SwitchView = ({ toggle, updateToggle }) => {
 
@@ -11,7 +11,7 @@ export const SwitchView = ({ toggle, updateToggle }) => {
                         <TbBoxMultiple4 />
                     </button>
                     <button onClick={() => updateToggle(2)} className="z-50 text-md w-8 h-8 flex items-center justify-center rounded-full">
-                        <TbBoxMultiple2 />
+                        <TbBoxMultiple3 />
                     </button>
                     <button onClick={() => updateToggle(3)} className="z-50 text-md w-8 h-8 flex items-center justify-center rounded-full">
                         <TbBoxMultiple6 />

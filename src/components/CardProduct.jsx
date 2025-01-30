@@ -33,7 +33,7 @@ const highlightText = (text) => {
     return (
         <>
             <section className="md:mx-10 mx-5">
-                <div className={`${toggle === 2 && "md:grid-cols-2"} ${toggle === 3 && "md:grid-cols-6"} grid md:grid-cols-4 md:gap-7 grid-cols-2 gap-5 gap-y-14`}>
+                <div className={`${toggle === 2 && "md:grid-cols-3"} gridc ${toggle === 3 && "md:grid-cols-6"} grid md:grid-cols-4 md:gap-7 grid-cols-2 gap-5 gap-y-14`}>
                     {products.map((el, idx) => (
                         <div key={idx} className="space-y-2">
                             <Image
