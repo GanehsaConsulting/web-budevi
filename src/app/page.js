@@ -1,16 +1,18 @@
 "use client";
-import { Banner } from "@/components/Banner";
-import { Card } from "@/components/Card";
-import { Filter } from "@/components/Filter";
 import { useState } from "react";
-import { SwitchView } from "@/components/SwitchView";
+import { Banner } from "@/components/Banner";
+import { CardProduct } from "@/components/CardProduct";
 import { products } from "../../public/DB";
+import { Search } from "@/components/Search";
+import { Sort } from "@/components/Sort";
+import { Pagination } from "@/components/Pagination";
+import { SwitchView } from "@/components/SwitchView";
+import { Sticky } from "@/components/Sticky";
 
 export default function Home() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortCriteria, setSortCriteria] = useState(""); // Default sorting
-  const [visibleCount, setVisibleCount] = useState(15);
-  const [selectedCategories, setSelectedCategories] = useState([]); // Multi-category selection
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeSort, setActiveSort] = useState("az");
+  const [displayedProductsCount, setDisplayedProductsCount] = useState(8); // Inisialisasi jumlah produk yang ditampilkan
   const [toggle, setToggle] = useState(1);
 
   // Fungsi untuk update toggle
@@ -18,87 +20,76 @@ export default function Home() {
     setToggle(id);
   }
 
-  // Search Bar
-  const filteredProducts = products.filter((p) => {
-    const search = searchTerm.toLowerCase();
-    if (p.productName.toLowerCase().includes(search)) return true;
-    if (p.category.toLowerCase().includes(search)) return true;
-    if (p.variants.some(v => v.name.toLowerCase().includes(search) || v.unit.toLowerCase().includes(search))) {
-      return true;
+  // Fungsi untuk menangani perubahan urutan
+  const handleSort = (command) => {
+    setActiveSort(command);
+    switch (command) {
+      case "az":
+        products.sort((a, b) => a.productName.localeCompare(b.productName));
+        break;
+      case "za":
+        products.sort((a, b) => b.productName.localeCompare(a.productName));
+        break;
+      case "cheapest":
+        products.sort((a, b) => {
+          const priceA = a.variants[0].price;
+          const priceB = b.variants[0].price;
+          return priceA - priceB;
+        });
+        break;
+      case "expensive":
+        products.sort((a, b) => {
+          const priceA = a.variants[0].price;
+          const priceB = b.variants[0].price;
+          return priceB - priceA;
+        });
+        break;
+      case 0:
+      default:
+        break;
     }
-    return false;
-  });
-
-  // Filter
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
-    const getPrice = (product) => product.variants[0]?.price || 0; // Ambil harga varian pertama
-    if (sortCriteria === "cheapest") {
-      return getPrice(a) - getPrice(b); // Urutkan dari termurah ke termahal
-    } else if (sortCriteria === "expensive") {
-      return getPrice(b) - getPrice(a); // Urutkan dari termahal ke termurah
-    } else if (sortCriteria === "az") {
-      return a.productName.localeCompare(b.productName); // Urutkan A-Z berdasarkan productName
-    } else if (sortCriteria === "za") {
-      return b.productName.localeCompare(a.productName); // Urutkan Z-A berdasarkan productName
-    }
-    return 0; // Default: Tidak ada pengurutan
-  });
-
- 
-
-
-
-  // Fungsi untuk menangani perubahan sorting
-  const handleSort = (criteria) => {
-    console.log('====================================');
-    console.log(criteria);
-    console.log('====================================');
-    setSortCriteria(criteria); // Perbarui kriteria pengurutan
   };
 
-  // Fungsi untuk menangani perubahan kategori
-  const handleCategoryChange = (categories) => {
-    setSelectedCategories(categories); // Perbarui kategori yang dipilih
-  };
+  // Filter produk berdasarkan pencarian
+  const filteredProducts = products.filter((product) => {
+    const query = searchQuery.toLowerCase();
 
-  // Fungsi untuk mereset semua filter
-  const handleResetFilters = () => {
-    setSearchTerm(""); // Reset pencarian
-    setSelectedCategories([]); // Reset kategori
+    return (
+      product.productName.toLowerCase().includes(query) ||
+      product.category.toLowerCase().includes(query) ||
+      product.variants.some(variant => variant.name.toLowerCase().includes(query))
+    );
+  });
+
+  // Mengambil produk yang ditampilkan berdasarkan jumlah
+  const displayedProducts = filteredProducts.slice(0, displayedProductsCount);
+
+  // Fungsi untuk menangani load more
+  const handleLoadMore = () => {
+    setDisplayedProductsCount(prev => prev + 8); // Menambah jumlah produk yang ditampilkan
   };
 
   return (
     <>
       <Banner />
-      <Filter
-        toggle={toggle}
-        updateToggle={updateToggle}
-        onSearch={setSearchTerm}
-        onSort={handleSort}
-        onCategoryChange={handleCategoryChange}
-        onResetFilters={handleResetFilters} // Mengoper fungsi reset ke Filter
-        selectedCategories={selectedCategories} // Kategori yang sedang dipilih
-      />
-      {sortedProducts.length === 0 ? (
-        <div className="h-[10lvh] md:h-[30lvh] flex items-center justify-center">
-          <p className="md:text-xl text-center mx-5">
-            No product found for{" "}
-            <span className="font-semibold text text-mainColor dark:text-mainColorD">
-              {searchTerm}
-            </span>
-            . Please try a different search term.
-          </p>
+      <Sticky className="">
+        <Search onSearch={setSearchQuery} />
+        <SwitchView toggle={toggle} updateToggle={updateToggle} />
+        <Sort onSort={handleSort} activeSort={activeSort} />
+      </Sticky>
+
+      {/* Kondisi ketika tidak ada produk yang ditemukan */}
+      {filteredProducts.length === 0 ? (
+        <div className="text-center py-10 text-lg font-semibold">
+          Tidak ada produk yang ditemukan untuk <span className="font-bold dark:text-sky-300 text-sky-600">{searchQuery}</span>
         </div>
       ) : (
-        <>
-          <Card
-            toggle={toggle}
-            visibleCount={visibleCount}
-            setVisibleCount={setVisibleCount}
-            isSearching={!!searchTerm}
-            products={sortedProducts}
-          />
-        </>
+        <CardProduct toggle={toggle} products={displayedProducts} searchQuery={searchQuery} />
+      )}
+
+      {/* Menampilkan tombol load more jika ada produk lebih */}
+      {filteredProducts.length > displayedProductsCount && (
+        <Pagination onLoadMore={handleLoadMore} />
       )}
     </>
   );

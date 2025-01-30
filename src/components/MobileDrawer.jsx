@@ -1,7 +1,6 @@
 import { products } from "../../public/DB";
 import { NavbarItems } from "../../public/System"
 import { ExpandableButton } from "./ExpandableButton"
-import { SearchMegaMenu } from "./SearchMegaMenu";
 
 export const MobileDrawer = ({ isExpanded }) => {
     const data = products;
@@ -96,9 +95,6 @@ export const MobileDrawer = ({ isExpanded }) => {
                     </div>
                 ))}
             </section>
-            <div>
-                <SearchMegaMenu />
-            </div>
         </section>
     )
 }

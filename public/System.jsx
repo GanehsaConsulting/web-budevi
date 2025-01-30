@@ -4,15 +4,11 @@ export const NavbarItems = [
         href: "/"
     },
     {
-        label: "Products",
-        href: "/products"
-    },
-    {
-        label: "About",
+        label: "Tentang Kami",
         href: "/about-us"
     },
     {
-        label: "Contact",
+        label: "Kontak",
         href: "/contact"
     },
 ]
