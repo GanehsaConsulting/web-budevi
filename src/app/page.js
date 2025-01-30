@@ -12,7 +12,7 @@ import { Sticky } from "@/components/Sticky";
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSort, setActiveSort] = useState("az");
-  const [displayedProductsCount, setDisplayedProductsCount] = useState(8); // Inisialisasi jumlah produk yang ditampilkan
+  const [displayedProductsCount, setDisplayedProductsCount] = useState(15); // Inisialisasi jumlah produk yang ditampilkan
   const [toggle, setToggle] = useState(1);
 
   // Fungsi untuk update toggle
@@ -72,7 +72,7 @@ export default function Home() {
   return (
     <>
       <Banner />
-      <Sticky className="md:mx-10 mx-5 mb-10 flex items-center gap-2">
+      <Sticky>
         <Search onSearch={setSearchQuery} />
         <SwitchView toggle={toggle} updateToggle={updateToggle} />
         <Sort onSort={handleSort} activeSort={activeSort} />
@@ -81,7 +81,7 @@ export default function Home() {
       {/* Kondisi ketika tidak ada produk yang ditemukan */}
       {filteredProducts.length === 0 ? (
         <div className="text-center py-10 text-lg font-semibold">
-          Tidak ada produk yang ditemukan untuk <span className="font-bold dark:text-sky-300 text-sky-600">{searchQuery}</span> 
+          Tidak ada produk yang ditemukan untuk <span className="font-bold dark:text-sky-300 text-sky-600">{searchQuery}</span>
         </div>
       ) : (
         <CardProduct toggle={toggle} products={displayedProducts} searchQuery={searchQuery} />
