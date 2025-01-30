@@ -1,29 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
-
 import { IoIosCloseCircle, IoIosSearch } from "react-icons/io";
 import { HiAdjustmentsHorizontal } from "react-icons/hi2";
-import { prod } from "../../public/DB";
 import { SwitchView } from "./SwitchView";
+import { products } from "../../public/DB";
 
-export const Filter = ({
-    onSearch,
-    onSort,
-    onCategoryChange,
-    onResetFilters,
-    selectedCategories,
-    child,
-    toggle,
-    updateToggle
-}) => {
-    const [isExpanded, setIsExpanded] = useState(false);
+export const Filter = ({ onSearch, onSort, onCategoryChange, onResetFilters, selectedCategories, toggle, updateToggle }) => {
     const [visible, setVisible] = useState(true);
     const [prevScrollPos, setPrevScrollPos] = useState(0);
     const [isScrolled, setIsScrolled] = useState(false);
-
-    const handleToggleExpand = () => {
-        setIsExpanded(!isExpanded);
-    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -49,7 +34,7 @@ export const Filter = ({
         return () => window.removeEventListener("scroll", handleScroll);
     }, [prevScrollPos, visible]);
 
-    const data = prod;
+    const data = products;
 
     // Extract unique categories
     const uniqueCategories = [];
@@ -62,7 +47,7 @@ export const Filter = ({
     // Sort Categoris by Aplhabet
     uniqueCategories.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
 
-    const [sortCriteria, setSortCriteria] = useState("cheapest"); // Default sort: cheapest
+    const [sortCriteria, setSortCriteria] = useState("az"); // Default sort: cheapest
     const [searchTerm, setSearchTerm] = useState("");
 
     // Handle search input changes
@@ -100,6 +85,29 @@ export const Filter = ({
         onResetFilters(); // Call parent reset function
     };
 
+    const filterData = [
+        {
+            label: "A - Z",
+            command: "az"
+        },
+        {
+            label: "Z - A",
+            command: "za"
+        },
+        {
+            label: "Termurah",
+            command: "cheapest"
+        },
+        {
+            label: "Termahal",
+            command: "expensive"
+        },
+        {
+            label: "Default",
+            command: 0
+        },
+    ]
+
     return (
         <>
             <section
@@ -109,7 +117,7 @@ export const Filter = ({
                      duration-300 sticky z-[888] bg-white dark:bg-black dark:bg-opacity-80 bg-opacity-80 backdrop-blur-xl py-1 md:py-1 top-0`}
             >
                 <div className="md:mx-10 mx-5">
-                    <div className={`${isScrolled && "pt-1 md:pt-0"} flex md:flex-row flex-col gap-1 md:gap-2 items-center w-full`}>
+                    <div className={`${isScrolled && "pt-1 md:pt-0"} flex md:flex-row flex-row gap-1 md:gap-2 items-center w-full`}>
                         <label
                             className={`${isScrolled && "bg-opacity-50 bg-white dark:bg-black dark:border-neutral-700 dark:bg-opacity-50 border border-neutral-300"} bg-bgLight dark:bg-darkColor input input-sm md:input-md md:h-[40px] rounded-full w-full flex items-center gap-2`}
                         >
@@ -133,7 +141,7 @@ export const Filter = ({
                                 />
                             </button>
                         </label>
-                        <div className="flex md:flex-row items-center md:w-fit w-full gap-1 md:gap-1">
+                        <div className="flex md:flex-row items-center md:w-fit w-fit gap-[2px] md:gap-1">
                             <SwitchView
                                 isScrolled={isScrolled}
                                 toggle={toggle}
@@ -142,12 +150,14 @@ export const Filter = ({
                                 <button
                                     onClick={() => document.getElementById("my_modal_5").showModal()}
                                     className={`${isScrolled && "bg-opacity-50 bg-white border !border-neutral-300 dark:bg-black dark:bg-opacity-50 dark:!border-neutral-700"}
-                                    md:h-[40px] h-[32px] w-full px-4 md:w-[100px] flex  items-center justify-center border-transparent hover:bg-neutral-300 dark:hover:bg-neutral-900 duration-300 rounded-full m-1 bg-bgLight dark:bg-darkColor text-neutral-800 dark:text-neutral-400`}
+                                    md:h-[40px] h-[32px] w-fit px-2 md:w-[100px] flex  items-center justify-center border-transparent hover:bg-neutral-300 dark:hover:bg-neutral-900 duration-300 rounded-full m-1 bg-bgLight dark:bg-darkColor text-neutral-800 dark:text-neutral-400`}
                                 >
-                                    <span className="flex gap-2 items-center">
-                                        Filter
+                                    <div className="flex gap-2 items-center">
+                                        <span className="md:block hidden">
+                                            Filter
+                                        </span>
                                         <HiAdjustmentsHorizontal />
-                                    </span>
+                                    </div>
                                 </button>
                                 <dialog
                                     id="my_modal_5"
@@ -156,7 +166,7 @@ export const Filter = ({
                                     <div className="modal-box dark:bg-darkColor bg-bgLight space-y-5">
                                         <div className="space-y-3">
                                             <p className="opacity-70 font-medium">Kategori Produk</p>
-                                            <div className="flex flex-wrap justify-between w-full gap-2">
+                                            {/* <div className="flex flex-wrap justify-between w-full gap-2">
                                                 {uniqueCategories.map((category, idx) => (
                                                     <button
                                                         key={idx}
@@ -176,32 +186,25 @@ export const Filter = ({
                                                         Reset Filter
                                                     </button>
                                                 )}
-                                            </div>
+                                            </div> */}
                                         </div>
                                         <div className="space-y-3">
                                             <p className="opacity-70 font-medium">Urutkan Produk</p>
-                                            <ul className="flex gap-2">
-                                                <li
-                                                    className={`${sortCriteria === "cheapest"
-                                                        ? "!bg-mainColor dark:!bg-mainColorD text-white bg-opacity-100"
-                                                        : ""
-                                                        } px-4 py-2 text-xs md:text-sm grow bg-white dark:bg-black rounded-full font-medium flex gap-2 items-center justify-center border border-neutral-300 dark:border-neutral-700`}
-                                                >
-                                                    <a onClick={() => handleSortChange("cheapest")}>
-                                                        Termurah
-                                                    </a>
-                                                </li>
-                                                <li
-                                                    className={`${sortCriteria === "expensive"
-                                                        ? "!bg-mainColor dark:!bg-mainColorD text-white bg-opacity-100"
-                                                        : ""
-                                                        } px-4 py-2 text-xs md:text-sm grow bg-white dark:bg-black rounded-full font-medium flex gap-2 items-center justify-center border border-neutral-300 dark:border-neutral-700`}
-                                                >
-                                                    <a onClick={() => handleSortChange("expensive")}>
-                                                        Termahal
-                                                    </a>
-                                                </li>
-                                            </ul>
+                                            <div className="flex gap-2">
+                                                {filterData.map((el, idx) => (
+                                                    <button
+                                                        key={idx}
+                                                        className={`${sortCriteria === el.command
+                                                            ? "!bg-mainColor dark:!bg-mainColorD text-white bg-opacity-100"
+                                                            : ""
+                                                            } px-4 py-2 text-xs md:text-sm grow bg-white dark:bg-black rounded-full font-medium flex gap-2 items-center justify-center border border-neutral-300 dark:border-neutral-700`}
+                                                    >
+                                                        <a onClick={() => handleSortChange(el.command)}>
+                                                            {el.label}
+                                                        </a>
+                                                    </button>
+                                                ))}
+                                            </div>
                                         </div>
                                         <div className="modal-action">
                                             <form method="dialog">

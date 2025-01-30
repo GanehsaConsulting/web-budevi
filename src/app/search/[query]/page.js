@@ -31,12 +31,27 @@ export default function SearchPage() {
         }
     }, [searchQuery, router]);
 
-    // Filter products based on searchQuery
-    const filteredProducts = products.filter((product) =>
-        product.productName.toLowerCase().includes(query.toLowerCase()) ||
-        product.category.toLowerCase().includes(query.toLowerCase()) ||
-        product.type.toLowerCase().includes(query.toLowerCase())
-    );
+    // Filter produk berdasarkan pencarian
+    const filteredProducts = products
+        .filter((product) => {
+            // Pencarian berdasarkan nama varian
+            const matchesSearch = product.variants.some((variant) =>
+                variant.name.toLowerCase().includes(query.toLowerCase())
+            );
+
+            // Tidak ada kategori yang digunakan dalam filter, jadi hanya matchesSearch yang dipertimbangkan
+            return matchesSearch;
+        })
+        .map((product) => ({
+            ...product,
+            // Filter varian yang cocok dengan pencarian
+            variants: product.variants.filter((variant) =>
+                variant.name.toLowerCase().includes(query.toLowerCase())
+            ),
+        }))
+        // Hanya produk dengan varian yang cocok yang akan ditampilkan
+        .filter((product) => product.variants.length > 0);
+
 
     const handleSearch = (e) => {
         e.preventDefault(); // Prevent form submission
@@ -68,11 +83,10 @@ export default function SearchPage() {
                         className="active:scale-90 duration-300"
                     >
                         <IoIosCloseCircle
-                            className={`${
-                                query !== ""
-                                    ? "block md:text-2xl -mr-1 opacity-40"
-                                    : "hidden"
-                            }`}
+                            className={`${query !== ""
+                                ? "block md:text-2xl -mr-1 opacity-40"
+                                : "hidden"
+                                }`}
                         />
                     </button>
                 </label>

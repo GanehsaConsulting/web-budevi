@@ -2,13 +2,13 @@
 import { Banner } from "@/components/Banner";
 import { Card } from "@/components/Card";
 import { Filter } from "@/components/Filter";
-import { prod } from "../../public/DB"; // Menggunakan database produk
 import { useState } from "react";
 import { SwitchView } from "@/components/SwitchView";
+import { products } from "../../public/DB";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortCriteria, setSortCriteria] = useState("cheapest"); // Default sorting
+  const [sortCriteria, setSortCriteria] = useState(""); // Default sorting
   const [visibleCount, setVisibleCount] = useState(15);
   const [selectedCategories, setSelectedCategories] = useState([]); // Multi-category selection
   const [toggle, setToggle] = useState(1);
@@ -18,37 +18,41 @@ export default function Home() {
     setToggle(id);
   }
 
-  // Filter produk berdasarkan pencarian dan kategori yang dipilih
-  const filteredProducts = prod
-    .filter((product) => {
-      const matchesSearch = product.variants.some((variant) =>
-        variant.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      const matchesCategory =
-        selectedCategories.length === 0 || selectedCategories.includes(product.category);
-      return matchesSearch && matchesCategory;
-    })
-    .map((product) => ({
-      ...product,
-      variants: product.variants.filter((variant) =>
-        variant.name.toLowerCase().includes(searchTerm.toLowerCase())
-      ),
-    }))
-    .filter((product) => product.variants.length > 0);
+  // Search Bar
+  const filteredProducts = products.filter((p) => {
+    const search = searchTerm.toLowerCase();
+    if (p.productName.toLowerCase().includes(search)) return true;
+    if (p.category.toLowerCase().includes(search)) return true;
+    if (p.variants.some(v => v.name.toLowerCase().includes(search) || v.unit.toLowerCase().includes(search))) {
+      return true;
+    }
+    return false;
+  });
 
-  // Mengurutkan produk yang sudah difilter
+  // Filter
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     const getPrice = (product) => product.variants[0]?.price || 0; // Ambil harga varian pertama
     if (sortCriteria === "cheapest") {
       return getPrice(a) - getPrice(b); // Urutkan dari termurah ke termahal
     } else if (sortCriteria === "expensive") {
       return getPrice(b) - getPrice(a); // Urutkan dari termahal ke termurah
+    } else if (sortCriteria === "az") {
+      return a.productName.localeCompare(b.productName); // Urutkan A-Z berdasarkan productName
+    } else if (sortCriteria === "za") {
+      return b.productName.localeCompare(a.productName); // Urutkan Z-A berdasarkan productName
     }
     return 0; // Default: Tidak ada pengurutan
   });
 
+ 
+
+
+
   // Fungsi untuk menangani perubahan sorting
   const handleSort = (criteria) => {
+    console.log('====================================');
+    console.log(criteria);
+    console.log('====================================');
     setSortCriteria(criteria); // Perbarui kriteria pengurutan
   };
 

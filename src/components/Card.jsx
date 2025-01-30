@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { useState } from "react";
 import { formatToRupiah } from "@/helper/formatToRupiah";
@@ -7,11 +5,10 @@ import { IoClose, IoCopyOutline } from "react-icons/io5";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 import { RiArrowDownWideFill } from "react-icons/ri";
-import { ExpandableButton } from "./ExpandableButton";
+import { IoIosArrowForward } from "react-icons/io";
 
 export const Card = ({ products, visibleCount, setVisibleCount, toggle }) => {
     const [selectedProducts, setSelectedProducts] = useState([]);
-
     const [variant, setVariant] = useState(
         products.reduce((acc, product, idx) => {
             acc[idx] = product.variants[0]; // Default ke varian pertama untuk setiap produk
@@ -19,10 +16,10 @@ export const Card = ({ products, visibleCount, setVisibleCount, toggle }) => {
         }, {})
     );
 
-    const handleVariantClick = (productIdx, selectedVariant) => {
+    const handleVariantChange = (productIdx, selectedVariant) => {
         setVariant((prev) => ({
             ...prev,
-            [productIdx]: selectedVariant,
+            [productIdx]: selectedVariant || products[productIdx].variants[0], // Memastikan varian pertama terpilih sebagai default jika tidak ada
         }));
     };
 
@@ -46,8 +43,6 @@ export const Card = ({ products, visibleCount, setVisibleCount, toggle }) => {
         ${variantsText}
         `;
     };
-
-
 
     const handleCopyProduct = (product, productIdx) => {
         const selectedVariant = variant[productIdx] || product.variants[0]; // Ambil varian yang dipilih
@@ -115,18 +110,20 @@ export const Card = ({ products, visibleCount, setVisibleCount, toggle }) => {
     return (
         <>
             <section className="md:mx-10 mx-5 pb-10 mt-5">
-                {toggle === 2 &&
+                {/* Mobile Card */}
+                {toggle === 2 ?
                     (
-                        <>
+                        <div className="">
                             <div className={`md:hidden grid grid-cols-1 md:gap-7 gap-3 gap-y-7 duration-300 ease-in-out`}>
                                 {dataDisplayed.map((product, idx) => {
                                     const selectedVariant = variant[idx];
                                     return (
                                         <div
                                             key={idx}
-                                            className={`group flex flex-col rounded-lg duration-300 ease-in-out md:hover:-translate-y-1 space-y-2 ${selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name)
-                                                ? "ring-offset-4 dark:ring-offset-black ring ring-darkColor dark:ring-bgLight dark:ring-opacity-20 ring-opacity-20 md:p-3 p-2 !rounded-2xl overflow-hidden mx-[3px] md:mx-0"
-                                                : ""
+                                            className={`group flex flex-col rounded-lg duration-300 ease-in-out md:hover:-translate-y-1 space-y-2
+                                                ${selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name)
+                                                    ? "ring-offset-4 dark:ring-offset-black ring ring-darkColor dark:ring-bgLight dark:ring-opacity-20 ring-opacity-20 md:p-3 p-2 !rounded-2xl overflow-hidden mx-[3px] md:mx-0"
+                                                    : ""
                                                 }`}
                                         >
                                             <div className="flex flex-row gap-2 flex-grow relative">
@@ -143,20 +140,263 @@ export const Card = ({ products, visibleCount, setVisibleCount, toggle }) => {
                                                     </p>
                                                     <div className="flex flex-col space-y-1">
                                                         <h1 className="md:text-lg">
-                                                            {product.category} {' '}
-                                                            <span className="font-medium">
-                                                                {selectedVariant.name}
+                                                            {product.productName || selectedVariant?.name}
+                                                        </h1>
+                                                        <h2 className={`${product?.variants?.length <= 1 && "hidden"} text-sm opacity-60 flex items-center`}>
+                                                            <IoIosArrowForward />
+                                                            {selectedVariant?.name}
+                                                        </h2>
+                                                        <div className="flex gap-1 items-center">
+                                                            <span className="md:text-lg font-bold">
+                                                                {formatToRupiah(selectedVariant?.price)}
                                                             </span>
+                                                            <span className="text-sm opacity-50">
+                                                                ({selectedVariant?.unit})
+                                                            </span>
+                                                        </div>
+
+                                                    </div>
+                                                    <div className="flex gap-2 w-full mt-auto flex-row text-sm md:mt-5 z-20">
+                                                        <button
+                                                            onClick={() => handleCopyProduct(product, idx)}
+                                                            className="hover:bg-neutral-200 dark:hover:bg-neutral-900 duration-300 active:scale-90 px-2 py-1 w-fit justify-center flex gap-2 items-center bg-bgLight dark:text-white dark:bg-darkColor text-neutral-600 truncate rounded-full"
+                                                        >
+                                                            <IoCopyOutline />
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleBatchSelect(product)}
+                                                            className={`hover:bg-blue-500 hover:text-white text-darkColor group-hover:border-neutral-500 duration-300 active:scale-90 px-4 py-1 w-fit border border-neutral-200 dark:border-neutral-500 dark:text-bgLight rounded-full ${selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name)
+                                                                ? "dark:bg-darkColor bg-bgLight text-black dark:text-white dark:!border-neutral-800 border-neutral-200 font-medium"
+                                                                : "text-neutral-600"
+                                                                }`}
+                                                        >
+                                                            {selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name)
+                                                                ? "Dipilih"
+                                                                : "Pilih"}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                {selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name) && (
+                                                    <div className="absolute w-full h-full bg-white dark:bg-black opacity-10 duration-200 scale-125 inset-0 z-[15]"></div>
+                                                )}
+                                                <Image
+                                                    className={`absolute md:w-full min-w-[30lvw] min-h-[30lvw] max-w-[30lvw] max-h-[30lvw]  duration-100 scale-90 dark:scale-[.8] translate-y-10 rounded-lg md:h-[30lvh] z-10 object-cover blur-xl dark:blur-2xl dark:brightness-125 dark:opacity-40 opacity-30 ${selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name) &&
+                                                        "!w-full !min-w-full !h-full !scale-150 !opacity-50"
+                                                        }`}
+                                                    width={1}
+                                                    height={1}
+                                                    src={product.thumbnailURL}
+                                                    alt={product.category}
+                                                />
+
+                                            </div>
+                                            {/* Replace ExpandableButton with select */}
+                                            {product.variants?.length > 1 && (
+                                                <select
+                                                    value={selectedVariant?.name}
+                                                    onChange={(e) =>
+                                                        handleVariantChange(
+                                                            idx,
+                                                            product.variants.find((v) => v.name === e.target.value)
+                                                        )
+                                                    }
+                                                    className="w-full bg-bgLight dark:bg-darkColor rounded-md select select-sm"
+                                                >
+                                                    {product.variants?.map((v, variantIdx) => (
+                                                        <option key={variantIdx} value={v.name}>
+                                                            {v.name}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            )}
+
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )
+                    : (
+                        <div className={`grid grid-cols-2 md:grid-cols-4 md:gap-7 gap-3 gap-y-7 duration-300 ease-in-out
+                                    ${toggle === 2 && "!grid-cols-2"}`
+                        }>
+                            {dataDisplayed.map((product, idx) => {
+                                const selectedVariant = variant[idx];
+                                return (
+                                    <div
+                                        key={idx}
+                                        className={`group flex flex-col rounded-lg duration-300 ease-in-out md:hover:-translate-y-1 space-y-2 ${selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name)
+                                            ? "ring-offset-4 dark:ring-offset-black ring ring-darkColor dark:ring-bgLight dark:ring-opacity-20 ring-opacity-20 md:p-3 p-2 !rounded-2xl overflow-hidden mx-[3px] md:mx-0"
+                                            : ""
+                                            }`}
+                                    >
+                                        <div className="flex flex-col gap-2 justify-between flex-grow relative">
+                                            <div className="z-20 space-y-2">
+                                                <Image
+                                                    className="w-full h-auto rounded-lg opacity-100 md:h-[30lvh] z-20 object-cover"
+                                                    width={500}
+                                                    height={500}
+                                                    src={product.thumbnailURL}
+                                                    alt={product.category}
+                                                />
+                                                <p className="opacity-50 rounded-md text-[11px] font-semibold uppercase w-fit">
+                                                    {product.category}
+                                                </p>
+                                                <div className="flex flex-col space-y-1">
+                                                    <h1 className="md:text-lg">
+                                                        {product.productName || selectedVariant?.name}
+                                                    </h1>
+                                                    <h2 className={`${product?.variants?.length <= 1 && "hidden"} text-sm opacity-60 flex items-center`}>
+                                                        <IoIosArrowForward />
+                                                        {selectedVariant?.name}
+                                                    </h2>
+                                                    <div className="flex gap-1 items-center">
+                                                        <span className="md:text-lg font-bold">
+                                                            {formatToRupiah(selectedVariant?.price)}
+                                                        </span>
+                                                        <span className="text-sm opacity-50">
+                                                            ({selectedVariant?.unit})
+                                                        </span>
+                                                    </div>
+
+                                                    {/* Select variant */}
+                                                    {product.variants?.length > 1 && (
+                                                        <select
+                                                            value={selectedVariant?.name}
+                                                            onChange={(e) =>
+                                                                handleVariantChange(
+                                                                    idx,
+                                                                    product.variants.find((v) => v.name === e.target.value)
+                                                                )
+                                                            }
+                                                            className="w-full bg-bgLight dark:bg-darkColor rounded-md select select-sm"
+                                                        >
+                                                            {product.variants?.map((v, variantIdx) => (
+                                                                <option key={variantIdx} value={v.name}>
+                                                                    {v.name}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    )}
+                                                </div>
+                                                <div className="flex gap-2 w-full mt-auto flex-row text-sm md:mt-5 z-20">
+                                                    <button
+                                                        onClick={() => handleBatchSelect(product)}
+                                                        className={`hover:bg-blue-500 hover:text-white text-darkColor group-hover:border-neutral-500 duration-300 active:scale-90 px-4 py-1 w-fit border border-neutral-200 dark:border-neutral-500 dark:text-bgLight rounded-full ${selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name)
+                                                            ? "dark:bg-darkColor bg-bgLight text-black dark:text-white dark:!border-neutral-800 border-neutral-200 font-medium"
+                                                            : "text-neutral-600"
+                                                            }`}
+                                                    >
+                                                        {selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name)
+                                                            ? "Dipilih"
+                                                            : "Pilih"}
+                                                    </button>
+
+                                                    <button
+                                                        onClick={() => handleCopyProduct(product, idx)}
+                                                        className="hover:bg-neutral-200 dark:hover:bg-neutral-900 duration-300 active:scale-90 px-4 py-1 w-fit justify-center flex gap-2 items-center bg-bgLight dark:text-white dark:bg-darkColor text-neutral-600 truncate rounded-full"
+                                                    >
+                                                        <IoCopyOutline /> Copy Produk
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            {selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name) && (
+                                                <div className="absolute w-full h-full bg-white dark:bg-black opacity-10 duration-200 scale-125 inset-0 z-[15]"></div>
+                                            )}
+
+                                            <Image
+                                                className={`absolute w-full duration-100 scale-90 dark:scale-[.8] translate-y-10 rounded-lg md:h-[30lvh] z-10 object-cover blur-xl dark:blur-2xl dark:brightness-125 dark:opacity-40 opacity-30 ${selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name) &&
+                                                    "!w-full !h-full !scale-150 !opacity-50"
+                                                    }`}
+                                                width={1}
+                                                height={1}
+                                                src={product.thumbnailURL}
+                                                alt={product.category}
+                                            />
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
+
+                {selectedProducts.length > 0 && (
+                    <div className="fixed bottom-5 right-5 flex md:flex-row flex-col gap-2 md:items-center z-40">
+                        <button
+                            onClick={handleCancelSelect}
+                            className="bg-red-500 rounded-full p-1 text-white text-2xl self-end md:block hidden"
+                        >
+                            <IoClose />
+                        </button>
+                        <button
+                            onClick={handleCancelSelect}
+                            className="px-3 py-1 w-fit self-end md:hidden flex gap-1 items-center bg-red-500 font-medium text-white rounded-full shadow-lg hover:bg-red-600 active:scale-95 duration-300"
+                        >
+                            <IoClose className="text-lg" /> Cancel
+                        </button>
+                        <button
+                            onClick={handleBatchCopy}
+                            className="px-3 py-1 flex gap-2 items-center font-medium bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 active:scale-95 duration-300"
+                        >
+                            <IoCopyOutline /> Copy Produk Terpilih
+                        </button>
+                    </div>
+                )}
+                {/* Load More Button */}
+                {visibleCount < products.length && (
+                    <div className="flex justify-center mt-5">
+                        <button
+                            onClick={handleLoadMore}
+                            className="px-6 py-2 bg-bgLight dark:bg-darkColor text-neutral-600 dark:text-white rounded-md"
+                        >
+                            Load More
+                        </button>
+                    </div>
+                )}
+            </section>
+
+            {/* 
+             <>
+            <section className="md:mx-10 mx-5 pb-10 mt-5">
+                {toggle === 2 &&
+                    (
+                        <>
+                            <div className={md:hidden grid grid-cols-1 md:gap-7 gap-3 gap-y-7 duration-300 ease-in-out}>
+                                {dataDisplayed.map((product, idx) => {
+                                    const selectedVariant = variant[idx];
+                                    return (
+                                        <div
+                                            key={idx}
+                                            className={group flex flex-col rounded-lg duration-300 ease-in-out md:hover:-translate-y-1 space-y-2 ${selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name)
+                                                ? "ring-offset-4 dark:ring-offset-black ring ring-darkColor dark:ring-bgLight dark:ring-opacity-20 ring-opacity-20 md:p-3 p-2 !rounded-2xl overflow-hidden mx-[3px] md:mx-0"
+                                                : ""
+                                                }}
+                                        >
+                                            <div className="flex flex-row gap-2 flex-grow relative">
+                                                <Image
+                                                    className="min-w-[30lvw] min-h-[30lvw] max-w-[30lvw] max-h-[30lvw] rounded-lg opacity-100 md:h-[30lvh] z-20 object-cover"
+                                                    width={500}
+                                                    height={500}
+                                                    src={product.thumbnailURL}
+                                                    alt={product.category}
+                                                />
+                                                <div className="z-20 space-y-2">
+                                                    <p className="opacity-50 rounded-md text-[11px] font-semibold uppercase w-fit">
+                                                        {product.category}
+                                                    </p>
+                                                    <div className="flex flex-col space-y-1">
+                                                        <h1 className="md:text-lg">
+                                                            {selectedVariant?.name}
                                                         </h1>
                                                         <div className="flex gap-1 items-center">
                                                             <span className="md:text-lg font-bold">
-                                                                {formatToRupiah(selectedVariant.price)}
+                                                                {formatToRupiah(selectedVariant?.price)}
                                                             </span>
                                                             <span className="text-sm opacity-50">
-                                                                ({selectedVariant.unit})
+                                                                ({selectedVariant?.unit})
                                                             </span>
                                                         </div>
-                                                        {product.variants.length > 1 && (
+                                                        {product?.variants?.length > 1 && (
                                                             <ExpandableButton
                                                                 arrowType={<RiArrowDownWideFill />}
                                                                 contentH={'25px'}
@@ -168,9 +408,9 @@ export const Card = ({ products, visibleCount, setVisibleCount, toggle }) => {
                                                                     <button
                                                                         key={variantIdx}
                                                                         onClick={() => handleVariantClick(idx, v)}
-                                                                        className={`ˇ
+                                                                        className={ˇ
                                                                 ${variant[idx]?.name === v.name ? "bg-mainColor text-white" : ""}
-                                                                px-1 text-sm bg-bgLight dark:bg-darkColor text-neutral-500 rounded-md uppercase font-medium grow flex items-center justify-center `}
+                                                                px-1 text-sm bg-bgLight dark:bg-darkColor text-neutral-500 rounded-md uppercase font-medium grow flex items-center justify-center }
                                                                     >
                                                                         {v.name}
                                                                     </button>
@@ -181,10 +421,10 @@ export const Card = ({ products, visibleCount, setVisibleCount, toggle }) => {
                                                     <div className="flex gap-2 w-full mt-auto flex-row text-sm md:mt-5 z-20">
                                                         <button
                                                             onClick={() => handleBatchSelect(product)}
-                                                            className={`hover:bg-blue-500 hover:text-white text-darkColor group-hover:border-neutral-500 duration-300 active:scale-90 px-4 py-1 w-fit border border-neutral-200 dark:border-neutral-500 dark:text-bgLight rounded-full ${selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name)
+                                                            className={hover:bg-blue-500 hover:text-white text-darkColor group-hover:border-neutral-500 duration-300 active:scale-90 px-4 py-1 w-fit border border-neutral-200 dark:border-neutral-500 dark:text-bgLight rounded-full ${selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name)
                                                                 ? "dark:bg-darkColor bg-bgLight text-black dark:text-white dark:!border-neutral-800 border-neutral-200 font-medium"
                                                                 : "text-neutral-600"
-                                                                }`}
+                                                                }}
                                                         >
                                                             {selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name)
                                                                 ? "Dipilih"
@@ -203,17 +443,6 @@ export const Card = ({ products, visibleCount, setVisibleCount, toggle }) => {
                                                 {selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name) && (
                                                     <div className="absolute w-full h-full bg-white dark:bg-black opacity-10 duration-200 scale-125 inset-0 z-[15]"></div>
                                                 )}
-
-                                                {/* <Image
-                                                    className={`absolute w-full duration-100 scale-90 dark:scale-[.8] translate-y-10 rounded-lg md:h-[30lvh] z-10 object-cover blur-xl dark:blur-2xl dark:brightness-125 dark:opacity-40 opacity-30 ${selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name) &&
-                                                        "!w-full !h-full !scale-150 !opacity-50"
-                                                        }`}
-                                                    width={1}
-                                                    height={1}
-                                                    src={product.thumbnailURL}
-                                                    alt={product.category}
-                                                /> */}
-
                                             </div>
                                         </div>
                                     );
@@ -222,18 +451,18 @@ export const Card = ({ products, visibleCount, setVisibleCount, toggle }) => {
                         </>
                     )}
                 <>
-                    <div className={`grid grid-cols-2 md:grid-cols-4 md:gap-7 gap-3 gap-y-7 duration-300 ease-in-out
-                                            ${toggle === 2 && "!grid-cols-2"}
-                    `}>
+                    <div className={grid grid-cols-2 md:grid-cols-4 md:gap-7 gap-3 gap-y-7 duration-300 ease-in-out
+                                    ${toggle === 2 && "!grid-cols-2"}
+                    }>
                         {dataDisplayed.map((product, idx) => {
                             const selectedVariant = variant[idx];
                             return (
                                 <div
                                     key={idx}
-                                    className={`group flex flex-col rounded-lg duration-300 ease-in-out md:hover:-translate-y-1 space-y-2 ${selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name)
+                                    className={group flex flex-col rounded-lg duration-300 ease-in-out md:hover:-translate-y-1 space-y-2 ${selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name)
                                         ? "ring-offset-4 dark:ring-offset-black ring ring-darkColor dark:ring-bgLight dark:ring-opacity-20 ring-opacity-20 md:p-3 p-2 !rounded-2xl overflow-hidden mx-[3px] md:mx-0"
                                         : ""
-                                        }`}
+                                        }}
                                 >
                                     <div className="flex flex-col gap-2 justify-between flex-grow relative">
                                         <div className="z-20 space-y-2">
@@ -249,20 +478,21 @@ export const Card = ({ products, visibleCount, setVisibleCount, toggle }) => {
                                             </p>
                                             <div className="flex flex-col space-y-1">
                                                 <h1 className="md:text-lg">
-                                                    {product.category} {' '}
-                                                    <span className="font-medium">
-                                                        {selectedVariant.name}
-                                                    </span>
+                                                    {product.productName || selectedVariant?.name}
                                                 </h1>
+                                                <h2 className={${product?.variants?.length <= 1 && "hidden"} text-sm opacity-60 flex items-center}>
+                                                    <IoIosArrowForward />
+                                                    {selectedVariant?.name}
+                                                </h2>
                                                 <div className="flex gap-1 items-center">
                                                     <span className="md:text-lg font-bold">
-                                                        {formatToRupiah(selectedVariant.price)}
+                                                        {formatToRupiah(selectedVariant?.price)}
                                                     </span>
                                                     <span className="text-sm opacity-50">
-                                                        ({selectedVariant.unit})
+                                                        ({selectedVariant?.unit})
                                                     </span>
                                                 </div>
-                                                {product.variants.length > 1 && (
+                                                {product?.variants?.length > 1 && (
                                                     <>
                                                         <ExpandableButton
                                                             arrowType={<RiArrowDownWideFill />}
@@ -275,9 +505,9 @@ export const Card = ({ products, visibleCount, setVisibleCount, toggle }) => {
                                                                 <button
                                                                     key={variantIdx}
                                                                     onClick={() => handleVariantClick(idx, v)}
-                                                                    className={`
-                                                                        ${variant[idx]?.name === v.name ? "bg-mainColor text-white" : ""}
-                                                                        px-1 text-sm bg-bgLight dark:bg-darkColor text-neutral-500 rounded-md uppercase font-medium grow flex items-center justify-center `}
+                                                                    className={
+                                                                        ${variant[idx]?.name === v.name ? "bg-mainColor dark:bg-mainColorD text-white" : ""}
+                                                                        px-1 text-sm bg-bgLight dark:bg-darkColor text-neutral-500 rounded-md uppercase font-medium grow flex items-center justify-center }
                                                                 >
                                                                     {v.name}
                                                                 </button>
@@ -293,9 +523,9 @@ export const Card = ({ products, visibleCount, setVisibleCount, toggle }) => {
                                         )}
 
                                         <Image
-                                            className={`absolute w-full duration-100 scale-90 dark:scale-[.8] translate-y-10 rounded-lg md:h-[30lvh] z-10 object-cover blur-xl dark:blur-2xl dark:brightness-125 dark:opacity-40 opacity-30 ${selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name) &&
+                                            className={absolute w-full duration-100 scale-90 dark:scale-[.8] translate-y-10 rounded-lg md:h-[30lvh] z-10 object-cover blur-xl dark:blur-2xl dark:brightness-125 dark:opacity-40 opacity-30 ${selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name) &&
                                                 "!w-full !h-full !scale-150 !opacity-50"
-                                                }`}
+                                                }}
                                             width={1}
                                             height={1}
                                             src={product.thumbnailURL}
@@ -304,10 +534,10 @@ export const Card = ({ products, visibleCount, setVisibleCount, toggle }) => {
                                         <div className="flex flex-col gap-2 w-full mt-auto md:flex-row text-sm md:mt-5 z-20">
                                             <button
                                                 onClick={() => handleBatchSelect(product)}
-                                                className={`hover:bg-blue-500 hover:text-white text-darkColor group-hover:border-neutral-500 duration-300 active:scale-90 px-4 py-1 w-full border border-neutral-200 dark:border-neutral-500 dark:text-bgLight rounded-full ${selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name)
+                                                className={hover:bg-blue-500 hover:text-white text-darkColor group-hover:border-neutral-500 duration-300 active:scale-90 px-4 py-1 w-full border border-neutral-200 dark:border-neutral-500 dark:text-bgLight rounded-full ${selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name)
                                                     ? "dark:bg-darkColor bg-bgLight text-black dark:text-white dark:!border-neutral-800 border-neutral-200 font-medium"
                                                     : "text-neutral-600"
-                                                    }`}
+                                                    }}
                                             >
                                                 {selectedProducts.some((p) => p.category === product.category && p.variants[0].name === product.variants[0].name)
                                                     ? "Dipilih"
@@ -362,6 +592,8 @@ export const Card = ({ products, visibleCount, setVisibleCount, toggle }) => {
                     </button>
                 </div>
             )}
+        </>
+            */}
         </>
     );
 };
