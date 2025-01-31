@@ -471,7 +471,7 @@ export const products = [
   {
     productName: "BALL VALVE KUNINGAN",
     category: "BALL VALVE",
-    thumbnailURL: "https://picsum.photos/1000/1000?BALL_VALVE_KUNINGAN",
+    thumbnailURL: "https://picsum.photos/1000/1000?BALL_VALVE_KUNIng",
     variants: [
       {
         varImg: "",

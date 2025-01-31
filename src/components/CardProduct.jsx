@@ -26,31 +26,31 @@ export const CardProduct = ({ products, searchQuery, toggle }) => {
 const highlightText = (text) => {
     if (!text || !searchQuery) return text; // Pastikan text dan searchQuery ada
     const regex = new RegExp(`(${searchQuery})`, "gi");
-    return text.replace(regex, `<mark class="bg-yellow-300 bg-opacity-0 dark:text-white animate-pulse rounded-[4px]">$1</mark>`);
+    return text.replace(regex, `<mark class="bg-yellow-300 bg-opacity-0 border-b dark:text-white">$1</mark>`);
 };
 
 
     return (
         <>
             <section className="md:mx-10 mx-5">
-                <div className={`${toggle === 2 && "md:grid-cols-5"} gridc ${toggle === 3 && "md:grid-cols-6"} grid md:grid-cols-4 md:gap-7 grid-cols-2 gap-5 gap-y-14`}>
+                <div className={`${toggle === 2 && "md:grid-cols-5"} gridc ${toggle === 3 && "md:grid-cols-6"} grid md:grid-cols-4 md:gap-7 grid-cols-2 gap-5 gap-y-6 md:gap-y-14`}>
                     {products.map((el, idx) => (
                         <div key={idx} className="space-y-2">
                             <Image
                                 width={500}
                                 height={500}
                                 src={el.thumbnailURL}
-                                className="rounded-lg w-full h-auto object-cover"
+                                className="rounded-xl md:rounded-2xl w-full h-auto object-cover"
                                 alt={el.productName}
                             />
                             <div className="space-y-1">
                                 {/* Highlight Category */}
                                 <p
-                                    className="text-xs uppercase tracking-wide font-semibold opacity-50"
+                                    className="text-[10px] uppercase tracking-wide font-semibold opacity-50"
                                     dangerouslySetInnerHTML={{ __html: highlightText(el.category) }}
                                 ></p>
 
-                                <div>
+                                <div className="text-sm md:text-lg">
                                     {/* Highlight Product Name */}
                                     <h1
                                         className="font-medium"
@@ -58,7 +58,7 @@ const highlightText = (text) => {
                                     ></h1>
 
                                     <div className="">
-                                        <span className={`${el.variants.length <= 2 && "!hidden"} font-semibold text-sky-600 dark:text-sky-300 text-sm flex items-center`}>
+                                        <span className={`${el.variants.length < 2 && "!hidden"} font-semibold text-secondaryColor text-sm flex items-center`}>
                                             <IoIosArrowForward />
                                             <span
                                                 dangerouslySetInnerHTML={{ __html: highlightText(selectedVariants[idx]?.name) }}
@@ -73,7 +73,7 @@ const highlightText = (text) => {
                                 {el.variants.length > 1 && (
                                     <div>
                                         <select
-                                            className="select select-sm w-full border rounded-md bg-bgLight dark:bg-darkColor"
+                                            className="select select-sm w-full border rounded-md bg-mainColorD dark:bg-darkColor"
                                             onChange={(e) => handleVariantChange(idx, e.target.value)}
                                             value={el.variants.indexOf(selectedVariants[idx])}
                                         >

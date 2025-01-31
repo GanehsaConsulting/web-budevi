@@ -17,7 +17,7 @@ export const Search = ({ onSearch }) => {
     };
 
     return (
-            <label className="bg-bgLight dark:bg-darkColor input input-sm md:input-md md:h-[40px] rounded-full w-full flex items-center gap-2">
+            <label className="bg-mainColorD dark:bg-darkColor input input-sm md:input-md md:h-[40px] rounded-full w-full flex items-center gap-2">
                 <IoIosSearch className="opacity-60" />
                 <input
                     type="text"

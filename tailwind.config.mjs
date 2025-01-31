@@ -1,5 +1,3 @@
-
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -14,9 +12,9 @@ module.exports = {
         foreground: "var(--foreground)",
       },
       colors: {
-        mainColor: "#005874",
-        secondaryColor: "#D9EAFD",
-        mainColorD: "#1C819E",
+        mainColor: "#4A5A75",
+        secondaryColor: "#FEA800",
+        mainColorD: "#EEF2F5",
         secondaryColorD: "#BCCCDC",
         baseColor: '#E6E6D4',
         darkColor: '#232323',
