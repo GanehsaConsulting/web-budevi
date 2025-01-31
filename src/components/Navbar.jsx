@@ -52,7 +52,7 @@ export const Navbar = ({ children }) => {
                             `}>
                 <div className={`navbar-start md:ml-[30px] ml-[10px]`}>
                     <div className="dropdown md:block hidden">
-                        <div tabIndex={0} role="button" >
+                        <div tabIndex={0} role="button" className="active:scale-90 duration-300">
                             <BurgerButton isExpanded={isExpanded} />
                         </div>
                         <ul
@@ -60,7 +60,8 @@ export const Navbar = ({ children }) => {
                             className="menu menu-sm dropdown-content bg-mainColorD dark:bg-darkColor rounded-box z-[1] mt-3 w-52 p-2 shadow">
                             {NavbarItems.map((el, idx) => (
                                 <li key={idx}>
-                                    <a href="">
+                                    <a href={el.href}
+                                    >
                                         {el.label}
                                     </a>
                                 </li>
@@ -70,12 +71,13 @@ export const Navbar = ({ children }) => {
                     <a href="/" className="md:text-xl z-[888] font-medium md:hidden block">Sinar Lotus</a>
                 </div>
                 <div className="navbar-center hidden lg:flex">
-                    <a href="/" className="md:text-xl z-[888] font-medium">Sinar Lotus</a>
+                    <a href="/" className="md:text-xl z-[888] font-medium hover:scale-105 active:scale-75 duration-300">Sinar Lotus</a>
                 </div>
                 <div className="navbar-end md:mr-[30px] mr-[10px] space-x-4 md:space-x-3">
                     <ThemeSwitch />
-                    <a href=""
-                        className="md:pr-3 md:pl-2 md:py-[2px] flex items-center gap-1 text-neutral-800 md:bg-neutral-300 font-semibold md:text-sm rounded-full"
+                    <a
+                        href="/contact"
+                        className="active:scale-95 md:pr-3 md:pl-2 md:py-[2px] flex items-center gap-1 text-neutral-800 md:bg-neutral-300 font-semibold md:text-sm rounded-full"
                     >
                         <RiCustomerServiceFill className=" text-cl " />
                         <span className="md:block hidden">

@@ -52,7 +52,7 @@ export const FloatingButton = () => {
                 <section className="flex flex-col gap-3 duration-300">
                     <button
                         onClick={scrollToTop}
-                        className={`${isVisible ? "scale-100 " : 'scale-0 '} bg-baseColor bg-opacity-50 duration-300 backdrop-blur-md hover:bg-mainColor hover:text-baseColor dark:text-white text-mainColor rounded-full p-3 shadow-lg`}
+                        className={`${isVisible ? "scale-100 " : 'scale-0 translate-y-full'} bg-baseColor bg-opacity-50 duration-300 backdrop-blur-md hover:bg-mainColor hover:text-baseColor dark:text-white text-mainColor rounded-full p-3 shadow-lg`}
                     >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>

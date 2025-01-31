@@ -1,3 +1,8 @@
+import { TbMail, TbMailFilled } from "react-icons/tb";
+import { RiFacebookBoxFill, RiInstagramFill, RiLinkedinFill, RiWhatsappFill } from "react-icons/ri";
+import { IoIosCall } from "react-icons/io";
+
+
 export const NavbarItems = [
     {
         label: "Home",
@@ -63,4 +68,70 @@ export const brandIdentity = {
             "Media Sosial: Ikuti kami di Instagram, Facebook, dan Twitter untuk pembaruan produk dan promo terbaru!"
         ]
     }
+};
+
+export const dataContact = {
+    mail: [
+        {
+            label: "Email",
+            icon: <TbMailFilled />,
+            data: "ganeshamultikreatif@gmail.com",
+            link: "mailto:ganeshamultikreatif@gmail.com"
+        },
+        {
+            label: "Email",
+            icon: <TbMail />,
+            data: "commercial@ganeshaconsulting.co.id",
+            link: "mailto:commercial@ganeshaconsulting.co.id"
+        }
+    ],
+    phone: [
+        {
+            label: "Phone",
+            icon: <IoIosCall />,
+            data: "+62 888 712 7000",
+            link: "tel:628887127000"
+        }
+    ],
+    media: [
+        {
+            label: "Instagram",
+            icon: <RiInstagramFill />,
+            data: "@ganeshamultikreatif",
+            link: "https://www.instagram.com/ganeshamultikreatif?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+        },
+        {
+            label: "Facebook",
+            icon: <RiFacebookBoxFill />,
+            class: "bg-gradient-to-b to-transparent from-[#EA5554] !text-white",
+            data: "Ganesha Consulting",
+            link: "https://www.facebook.com/profile.php?id=61555739807086"
+        },
+        {
+            label: "LinkedIn",
+            icon: <RiLinkedinFill />,
+            data: "Ganesha Multi Kreatif",
+            link: "https://www.linkedin.com/company/ganesha-multi-kreatif/"
+        },
+        {
+            label: "WhatsApp",
+            icon: <RiWhatsappFill />,
+            data: "+62 888 712 7000",
+            link: "https://api.whatsapp.com/send?phone=628887127000&text=Halo%20Ganesha%20Consulting"
+        }
+    ],
+    address: [
+        {
+            label: "Operational Office",
+            data: "Jl. Raya Masjid Al Hidayah No.5, RT.6/RW.7, Pejaten Barat, Pasar Minggu, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12510",
+            embed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126905.92489499568!2d106.7575353514891!3d-6.288666897638287!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3007a6e8e39%3A0xf83b477d03a6931f!2sGANESHA%20CONSULTING%20-%20OPERATIONAL!5e0!3m2!1sid!2sid!4v1723453298072!5m2!1sid!2sid",
+            link: "https://maps.app.goo.gl/jvz8ScJZtUmAnT7SA"
+        },
+        {
+            label: "Head Office",
+            data: "Menara Cakrawala 12th Floor Unit 5A, Jalan M.H. Thamrin, Desa/Kelurahan Kebon Sirih, Kec. Menteng, Kota Adm. Jakarta Pusat, Provinsi DKI Jakarta 10340",
+            embed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.586712234682!2d106.82116857499005!3d-6.1860248938015285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f428abe15763%3A0x7c3a05b23a1bfef!2sMenara%20Cakrawala!5e0!3m2!1sid!2sid!4v1723453764481!5m2!1sid!2sid",
+            link: "https://maps.app.goo.gl/8wg4sGKQiffsFRML8"
+        }
+    ]
 };

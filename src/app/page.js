@@ -8,6 +8,8 @@ import { Sort } from "@/components/Sort";
 import { Pagination } from "@/components/Pagination";
 import { SwitchView } from "@/components/SwitchView";
 import { Sticky } from "@/components/Sticky";
+import { PiFlowerLotusLight } from "react-icons/pi";
+import { brandIdentity } from "../../public/System";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -71,7 +73,11 @@ export default function Home() {
 
   return (
     <>
-      <Banner />
+      <Banner
+        head={<>Sinar Lotus<PiFlowerLotusLight /></>}
+        desc={brandIdentity.banner.taglineShort}
+        imgUrl={'https://images.unsplash.com/photo-1567361808960-dec9cb578182?q=80&w=2990&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
+      />
       <Sticky>
         <Search onSearch={setSearchQuery} />
         <SwitchView toggle={toggle} updateToggle={updateToggle} />
