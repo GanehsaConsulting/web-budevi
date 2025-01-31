@@ -33,7 +33,7 @@ export const CardProduct = ({ products, searchQuery, toggle }) => {
     const highlightText = (text) => {
         if (!text || !searchQuery) return text;
         const regex = new RegExp(`(${searchQuery})`, "gi");
-        return text.replace(regex, `<mark class="bg-yellow-300 bg-opacity-0 border-b dark:text-white">$1</mark>`);
+        return text.replace(regex, `<mark class="bg-secondaryColor bg-opacity-50 dark:text-white rounded-[2px]">$1</mark>`);
     };
 
     return (
