@@ -3,10 +3,9 @@ import { useState, useEffect } from "react";
 import { NavbarItems } from "../../public/System";
 import { MegaMenuNavbar } from "./MegaMenuNavbar";
 import { MobileDrawer } from "./MobileDrawer";
+import { RiCustomerServiceFill } from "react-icons/ri";
 import BurgerButton from "./BurgerButton";
 import ThemeSwitch from "./ThemeSwitch";
-import { IoIosCall } from "react-icons/io";
-import { RiCustomerServiceFill } from "react-icons/ri";
 
 export const Navbar = ({ children }) => {
     const [visible, setVisible] = useState(true);
@@ -77,9 +76,9 @@ export const Navbar = ({ children }) => {
                     <ThemeSwitch />
                     <a
                         href="/contact"
-                        className="active:scale-95 md:pr-3 md:pl-2 md:py-[2px] flex items-center gap-1 text-neutral-800 md:bg-neutral-300 font-semibold md:text-sm rounded-full"
+                        className="active:scale-95 md:pr-3 md:pl-2 md:py-[2px] flex items-center gap-1 md:text-neutral-800 md:bg-neutral-300 font-semibold md:text-sm rounded-full text-neutral-500 dark:text-neutral-300"
                     >
-                        <RiCustomerServiceFill className=" text-cl " />
+                        <RiCustomerServiceFill className="" />
                         <span className="md:block hidden">
                             Kontak
                         </span>
