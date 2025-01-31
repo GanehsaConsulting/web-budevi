@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { FloatingButton } from "@/components/FloatingButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
         <ThemeProvider enableSystem={true} attribute="class">
           <Navbar />
           {children}
+          <FloatingButton />
           <Footer />
         </ThemeProvider>
       </body>

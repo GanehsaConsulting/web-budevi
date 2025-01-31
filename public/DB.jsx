@@ -756,7 +756,7 @@ export const products = [
     ],
   },
   {
-    productName: "BAUT BAJA LION",
+    productName: "BAUT BAJA LION 10X19 CURAH isi(5000)",
     category: "BAUT",
     thumbnailURL: "https://picsum.photos/1000/1000?BAUT_BAJA_LION",
     variants: [

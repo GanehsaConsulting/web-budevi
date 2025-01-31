@@ -5,6 +5,8 @@ import { MegaMenuNavbar } from "./MegaMenuNavbar";
 import { MobileDrawer } from "./MobileDrawer";
 import BurgerButton from "./BurgerButton";
 import ThemeSwitch from "./ThemeSwitch";
+import { IoIosCall } from "react-icons/io";
+import { RiCustomerServiceFill } from "react-icons/ri";
 
 export const Navbar = ({ children }) => {
     const [visible, setVisible] = useState(true);
@@ -70,10 +72,16 @@ export const Navbar = ({ children }) => {
                 <div className="navbar-center hidden lg:flex">
                     <a href="/" className="md:text-xl z-[888] font-medium">Sinar Lotus</a>
                 </div>
-                <div className="navbar-end md:mr-[30px] mr-[10px] space-x-3 md:space-x-1">
-                    <div className="z-[999]">
-                        <ThemeSwitch />
-                    </div>
+                <div className="navbar-end md:mr-[30px] mr-[10px] space-x-4 md:space-x-3">
+                    <ThemeSwitch />
+                    <a href=""
+                        className="md:pr-3 md:pl-2 md:py-[2px] flex items-center gap-1 text-neutral-800 md:bg-neutral-300 font-semibold md:text-sm rounded-full"
+                    >
+                        <RiCustomerServiceFill className=" text-cl " />
+                        <span className="md:block hidden">
+                            Kontak
+                        </span>
+                    </a>
                     <div className="block md:hidden">
                         <MegaMenuNavbar
                             arrowVisibility={'hidden'}
@@ -83,6 +91,7 @@ export const Navbar = ({ children }) => {
                             children={<MobileDrawer isExpanded={isExpanded} />}
                         />
                     </div>
+
                 </div>
             </div>
         </>
