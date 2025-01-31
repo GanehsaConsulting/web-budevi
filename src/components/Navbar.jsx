@@ -1,7 +1,6 @@
 "use client"
 import { useState, useEffect } from "react";
 import { NavbarItems } from "../../public/System";
-import { ProductsMegaMenu } from "./ProductsMegaMenu";
 import { MegaMenuNavbar } from "./MegaMenuNavbar";
 import { MobileDrawer } from "./MobileDrawer";
 import BurgerButton from "./BurgerButton";
@@ -52,7 +51,7 @@ export const Navbar = ({ children }) => {
                 <div className={`navbar-start md:ml-[30px] ml-[10px]`}>
                     <div className="dropdown md:block hidden">
                         <div tabIndex={0} role="button" >
-                           <BurgerButton isExpanded={isExpanded} />
+                            <BurgerButton isExpanded={isExpanded} />
                         </div>
                         <ul
                             tabIndex={0}
@@ -77,23 +76,15 @@ export const Navbar = ({ children }) => {
                     </div>
                     <div className="block md:hidden">
                         <MegaMenuNavbar
-                            burger={
-                                <BurgerButton isExpanded={isExpanded} />
-                            }
                             arrowVisibility={'hidden'}
                             isExpanded={isExpanded}
                             setIsExpanded={setIsExpanded}
-                            children={
-                                <MobileDrawer isExpanded={isExpanded} />
-                            }
+                            burger={<BurgerButton isExpanded={isExpanded} />}
+                            children={<MobileDrawer isExpanded={isExpanded} />}
                         />
                     </div>
                 </div>
             </div>
-            {/* <div
-                onClick={handleToggleExpand}
-                className={`fixed z-[990] ${isExpanded ? "opacity-100 backdrop-blur-xl md:backdrop-blur-[30px] w-screen h-screen" : "opacity-0"} bg-white bg-opacity-30 dark:bg-black dark:bg-opacity-30 transition-opacity duration-300`}></div> */}
-
         </>
     )
 }
