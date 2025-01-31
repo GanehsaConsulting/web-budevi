@@ -4,8 +4,8 @@ import { dataContact, NavbarItems } from "../../public/System"
 export const Footer = () => {
     return (
         <>
-            <footer className="md:p-10 grid grid-cols-3">
-                <nav>
+            <footer className="md:p-10 p-5 grid md:grid-cols-3 grid-cols-1 gap-10">
+                <nav className="text-center md:text-left order-last md:order-none">
                     <p className="footer-title text-xs">
                         Kontak
                     </p>
@@ -21,7 +21,7 @@ export const Footer = () => {
                         ))}
                     </div>
                 </nav>
-                <nav className="space-y-5">
+                <nav className="order-first md:order-none space-y-5">
                     <div className="text-mainColor dark:text-mainColorD flex flex-col items-center gap-2 text-2xl md:text-4xl font-light opacity-80 brightness-105">
                         <PiFlowerLotusLight />
                         <h1>
@@ -43,7 +43,7 @@ export const Footer = () => {
                         ))}
                     </div>
                 </nav>
-                <nav className="text-right">
+                <nav className="text-center md:text-right">
                     <p className="footer-title text-xs">
                         Social Media
                     </p>
