@@ -4,6 +4,7 @@ import { NavbarItems } from "../../public/System";
 import { MegaMenuNavbar } from "./MegaMenuNavbar";
 import { MobileDrawer } from "./MobileDrawer";
 import { RiCustomerServiceFill } from "react-icons/ri";
+import { LuMenu } from "react-icons/lu";
 import BurgerButton from "./BurgerButton";
 import ThemeSwitch from "./ThemeSwitch";
 
@@ -52,7 +53,7 @@ export const Navbar = ({ children }) => {
                 <div className={`navbar-start md:ml-[30px] ml-[10px]`}>
                     <div className="dropdown md:block hidden">
                         <div tabIndex={0} role="button" className="active:scale-90 duration-300">
-                            <BurgerButton isExpanded={isExpanded} />
+                            <LuMenu />
                         </div>
                         <ul
                             tabIndex={0}
@@ -76,7 +77,7 @@ export const Navbar = ({ children }) => {
                     <ThemeSwitch />
                     <a
                         href="/contact"
-                        className="active:scale-95 md:pr-3 md:pl-2 md:py-[2px] flex items-center gap-1 md:text-neutral-800 md:bg-neutral-300 font-semibold md:text-sm rounded-full text-neutral-500 dark:text-neutral-300"
+                        className="active:scale-95 md:pr-3 md:pl-2 md:py-[2px] flex items-center gap-1 md:text-neutral-800 md:dark:text-neutral-800 md:bg-neutral-300 font-semibold md:text-sm rounded-full text-neutral-500 dark:text-neutral-300"
                     >
                         <RiCustomerServiceFill className="" />
                         <span className="md:block hidden">
