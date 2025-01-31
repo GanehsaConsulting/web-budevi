@@ -52,7 +52,7 @@ export const CardProduct = ({ products, searchQuery, toggle }) => {
                                     width={500}
                                     height={500}
                                     src={el.thumbnailURL}
-                                    className="rounded-xl md:rounded-2xl w-full h-auto object-cover"
+                                    className="rounded-xl md:rounded-2xl w-full h-auto object-cover bg-secondaryColorD"
                                     alt={formattedProductName}
                                 />
                                 <div className="absolute right-1 bottom-1 group">

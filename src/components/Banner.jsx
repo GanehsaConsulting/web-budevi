@@ -12,14 +12,14 @@ export const Banner = ({ imgUrl, head, desc }) => {
                     <Image
                         width={1000}
                         height={1000}
-                        className="z-[50] w-full h-[30lvh] md:h-[40lvh] object-cover dark:brightness-75 brightness-90 rounded-xl md:rounded-2xl"
+                        className="z-[50] w-full h-[30lvh] md:h-[40lvh] object-cover dark:brightness-75 brightness-90 rounded-xl md:rounded-2xl bg-secondaryColorD"
                         src={imgUrl}
                         alt="Banner Images"
                     />
                     <Image
                         width={1}
                         height={1}
-                        className="absolute inset-0 -z-20 w-full h-[30lvh] md:h-[40lvh] object-cover dark:brightness-75 brightness-90 rounded-xl md:rounded-2xl"
+                        className="absolute inset-0 -z-20 w-full h-[30lvh] md:h-[40lvh] object-cover rounded-xl md:rounded-2xl bg-secondaryColorD"
                         src={imgUrl}
                         alt="Banner Images"
                     />
