@@ -6991,25 +6991,25 @@ export const products = [
         varImg: "",
         name: "4.5MM",
         unit: "pcs",
-        price: 4.050
+        price: 4050
       },
       {
         varImg: "",
         name: "5MM",
         unit: "pcs",
-        price: 4.500
+        price: 4500
       },
       {
         varImg: "",
         name: "6MM",
         unit: "pcs",
-        price: 5.400
+        price: 5400
       },
       {
         varImg: "",
         name: "8MM",
         unit: "pcs",
-        price: 7.200
+        price: 7200
       },
       {
         varImg: "",
@@ -7021,7 +7021,7 @@ export const products = [
         varImg: "",
         name: "12MM",
         unit: "pcs",
-        price: 14.400
+        price: 14400
       }
     ]
   },
