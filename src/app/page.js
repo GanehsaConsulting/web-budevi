@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Banner } from "@/components/Banner";
 import { CardProduct } from "@/components/CardProduct";
 import { products } from "../../public/DB";
@@ -10,11 +10,17 @@ import { SwitchView } from "@/components/SwitchView";
 import { Sticky } from "@/components/Sticky";
 import { PiFlowerLotusLight } from "react-icons/pi";
 import { brandIdentity } from "../../public/System";
+import ProductPDFPreview from "@/components/ProductPDFPreview";
+import { ItemsToShow } from "@/components/ItemsToShow";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
+import { StackButton } from "@/components/StackButton";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSort, setActiveSort] = useState("az");
-  const [displayedProductsCount, setDisplayedProductsCount] = useState(15); // Inisialisasi jumlah produk yang ditampilkan
+  const [displayedProductsCount, setDisplayedProductsCount] = useState(16);
+  const [prevProductsCount, setPrevProductsCount] = useState(16);  // Inisialisasi jumlah produk yang ditampilkan
   const [toggle, setToggle] = useState(1);
 
   // Fungsi untuk update toggle
@@ -68,8 +74,27 @@ export default function Home() {
 
   // Fungsi untuk menangani load more
   const handleLoadMore = () => {
-    setDisplayedProductsCount(prev => prev + 8); // Menambah jumlah produk yang ditampilkan
+    setDisplayedProductsCount(prev => prev + 8);
   };
+
+  // Gunakan useEffect untuk menampilkan notifikasi hanya sekali setelah update state
+  useEffect(() => {
+    if (displayedProductsCount > prevProductsCount) {
+      const newProductsCount = displayedProductsCount - prevProductsCount;
+
+      Toastify({
+        text: `+${newProductsCount} produk ditambahkan! Total: ${displayedProductsCount} produk`,
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "#fea800",
+        stopOnFocus: true,
+      }).showToast();
+
+      setPrevProductsCount(displayedProductsCount); // Update jumlah sebelumnya
+    }
+  }, [displayedProductsCount, prevProductsCount]);
+
 
   return (
     <>
@@ -82,6 +107,12 @@ export default function Home() {
         <Search onSearch={setSearchQuery} />
         <SwitchView toggle={toggle} updateToggle={updateToggle} />
         <Sort onSort={handleSort} activeSort={activeSort} />
+        <div className="-space-x-[4.5px]">
+          <ItemsToShow currentDisplayed={displayedProductsCount} onChange={setDisplayedProductsCount} />
+          {filteredProducts.length > displayedProductsCount && (
+            <Pagination onLoadMore={handleLoadMore} />
+          )}
+        </div>
       </Sticky>
 
       {/* Kondisi ketika tidak ada produk yang ditemukan */}
@@ -92,11 +123,9 @@ export default function Home() {
       ) : (
         <CardProduct toggle={toggle} products={displayedProducts} searchQuery={searchQuery} />
       )}
-
-      {/* Menampilkan tombol load more jika ada produk lebih */}
-      {filteredProducts.length > displayedProductsCount && (
-        <Pagination onLoadMore={handleLoadMore} />
-      )}
+      <StackButton >
+        <ProductPDFPreview toggle={toggle} products={displayedProducts} />
+      </StackButton>
     </>
   );
 }

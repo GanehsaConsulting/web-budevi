@@ -58,6 +58,7 @@ export const FloatingButton = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
                         </svg>
                     </button>
+                  
                     <button
                         onClick={() => gtag_report_conversion(WaLink)}
                         className="bg-[#4DED69] hover:bg-[#35a549] hover:scale-95 duration-300 ease-in-out text-white font-bold py-3 px-3 rounded-full shadow-lg"
