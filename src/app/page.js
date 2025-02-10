@@ -15,6 +15,8 @@ import { ItemsToShow } from "@/components/ItemsToShow";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 import { StackButton } from "@/components/StackButton";
+import { FaCheck } from "react-icons/fa";
+import { ImCross } from "react-icons/im";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,6 +24,8 @@ export default function Home() {
   const [displayedProductsCount, setDisplayedProductsCount] = useState(16);
   const [prevProductsCount, setPrevProductsCount] = useState(16);  // Inisialisasi jumlah produk yang ditampilkan
   const [toggle, setToggle] = useState(1);
+  const [selectedItems, setSelectedItems] = useState([]);
+
 
   // Fungsi untuk update toggle
   function updateToggle(id) {
@@ -77,6 +81,11 @@ export default function Home() {
     setDisplayedProductsCount(prev => prev + 8);
   };
 
+  // Fungsi untuk mengosongkan batch select untuk cetak PDF
+  const handleCancel = () => {
+    setSelectedItems([])
+  }
+
   // Gunakan useEffect untuk menampilkan notifikasi hanya sekali setelah update state
   useEffect(() => {
     if (displayedProductsCount > prevProductsCount) {
@@ -104,14 +113,19 @@ export default function Home() {
         imgUrl={'https://images.unsplash.com/photo-1567361808960-dec9cb578182?q=80&w=2990&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
       />
       <Sticky>
-        <Search onSearch={setSearchQuery} />
-        <SwitchView toggle={toggle} updateToggle={updateToggle} />
-        <Sort onSort={handleSort} activeSort={activeSort} />
-        <div className="-space-x-[4.5px]">
-          <ItemsToShow currentDisplayed={displayedProductsCount} onChange={setDisplayedProductsCount} />
-          {filteredProducts.length > displayedProductsCount && (
-            <Pagination onLoadMore={handleLoadMore} />
-          )}
+        <div className="flex items-center gap-2 w-full">
+          <Search onSearch={setSearchQuery} />
+          <Sort onSort={handleSort} activeSort={activeSort} />
+        </div>
+        <div className="flex items-center gap-2 w-full">
+          <SwitchView toggle={toggle} updateToggle={updateToggle} />
+
+          <div className="-space-x-[4.5px] grow">
+            <ItemsToShow currentDisplayed={displayedProductsCount} onChange={setDisplayedProductsCount} />
+            {filteredProducts.length > displayedProductsCount && (
+              <Pagination onLoadMore={handleLoadMore} />
+            )}
+          </div>
         </div>
       </Sticky>
 
@@ -121,10 +135,18 @@ export default function Home() {
           Tidak ada produk yang ditemukan untuk <span className="font-bold dark:text-sky-300 text-sky-600">{searchQuery}</span>
         </div>
       ) : (
-        <CardProduct toggle={toggle} products={displayedProducts} searchQuery={searchQuery} />
+        <CardProduct toggle={toggle} products={displayedProducts} searchQuery={searchQuery} selectedItems={selectedItems} setSelectedItems={setSelectedItems} />
       )}
       <StackButton >
-        <ProductPDFPreview toggle={toggle} products={displayedProducts} />
+        {selectedItems.length > 0 && (
+          <>
+            <button onClick={handleCancel} data-tip="Batal Pilih" className="tooltip tooltip-right bg-red-500 text-xl hover:scale-95 duration-300 ease-in-out text-white font-bold py-3 px-3 rounded-full shadow-lg flex items-center justify-center">
+              <ImCross />
+            </button>
+            <ProductPDFPreview dataTip={"Cetak Produk Terpilih"} icon={<FaCheck />} className={"!bg-green-500"} toggle={toggle} products={selectedItems} />
+          </>
+        )}
+        <ProductPDFPreview dataTip={"Cetak Semua Produk Di Halaman"} toggle={toggle} products={displayedProducts} />
       </StackButton>
     </>
   );

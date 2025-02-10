@@ -21,14 +21,13 @@ const ProductPDF = ({ products, toggle }) => {
         page: { padding: 20, backgroundColor: "#ffffff", position: "relative" },
         header: {
             flexDirection: "col",
-            justifyContent: "space-between",
             borderBottomWidth: 1,
             borderBottomColor: "#ddd",
             marginBottom: 10
         },
         logo: { width: 50, height: 50, borderRadius: 5, objectFit: "contain" },
         companyName: { fontSize: 14, fontWeight: "bold" },
-        companyInfo: { fontSize: 8, fontWeight: "medium", marginBottom: 5,marginTop: 2   },
+        companyInfo: { fontSize: 8, fontWeight: "medium", marginBottom: 5, marginTop: 2 },
         footer: {
             position: "absolute",
             bottom: 10,
@@ -45,7 +44,8 @@ const ProductPDF = ({ products, toggle }) => {
             display: "flex",
             flexDirection: "row",
             flexWrap: "wrap",
-            justifyContent: "space-between",
+            alignItems: "flex-start",
+            gap: 5
         },
         card: {
             flexBasis: cardWidth,
@@ -58,7 +58,7 @@ const ProductPDF = ({ products, toggle }) => {
             borderRadius: 6,
             objectFit: "cover",
         },
-        title: { fontSize: 8, fontWeight: "bold", marginTop: 4, marginBottom: 4, textAlign: "center" },
+        title: { fontSize: 8, fontWeight: "bold", marginTop: 4, marginBottom: 4, textAlign: "left" },
         price: { fontSize: 6, fontWeight: "medium", color: "#fea800" },
         variant: { fontSize: 6, color: "#444" },
         variantWrapper: {
@@ -100,13 +100,13 @@ const ProductPDF = ({ products, toggle }) => {
                 {/* Grid Produk */}
                 <View style={styles.grid}>
                     {products
-                        .filter((el) => el.variants.length <= 10)
+                        .filter((el) => el.variants?.length <= 10)
                         .map((el, idx) => (
                             <View key={idx} style={styles.card}>
                                 <Image style={styles.image} src={el.thumbnailURL} />
                                 <Text style={styles.title}>{el.productName}</Text>
 
-                                {el.variants.map((variant, vIdx) => (
+                                {el.variants?.map((variant, vIdx) => (
                                     <View key={vIdx} style={styles.variantWrapper}>
                                         <Text style={styles.variant}>{variant.name}</Text>
                                         <Text style={styles.price}>

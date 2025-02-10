@@ -68,7 +68,7 @@ export const Navbar = ({ children }) => {
                             ))}
                         </ul>
                     </div>
-                    <a href="/" className="md:text-xl z-[888] font-medium md:hidden block">Sinar Lotus</a>
+                    <a href="/" className="md:text-xl z-[99] font-medium md:hidden block">Sinar Lotus</a>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <a href="/" className="md:text-xl z-[888] font-medium hover:scale-105 active:scale-75 duration-300">Sinar Lotus</a>

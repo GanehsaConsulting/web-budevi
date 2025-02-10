@@ -5,7 +5,7 @@ import ProductPDF from "./ProductPDF";
 import { MdPictureAsPdf } from "react-icons/md";
 import { LuLoader } from "react-icons/lu";
 
-const ProductPDFPreview = ({ products, toggle }) => {
+const ProductPDFPreview = ({ products, toggle, icon, className, dataTip }) => {
     const [pdfUrl, setPdfUrl] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false); // State untuk loading
@@ -35,19 +35,22 @@ const ProductPDFPreview = ({ products, toggle }) => {
         <>
             {/* Button untuk generate PDF */}
             <button
+            data-tip={dataTip}
                 onClick={generatePreview}
-                className={`${isLoading && "bg-opacity-50 animate-pulse backdrop-blur-md"} bg-secondaryColor text-xl hover:scale-95 duration-300 ease-in-out text-white font-bold py-3 px-3 rounded-full shadow-lg flex items-center justify-center`}
+                className={`${isLoading && "bg-opacity-50 animate-pulse backdrop-blur-md"} ${className} tooltip tooltip-right bg-secondaryColor text-xl hover:scale-95 duration-300 ease-in-out text-white font-bold py-3 px-3 rounded-full shadow-lg flex items-center justify-center`}
             >
                 {isLoading ? (
                     <LuLoader className="animate-spin" />
-                ) : (
+                ) : !icon ? (
                     <MdPictureAsPdf />
+                ) : (
+                    icon
                 )}
-            </button> 
+            </button>
 
             {/* Modal Preview PDF */}
             {showModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-neutral-500 bg-opacity-50 backdrop-blur-xl !z-[9999]">
+                <div className="fixed inset-0 flex items-center justify-center bg-neutral-500/50 backdrop-blur-sm !z-[9999]">
                     <div className="w-[100%] h-full p-5 space-y-2">
                         {/* Preview PDF */}
                         {pdfUrl && (
