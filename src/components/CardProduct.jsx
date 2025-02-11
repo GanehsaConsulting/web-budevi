@@ -15,7 +15,7 @@ export const CardProduct = ({ products, searchQuery, toggle, setSelectedItems, s
     useEffect(() => {
         setSelectedVariants(products.map((el) => el.variants[0] || null));
     }, [products]);
-    
+
     const handleSelectItem = (product, variant) => {
         setSelectedItems((prev) => {
             const exists = prev.some(
@@ -65,9 +65,12 @@ export const CardProduct = ({ products, searchQuery, toggle, setSelectedItems, s
                         const isSelected = selectedItems?.some(item => item.productName === el.productName && item.variant.name === selectedVariant.name);
 
                         return (
-                            <div onClick={() => handleSelectItem(el, selectedVariant)} key={idx} className="space-y-2 cursor-pointer flex flex-col group duration-300 md:hover:scale-95 md:hover:brightness-75">
-                                <div className="relative overflow-hidden">
+                            <div key={idx} className="space-y-2 cursor-pointer flex flex-col group duration-300 md:hover:scale-95 md:hover:brightness-75">
+                                <div
+                                    onClick={() => handleSelectItem(el, selectedVariant)}
+                                    className="relative overflow-hidden">
                                     <Image
+
                                         width={500}
                                         height={500}
                                         src={el.thumbnailURL}

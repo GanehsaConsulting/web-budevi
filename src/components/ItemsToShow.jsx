@@ -32,7 +32,7 @@ export const ItemsToShow = ({ onChange, currentDisplayed, totalItems }) => {
                     className="px-4 py-[10px] w-full truncate flex gap-1 items-center justify-center border-transparent hover:bg-neutral-300 dark:hover:bg-neutral-900 duration-300 rounded-full m-1 bg-mainColorD dark:bg-darkColor text-neutral-800 dark:text-neutral-400 text-sm"
                 >
                     <span className="md:block hidden">
-                        Data Ditampilkan:
+                        Produk Ditampilkan:
                     </span>
                     <span className="text-xs block md:hidden" >
                         Produk:
