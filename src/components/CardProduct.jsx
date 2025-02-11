@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatToRupiah } from "@/helper/formatToRupiah";
 import { IoIosArrowForward } from "react-icons/io";
 import { CopyButton } from "./CopyButton";
@@ -11,6 +11,11 @@ export const CardProduct = ({ products, searchQuery, toggle, setSelectedItems, s
         products.map((el) => el.variants[0] || null)
     );
 
+
+    useEffect(() => {
+        setSelectedVariants(products.map((el) => el.variants[0] || null));
+    }, [products]);
+    
     const handleSelectItem = (product, variant) => {
         setSelectedItems((prev) => {
             const exists = prev.some(
@@ -53,7 +58,7 @@ export const CardProduct = ({ products, searchQuery, toggle, setSelectedItems, s
     return (
         <>
             <section className="md:mx-10 mx-5">
-                <div className={`grid md:grid-cols-4 md:gap-7 grid-cols-2 gap-2 ${toggle === 2 ? "grid-cols-3 md:grid-cols-5" : ""} ${toggle === 3 ? "!grid-cols-1 md:grid-cols-6" : ""}`}>
+                <div className={`grid md:gap-7 gap-2 ${toggle === 1 && "grid-cols-2 md:grid-cols-4 "} ${toggle === 2 && "grid-cols-3 md:grid-cols-5"} ${toggle === 3 && "grid-cols-1 lg:grid-cols-6"}`}>
                     {products.map((el, idx) => {
                         const selectedVariant = selectedVariants[idx] || { name: "", price: 0 }; // Mencegah undefined error
                         const formattedProductName = el.variants.length === 1 ? getUniqueVariantName(el.productName, selectedVariant?.name) : el.productName;

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 
-export const ItemsToShow = ({ onChange, currentDisplayed }) => {
+export const ItemsToShow = ({ onChange, currentDisplayed, totalItems }) => {
     const data = [8, 16, 20, 40, 60, 80, 100, 150, 200, 300];
     const [selectedItem, setSelectedItem] = useState(data[0]); // Default nilai pertama
 
@@ -29,15 +29,14 @@ export const ItemsToShow = ({ onChange, currentDisplayed }) => {
                 <div
                     tabIndex={1}
                     role="button"
-                    className="px-4 py-2 w-full min-w-full grow flex gap-1 items-center justify-center border-transparent hover:bg-neutral-300 dark:hover:bg-neutral-900 duration-300 rounded-l-full m-1 bg-mainColorD dark:bg-darkColor text-neutral-800 dark:text-neutral-400 text-sm"
+                    className="px-4 py-[10px] w-full truncate flex gap-1 items-center justify-center border-transparent hover:bg-neutral-300 dark:hover:bg-neutral-900 duration-300 rounded-full m-1 bg-mainColorD dark:bg-darkColor text-neutral-800 dark:text-neutral-400 text-sm"
                 >
-
                     <span className="md:block hidden">
                         Data Ditampilkan:
                     </span>
                     <span className="text-xs block md:hidden" >
-                    Produk:
-                </span>
+                        Produk:
+                    </span>
                     <span className="font-bold dark:text-white text-black">
                         {selectedItem === currentDisplayed ? selectedItem : currentDisplayed}
                     </span>
@@ -55,6 +54,14 @@ export const ItemsToShow = ({ onChange, currentDisplayed }) => {
                             </button>
                         </li>
                     ))}
+                        <li>
+                            <button
+                                onClick={() => handleSelect(totalItems)}
+                                className="grow !text-center font-bold bg-green-500 text-white"
+                            >
+                                Tampilkan Semua ({totalItems})
+                            </button>
+                        </li>
                 </ul>
             </div>
         </>

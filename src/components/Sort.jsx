@@ -27,7 +27,7 @@ export const Sort = ({ onSort, activeSort }) => {
     return (
         <>
             <div className="dropdown dropdown-bottom dropdown-end">
-                <div tabIndex={0} role="button" className="md:h-[40px] h-[32px] w-full px-2 md:w-[100px] flex gap-1 items-center justify-center border-transparent hover:bg-neutral-300 dark:hover:bg-neutral-900 duration-300 rounded-full m-1 bg-mainColorD dark:bg-darkColor text-neutral-800 dark:text-neutral-400 text-sm">
+                <div tabIndex={0} role="button" className="h-[40px] w-full px-2 md:w-[100px] flex gap-1 items-center justify-center border-transparent hover:bg-neutral-300 dark:hover:bg-neutral-900 duration-300 rounded-full m-1 bg-mainColorD dark:bg-darkColor text-neutral-800 dark:text-neutral-400 text-sm">
                     <HiAdjustmentsHorizontal />
                     Urutkan
                 </div>

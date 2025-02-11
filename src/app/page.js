@@ -17,14 +17,17 @@ import "toastify-js/src/toastify.css";
 import { StackButton } from "@/components/StackButton";
 import { FaCheck } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
+import { PaginationNumber } from "@/components/PaginationNumber";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSort, setActiveSort] = useState("az");
-  const [displayedProductsCount, setDisplayedProductsCount] = useState(16);
-  const [prevProductsCount, setPrevProductsCount] = useState(16);  // Inisialisasi jumlah produk yang ditampilkan
+  // const [displayedProductsCount, setDisplayedProductsCount] = useState(16);
+  // const [prevProductsCount, setPrevProductsCount] = useState(16);  // Inisialisasi jumlah produk yang ditampilkan
   const [toggle, setToggle] = useState(1);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [itemsPerPage, setItemsPerPage] = useState(16);
+  const [currentPage, setCurrentPage] = useState(1);
 
 
   // Fungsi untuk update toggle
@@ -73,12 +76,15 @@ export default function Home() {
     );
   });
 
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const displayedProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
   // Mengambil produk yang ditampilkan berdasarkan jumlah
-  const displayedProducts = filteredProducts.slice(0, displayedProductsCount);
+  // const displayedProducts = filteredProducts.slice(0, displayedProductsCount);
 
   // Fungsi untuk menangani load more
   const handleLoadMore = () => {
-    setDisplayedProductsCount(prev => prev + 8);
+    setItemsPerPage(prev => prev + 8);
   };
 
   // Fungsi untuk mengosongkan batch select untuk cetak PDF
@@ -88,21 +94,21 @@ export default function Home() {
 
   // Gunakan useEffect untuk menampilkan notifikasi hanya sekali setelah update state
   useEffect(() => {
-    if (displayedProductsCount > prevProductsCount) {
-      const newProductsCount = displayedProductsCount - prevProductsCount;
+    if (setItemsPerPage > itemsPerPage) {
+      const newProductsCount = setItemsPerPage - itemsPerPage;
 
       Toastify({
-        text: `+${newProductsCount} produk ditambahkan! Total: ${displayedProductsCount} produk`,
+        text: `+${newProductsCount} produk ditambahkan! Total: ${itemsPerPage} produk`,
         duration: 3000,
         gravity: "top",
         position: "right",
         backgroundColor: "#fea800",
-        stopOnFocus: true,
+        stopOnFocus: false,
       }).showToast();
 
-      setPrevProductsCount(displayedProductsCount); // Update jumlah sebelumnya
+      setItemsPerPage(itemsPerPage); // Update jumlah sebelumnya
     }
-  }, [displayedProductsCount, prevProductsCount]);
+  }, [itemsPerPage, setItemsPerPage]);
 
 
   return (
@@ -113,19 +119,16 @@ export default function Home() {
         imgUrl={'https://images.unsplash.com/photo-1567361808960-dec9cb578182?q=80&w=2990&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
       />
       <Sticky>
-        <div className="flex items-center gap-2 w-full">
+        <div className="flex items-center gap-1 md:gap-2 w-full">
           <Search onSearch={setSearchQuery} />
           <Sort onSort={handleSort} activeSort={activeSort} />
         </div>
-        <div className="flex items-center gap-2 w-full">
+        <div className="flex items-center gap-1 md:gap-2">
           <SwitchView toggle={toggle} updateToggle={updateToggle} />
-
-          <div className="-space-x-[4.5px] grow">
-            <ItemsToShow currentDisplayed={displayedProductsCount} onChange={setDisplayedProductsCount} />
-            {filteredProducts.length > displayedProductsCount && (
-              <Pagination onLoadMore={handleLoadMore} />
-            )}
-          </div>
+          <ItemsToShow currentDisplayed={itemsPerPage} onChange={setItemsPerPage} totalItems={filteredProducts.length} />
+          {filteredProducts.length > itemsPerPage && (
+            <Pagination onLoadMore={handleLoadMore} />
+          )}
         </div>
       </Sticky>
 
@@ -136,6 +139,9 @@ export default function Home() {
         </div>
       ) : (
         <CardProduct toggle={toggle} products={displayedProducts} searchQuery={searchQuery} selectedItems={selectedItems} setSelectedItems={setSelectedItems} />
+      )}
+      {filteredProducts.length > itemsPerPage && (
+        <PaginationNumber currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
       )}
       <StackButton >
         {selectedItems.length > 0 && (
