@@ -77,20 +77,22 @@ export const CardProduct = ({ products, searchQuery, toggle, setSelectedItems, s
                                     <Image
                                         width={500}
                                         height={500}
-                                        src={el.thumbnailURL}
-                                        className={`${isSelected && "rounded-t-2xl rounded-b-none"} rounded-xl md:rounded-2xl w-full h-auto object-cover bg-secondaryColorD contrast-75 dark:invert`}
+                                        src={el.thumbnailURL || "https://res.cloudinary.com/dbez0ceip/image/upload/v1747294371/imgProdukLotus_11zon_ezptvu.webp"}
+                                        className={`${isSelected && "rounded-t-2xl rounded-b-none"} rounded-xl md:rounded-2xl w-full h-auto object-cover bg-secondaryColorD border`}
                                         alt={formattedProductName}
                                     />
                                     <div className="absolute right-1 bottom-1 group">
                                         <CopyButton product={el} variant={selectedVariant} />
                                     </div>
-                                    {isSelected && <div className="bg-black/30 backdrop-blur rounded-t-2xl absolute inset-0 w-full h-full flex items-center justify-center">
-                                        <FaCheck className="text-white/50 text-5xl" />
+                                    {isSelected && <div className="bg-black/15 rounded-2xl absolute inset-0 w-full h-full flex items-center justify-center">
+                                        <FaCheck className="text-secondaryColor/90 drop-shadow-md text-5xl" />
                                     </div>}
                                 </div>
                                 <div className={`${isSelected && "p-3 md:p-5 bg-neutral-200/90 dark:bg-darkColor/70 rounded-b-xl md:rounded-b-2xl grow !-mt-5 pt-7 md:pt-9"} ${toggle === 3 && "!text-sm"} space-y-1 duration-200 ease-in-out overflow-hidden`}>
                                     <p className="text-[10px] uppercase tracking-wide font-semibold opacity-50"
-                                        dangerouslySetInnerHTML={{ __html: highlightText(el.category) }}></p>
+                                    >
+                                        Product ID:     {el.idByVariants}
+                                    </p>
                                     <div className={`${toggle === 3 && "!text-sm"} text-sm md:text-lg`}>
                                         <h1 className="font-medium"
                                             dangerouslySetInnerHTML={{ __html: highlightText(formattedProductName) }}></h1>

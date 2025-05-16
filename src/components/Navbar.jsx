@@ -7,6 +7,7 @@ import { RiCustomerServiceFill } from "react-icons/ri";
 import { LuMenu } from "react-icons/lu";
 import BurgerButton from "./BurgerButton";
 import ThemeSwitch from "./ThemeSwitch";
+import Link from "next/link";
 
 export const Navbar = ({ children }) => {
     const [visible, setVisible] = useState(true);
@@ -45,13 +46,19 @@ export const Navbar = ({ children }) => {
 
     return (
         <>
-            <div className={`z-[999] navbar2 h-[40px] md:h-[50px] duration-300 ease-in-out
-                      
-                            `}>
+            <div className={`z-[999] navbar2 h-[40px] md:h-[50px] duration-300 ease-in-out`}>
                 <div className={`navbar-start md:ml-[30px] ml-[10px]`}>
-                    <div className="dropdown md:block hidden">
+
+                    <a href="/" className="md:text-xl z-[99] font-medium">Sinar Lotus</a>
+                </div>
+                <div className="navbar-center hidden">
+                    <a href="/" className="md:text-xl z-[888] font-medium hover:scale-105 active:scale-75 duration-300">Sinar Lotus</a>
+                </div>
+                <div className="navbar-end md:mr-[30px] mr-[10px] space-x-4 md:space-x-5">
+                    <ThemeSwitch />
+                    <div className="dropdown dropdown-left">
                         <div tabIndex={0} role="button" className="active:scale-90 duration-300">
-                            <LuMenu />
+                            <BurgerButton isExpanded={isExpanded} />
                         </div>
                         <ul
                             tabIndex={0}
@@ -66,32 +73,14 @@ export const Navbar = ({ children }) => {
                             ))}
                         </ul>
                     </div>
-                    <a href="/" className="md:text-xl z-[99] font-medium md:hidden block">Sinar Lotus</a>
-                </div>
-                <div className="navbar-center hidden lg:flex">
-                    <a href="/" className="md:text-xl z-[888] font-medium hover:scale-105 active:scale-75 duration-300">Sinar Lotus</a>
-                </div>
-                <div className="navbar-end md:mr-[30px] mr-[10px] space-x-4 md:space-x-3">
-                    <ThemeSwitch />
-                    <a
+                    <Link
                         href="/contact"
                         className="active:scale-95 md:pr-3 md:pl-2 md:py-[2px] flex items-center gap-1 md:text-neutral-800 md:dark:text-neutral-800 md:bg-neutral-300 font-semibold md:text-sm rounded-full text-neutral-500 dark:text-neutral-300"
                     >
-                        <RiCustomerServiceFill className="" />
                         <span className="md:block hidden">
                             Kontak
                         </span>
-                    </a>
-                    <div className="block md:hidden">
-                        <MegaMenuNavbar
-                            arrowVisibility={'hidden'}
-                            isExpanded={isExpanded}
-                            setIsExpanded={setIsExpanded}
-                            burger={<BurgerButton isExpanded={isExpanded} />}
-                            children={<MobileDrawer isExpanded={isExpanded} />}
-                        />
-                    </div>
-
+                    </Link>
                 </div>
             </div>
         </>

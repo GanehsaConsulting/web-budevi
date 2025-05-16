@@ -93,6 +93,7 @@ function formatGoogleSheetData(rawData) {
             price,
             varImg,
             partOf,
+            idByVariants,
         } = rowData;
 
         const cleanPrice = parseInt(String(price).replace(/[^0-9]/g, "")) || 0;
@@ -103,6 +104,7 @@ function formatGoogleSheetData(rawData) {
             price: cleanPrice,
             varImg,
             thumbnailURL,
+            idByVariants,
         };
 
         if (!partOf) {
@@ -111,6 +113,7 @@ function formatGoogleSheetData(rawData) {
                 productName,
                 category,
                 thumbnailURL,
+                idByVariants,
                 variants: [],
             };
 

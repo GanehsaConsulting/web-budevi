@@ -72,6 +72,10 @@ const handleSearch = (query) => {
   setSearchQuery(query);    // Trigger fetch
 };
 
+console.log('=============di page======================');
+console.log(sortedProducts);
+console.log('====================================');
+
   return (
     <>
       <Banner
