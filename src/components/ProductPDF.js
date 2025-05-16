@@ -15,11 +15,18 @@ const getCardWidth = (toggle) => {
 };
 
 const fixImageUrl = (url) => {
-    if (!url) return "";
+    if (!url || typeof url !== "string") {
+        return "https://via.placeholder.com/150"; // Atau gambar default
+    }
     return url.replace(/\.webp$/, ".jpg");
 };
 
+
+
 const ProductPDF = ({ products, toggle }) => {
+    console.log('=======products pdf=============================');
+    console.log(products);
+    console.log('===================================='); 
     const cardWidth = getCardWidth(toggle);
 
     const styles = StyleSheet.create({

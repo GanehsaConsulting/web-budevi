@@ -66,15 +66,11 @@ export default function Home() {
     setSelectedItems([]);
   };
 
-// Ganti handler pencarian agar reset page saat search dijalankan
-const handleSearch = (query) => {
-  setCurrentPage(1);        // Reset ke halaman pertama
-  setSearchQuery(query);    // Trigger fetch
-};
-
-console.log('=============di page======================');
-console.log(sortedProducts);
-console.log('====================================');
+  // Ganti handler pencarian agar reset page saat search dijalankan
+  const handleSearch = (query) => {
+    setCurrentPage(1);        // Reset ke halaman pertama
+    setSearchQuery(query);    // Trigger fetch
+  };
 
   return (
     <>
@@ -96,7 +92,7 @@ console.log('====================================');
 
       {loading ? (
         <div className="md:mx-10 mx-5 md:pb-[35px] pb-[10px]">
-          <SkeletonCards/>
+          <SkeletonCards />
         </div>
       ) : error ? (
         <div>Error: {error}</div>
@@ -105,44 +101,47 @@ console.log('====================================');
           Tidak ada produk yang ditemukan untuk <span className="font-bold dark:text-sky-300 text-sky-600">{searchQuery}</span>
         </div>
       ) : (
-        <CardProduct
-          toggle={toggle}
-          products={sortedProducts}
-          searchQuery={searchQuery}
-          selectedItems={selectedItems}
-          setSelectedItems={setSelectedItems}
-        />
+        <>
+          <CardProduct
+            toggle={toggle}
+            products={sortedProducts}
+            searchQuery={searchQuery}
+            selectedItems={selectedItems}
+            setSelectedItems={setSelectedItems}
+          />
+          <StackButton>
+            {selectedItems.length > 0 && !loading && (
+              <>
+                <button
+                  onClick={handleCancel}
+                  data-tip="Batal Pilih"
+                  className="tooltip tooltip-right bg-red-500 text-xl hover:scale-95 duration-300 ease-in-out text-white font-bold py-3 px-3 rounded-full shadow-lg flex items-center justify-center"
+                >
+                  <ImCross />
+                </button>
+                <ProductPDFPreview
+                  dataTip={"Cetak Produk Terpilih"}
+                  icon={<FaCheck />}
+                  className={"!bg-green-500"}
+                  toggle={toggle}
+                  products={selectedItems}
+                />
+              </>
+            )}
+            <ProductPDFPreview
+              dataTip={"Cetak Semua Produk Di Halaman"}
+              toggle={toggle}
+              products={sortedProducts}
+            />
+          </StackButton>
+        </>
       )}
 
       {totalPages > 1 && (
         <PaginationNumber currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
       )}
 
-      <StackButton>
-        {selectedItems.length > 0 && (
-          <>
-            <button
-              onClick={handleCancel}
-              data-tip="Batal Pilih"
-              className="tooltip tooltip-right bg-red-500 text-xl hover:scale-95 duration-300 ease-in-out text-white font-bold py-3 px-3 rounded-full shadow-lg flex items-center justify-center"
-            >
-              <ImCross />
-            </button>
-            <ProductPDFPreview
-              dataTip={"Cetak Produk Terpilih"}
-              icon={<FaCheck />}
-              className={"!bg-green-500"}
-              toggle={toggle}
-              products={selectedItems}
-            />
-          </>
-        )}
-        <ProductPDFPreview
-          dataTip={"Cetak Semua Produk Di Halaman"}
-          toggle={toggle}
-          products={sortedProducts}
-        />
-      </StackButton>
+
     </>
   );
 }

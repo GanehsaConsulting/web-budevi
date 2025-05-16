@@ -77,7 +77,7 @@ export const CardProduct = ({ products, searchQuery, toggle, setSelectedItems, s
                                     <Image
                                         width={500}
                                         height={500}
-                                        src={el.thumbnailURL || "https://res.cloudinary.com/dbez0ceip/image/upload/v1747294371/imgProdukLotus_11zon_ezptvu.webp"}
+                                        src={el.thumbnailURL}
                                         className={`${isSelected && "rounded-t-2xl rounded-b-none"} rounded-xl md:rounded-2xl w-full h-auto object-cover bg-secondaryColorD border`}
                                         alt={formattedProductName}
                                     />

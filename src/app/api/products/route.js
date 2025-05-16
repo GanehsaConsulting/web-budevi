@@ -69,6 +69,9 @@ export async function GET(request) {
     }
 }
 
+const DEFAULT_THUMBNAIL_URL =
+    "https://res.cloudinary.com/dbez0ceip/image/upload/v1747294371/imgProdukLotus_11zon_ezptvu.webp";
+
 function formatGoogleSheetData(rawData) {
     if (!Array.isArray(rawData) || rawData.length < 2) return [];
 
@@ -77,6 +80,9 @@ function formatGoogleSheetData(rawData) {
 
     const productsMap = {};
     const variantsToAssign = [];
+
+    const DEFAULT_THUMBNAIL_URL =
+        "https://res.cloudinary.com/dbez0ceip/image/upload/v1747294371/imgProdukLotus_11zon_ezptvu.webp";
 
     for (const row of rows) {
         const rowData = Object.fromEntries(
@@ -98,12 +104,15 @@ function formatGoogleSheetData(rawData) {
 
         const cleanPrice = parseInt(String(price).replace(/[^0-9]/g, "")) || 0;
 
+        const fixedThumbnailURL = thumbnailURL || DEFAULT_THUMBNAIL_URL;
+        const fixedVarImg = varImg || DEFAULT_THUMBNAIL_URL;
+
         const variantData = {
             name: variantName,
             unit,
             price: cleanPrice,
-            varImg,
-            thumbnailURL,
+            varImg: fixedVarImg,
+            thumbnailURL: fixedThumbnailURL,
             idByVariants,
         };
 
@@ -112,7 +121,7 @@ function formatGoogleSheetData(rawData) {
                 id,
                 productName,
                 category,
-                thumbnailURL,
+                thumbnailURL: fixedThumbnailURL,
                 idByVariants,
                 variants: [],
             };
@@ -133,3 +142,4 @@ function formatGoogleSheetData(rawData) {
 
     return Object.values(productsMap);
 }
+

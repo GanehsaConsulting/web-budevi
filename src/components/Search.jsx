@@ -16,7 +16,6 @@ export const Search = ({ onSearch }) => {
 
   const handleResetSearch = () => {
     setInputValue("");
-    onSearch(""); // Kosongkan hasil pencarian
   };
 
   return (
