@@ -7,7 +7,7 @@ export const Banner = ({ imgUrl, head, desc }) => {
 
     return (
         <>
-            <section className="md:mx-10 mx-5 md:pt-[53px] pt-[43px] md:pb-[35px] pb-[10px]">
+            <section className="md:mx-10 mx-5 md:pb-[35px] pb-[10px]">
                 <div className="relative group">
                     <Image
                         width={1000}

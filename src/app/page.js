@@ -1,158 +1,143 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState, useMemo } from "react";
 import { Banner } from "@/components/Banner";
 import { CardProduct } from "@/components/CardProduct";
-import { products } from "../../public/DB";
 import { Search } from "@/components/Search";
 import { Sort } from "@/components/Sort";
-import { Pagination } from "@/components/Pagination";
+import { PaginationNumber } from "@/components/PaginationNumber";
 import { SwitchView } from "@/components/SwitchView";
 import { Sticky } from "@/components/Sticky";
-import { PiFlowerLotusLight } from "react-icons/pi";
-import { brandIdentity } from "../../public/System";
-import ProductPDFPreview from "@/components/ProductPDFPreview";
 import { ItemsToShow } from "@/components/ItemsToShow";
-import Toastify from "toastify-js";
-import "toastify-js/src/toastify.css";
 import { StackButton } from "@/components/StackButton";
+import { PiFlowerLotusLight } from "react-icons/pi";
 import { FaCheck } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
-import { PaginationNumber } from "@/components/PaginationNumber";
+import { brandIdentity } from "../../public/System";
+import { SkeletonCards } from "@/components/SkeletonCard";
+import ProductPDFPreview from "@/components/ProductPDFPreview";
+import usePaginatedProducts from "@/hooks/usePaginatedProducts";
+import "toastify-js/src/toastify.css";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSort, setActiveSort] = useState("az");
-  // const [displayedProductsCount, setDisplayedProductsCount] = useState(16);
-  // const [prevProductsCount, setPrevProductsCount] = useState(16);  // Inisialisasi jumlah produk yang ditampilkan
   const [toggle, setToggle] = useState(1);
   const [selectedItems, setSelectedItems] = useState([]);
-  const [itemsPerPage, setItemsPerPage] = useState(16);
+
+  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
 
+  // Panggil data API dengan params page, limit, dan search
+  const { data, total, loading, error } = usePaginatedProducts(currentPage, itemsPerPage, searchQuery);
 
-  // Fungsi untuk update toggle
-  function updateToggle(id) {
-    setToggle(id);
-  }
-
-  // Fungsi untuk menangani perubahan urutan
-  const handleSort = (command) => {
-    setActiveSort(command);
-    switch (command) {
+  // data sudah terformat (produk + varian), tinggal sort frontend saja
+  // Buat copy supaya sort ga mutate original data
+  const sortedProducts = useMemo(() => {
+    if (!data) return [];
+    const arr = [...data];
+    switch (activeSort) {
       case "az":
-        products.sort((a, b) => a.productName.localeCompare(b.productName));
+        arr.sort((a, b) => a.productName.localeCompare(b.productName));
         break;
       case "za":
-        products.sort((a, b) => b.productName.localeCompare(a.productName));
+        arr.sort((a, b) => b.productName.localeCompare(a.productName));
         break;
       case "cheapest":
-        products.sort((a, b) => {
-          const priceA = a.variants[0].price;
-          const priceB = b.variants[0].price;
-          return priceA - priceB;
-        });
+        arr.sort((a, b) => (a.variants[0]?.price || 0) - (b.variants[0]?.price || 0));
         break;
       case "expensive":
-        products.sort((a, b) => {
-          const priceA = a.variants[0].price;
-          const priceB = b.variants[0].price;
-          return priceB - priceA;
-        });
+        arr.sort((a, b) => (b.variants[0]?.price || 0) - (a.variants[0]?.price || 0));
         break;
-      case 0:
       default:
         break;
     }
+    return arr;
+  }, [data, activeSort]);
+
+  const totalPages = Math.ceil(total / itemsPerPage);
+
+  // Handler sorting
+  const handleSort = (command) => {
+    setActiveSort(command);
   };
 
-  // Filter produk berdasarkan pencarian
-  const filteredProducts = products.filter((product) => {
-    const query = searchQuery.toLowerCase();
-
-    return (
-      product.productName.toLowerCase().includes(query) ||
-      product.category.toLowerCase().includes(query) ||
-      product.variants.some(variant => variant.name.toLowerCase().includes(query))
-    );
-  });
-
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-  const displayedProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-
-  // Mengambil produk yang ditampilkan berdasarkan jumlah
-  // const displayedProducts = filteredProducts.slice(0, displayedProductsCount);
-
-  // Fungsi untuk menangani load more
-  const handleLoadMore = () => {
-    setItemsPerPage(prev => prev + 8);
-  };
-
-  // Fungsi untuk mengosongkan batch select untuk cetak PDF
   const handleCancel = () => {
-    setSelectedItems([])
-  }
+    setSelectedItems([]);
+  };
 
-  // Gunakan useEffect untuk menampilkan notifikasi hanya sekali setelah update state
-  useEffect(() => {
-    if (setItemsPerPage > itemsPerPage) {
-      const newProductsCount = setItemsPerPage - itemsPerPage;
-
-      Toastify({
-        text: `+${newProductsCount} produk ditambahkan! Total: ${itemsPerPage} produk`,
-        duration: 3000,
-        gravity: "top",
-        position: "right",
-        backgroundColor: "#fea800",
-        stopOnFocus: false,
-      }).showToast();
-
-      setItemsPerPage(itemsPerPage); // Update jumlah sebelumnya
-    }
-  }, [itemsPerPage, setItemsPerPage]);
-
+// Ganti handler pencarian agar reset page saat search dijalankan
+const handleSearch = (query) => {
+  setCurrentPage(1);        // Reset ke halaman pertama
+  setSearchQuery(query);    // Trigger fetch
+};
 
   return (
     <>
       <Banner
-        head={<>Sinar Lotus<PiFlowerLotusLight /></>}
+        head={<>Sinar Lotus <PiFlowerLotusLight /></>}
         desc={brandIdentity.banner.taglineShort}
-        imgUrl={'https://images.unsplash.com/photo-1567361808960-dec9cb578182?q=80&w=2990&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
+        imgUrl={"https://images.unsplash.com/photo-1567361808960-dec9cb578182?q=80&w=2990&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
       />
       <Sticky>
         <div className="flex items-center gap-1 md:gap-2 w-full">
-          <Search onSearch={setSearchQuery} />
+          <Search onSearch={handleSearch} />
           <Sort onSort={handleSort} activeSort={activeSort} />
         </div>
         <div className="flex items-center gap-1 md:gap-2">
-          <SwitchView toggle={toggle} updateToggle={updateToggle} />
-          <ItemsToShow currentDisplayed={itemsPerPage} onChange={setItemsPerPage} totalItems={filteredProducts.length} />
-          {filteredProducts.length > itemsPerPage && (
-            <Pagination onLoadMore={handleLoadMore} />
-          )}
+          <SwitchView toggle={toggle} updateToggle={setToggle} />
+          <ItemsToShow currentDisplayed={itemsPerPage} onChange={setItemsPerPage} totalItems={total} />
         </div>
       </Sticky>
 
-      {/* Kondisi ketika tidak ada produk yang ditemukan */}
-      {filteredProducts.length === 0 ? (
+      {loading ? (
+        <div className="md:mx-10 mx-5 md:pb-[35px] pb-[10px]">
+          <SkeletonCards/>
+        </div>
+      ) : error ? (
+        <div>Error: {error}</div>
+      ) : sortedProducts.length === 0 ? (
         <div className="text-center py-10 text-lg font-semibold">
           Tidak ada produk yang ditemukan untuk <span className="font-bold dark:text-sky-300 text-sky-600">{searchQuery}</span>
         </div>
       ) : (
-        <CardProduct toggle={toggle} products={displayedProducts} searchQuery={searchQuery} selectedItems={selectedItems} setSelectedItems={setSelectedItems} />
+        <CardProduct
+          toggle={toggle}
+          products={sortedProducts}
+          searchQuery={searchQuery}
+          selectedItems={selectedItems}
+          setSelectedItems={setSelectedItems}
+        />
       )}
-      {filteredProducts.length > itemsPerPage && (
+
+      {totalPages > 1 && (
         <PaginationNumber currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
       )}
-      <StackButton >
+
+      <StackButton>
         {selectedItems.length > 0 && (
           <>
-            <button onClick={handleCancel} data-tip="Batal Pilih" className="tooltip tooltip-right bg-red-500 text-xl hover:scale-95 duration-300 ease-in-out text-white font-bold py-3 px-3 rounded-full shadow-lg flex items-center justify-center">
+            <button
+              onClick={handleCancel}
+              data-tip="Batal Pilih"
+              className="tooltip tooltip-right bg-red-500 text-xl hover:scale-95 duration-300 ease-in-out text-white font-bold py-3 px-3 rounded-full shadow-lg flex items-center justify-center"
+            >
               <ImCross />
             </button>
-            <ProductPDFPreview dataTip={"Cetak Produk Terpilih"} icon={<FaCheck />} className={"!bg-green-500"} toggle={toggle} products={selectedItems} />
+            <ProductPDFPreview
+              dataTip={"Cetak Produk Terpilih"}
+              icon={<FaCheck />}
+              className={"!bg-green-500"}
+              toggle={toggle}
+              products={selectedItems}
+            />
           </>
         )}
-        <ProductPDFPreview dataTip={"Cetak Semua Produk Di Halaman"} toggle={toggle} products={displayedProducts} />
+        <ProductPDFPreview
+          dataTip={"Cetak Semua Produk Di Halaman"}
+          toggle={toggle}
+          products={sortedProducts}
+        />
       </StackButton>
     </>
   );

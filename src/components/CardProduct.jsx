@@ -7,6 +7,7 @@ import { CopyButton } from "./CopyButton";
 import { FaCheck } from "react-icons/fa";
 
 export const CardProduct = ({ products, searchQuery, toggle, setSelectedItems, selectedItems }) => {
+
     const [selectedVariants, setSelectedVariants] = useState(
         products.map((el) => el.variants[0] || null)
     );
@@ -19,18 +20,19 @@ export const CardProduct = ({ products, searchQuery, toggle, setSelectedItems, s
     const handleSelectItem = (product, variant) => {
         setSelectedItems((prev) => {
             const exists = prev.some(
-                (item) => item.productName === product.productName && item.variant.name === variant.name
+                (item) => item.id === product.id && item.variant.name === variant.name
             );
 
             if (exists) {
                 return prev.filter(
-                    (item) => !(item.productName === product.productName && item.variant.name === variant.name)
+                    (item) => !(item.id === product.id && item.variant.name === variant.name)
                 );
             } else {
                 return [...prev, { ...product, variant }];
             }
         });
     };
+
 
 
     const handleVariantChange = (productIdx, variantIdx) => {
@@ -62,19 +64,21 @@ export const CardProduct = ({ products, searchQuery, toggle, setSelectedItems, s
                     {products.map((el, idx) => {
                         const selectedVariant = selectedVariants[idx] || { name: "", price: 0 }; // Mencegah undefined error
                         const formattedProductName = el.variants.length === 1 ? getUniqueVariantName(el.productName, selectedVariant?.name) : el.productName;
-                        const isSelected = selectedItems?.some(item => item.productName === el.productName && item.variant.name === selectedVariant.name);
+                        const isSelected = selectedItems?.some(
+                            (item) => item.id === el.id && item.variant.name === selectedVariant.name
+                        );
+
 
                         return (
-                            <div key={idx} className="space-y-2 cursor-pointer flex flex-col group duration-300 md:hover:scale-95 md:hover:brightness-75">
+                            <div key={idx} className="space-y-2 cursor-pointer flex flex-col group duration-300 md:hover:scale-[.99] md:hover:brightness-95">
                                 <div
                                     onClick={() => handleSelectItem(el, selectedVariant)}
                                     className="relative overflow-hidden">
                                     <Image
-
                                         width={500}
                                         height={500}
                                         src={el.thumbnailURL}
-                                        className={`${isSelected && "rounded-t-2xl rounded-b-none"} rounded-xl md:rounded-2xl w-full h-auto object-cover bg-secondaryColorD`}
+                                        className={`${isSelected && "rounded-t-2xl rounded-b-none"} rounded-xl md:rounded-2xl w-full h-auto object-cover bg-secondaryColorD contrast-75 dark:invert`}
                                         alt={formattedProductName}
                                     />
                                     <div className="absolute right-1 bottom-1 group">
@@ -104,9 +108,9 @@ export const CardProduct = ({ products, searchQuery, toggle, setSelectedItems, s
                                     </div>
 
                                     {el.variants.length > 1 && (
-                                        <div>
+                                        <div className="">
                                             <select
-                                                className="select select-sm w-full border rounded-md bg-mainColorD dark:bg-darkColor"
+                                                className="select focus:!outline-none select-sm w-full border rounded-md bg-mainColorD dark:bg-darkColor"
                                                 onChange={(e) => handleVariantChange(idx, e.target.value)}
                                                 value={el.variants.indexOf(selectedVariant)}
                                             >

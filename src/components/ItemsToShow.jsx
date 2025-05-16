@@ -4,7 +4,7 @@ import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 
 export const ItemsToShow = ({ onChange, currentDisplayed, totalItems }) => {
-    const data = [8, 16, 20, 40, 60, 80, 100, 150, 200, 300];
+    const data = [20, 40, 60, 80, 100];
     const [selectedItem, setSelectedItem] = useState(data[0]); // Default nilai pertama
 
     const handleSelect = (item) => {
@@ -45,23 +45,25 @@ export const ItemsToShow = ({ onChange, currentDisplayed, totalItems }) => {
                 {/* List Item dalam Dropdown */}
                 <ul tabIndex={1} className="dropdown-content menu bg-bgLight dark:bg-darkColor rounded-box z-[1] w-fit flex flex-col justify-center items-center p-2 shadow">
                     {data.map((item, idx) => (
-                        <li key={idx}>
+                        <li key={idx} className="flex w-full">
                             <button
                                 onClick={() => handleSelect(item)}
-                                className={`grow !text-center ${selectedItem === item ? "font-bold bg-secondaryColor" : ""}`}
+                                className={`flex items-center justify-center ${currentDisplayed === item ? "font-bold bg-secondaryColor" : ""}`}
                             >
                                 {item}
                             </button>
                         </li>
                     ))}
-                        <li>
-                            <button
-                                onClick={() => handleSelect(totalItems)}
-                                className="grow !text-center font-bold bg-green-500 text-white"
-                            >
-                                Tampilkan Semua ({totalItems})
-                            </button>
-                        </li>
+                    <li>
+                        <div
+                            // onClick={() => handleSelect(totalItems)}
+                            className="btn !btn-ghost btn-xs btn-disabled"
+                        >
+                            <div className="opacity-50 text-xs">
+                                Total Produk ({totalItems})
+                            </div>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </>

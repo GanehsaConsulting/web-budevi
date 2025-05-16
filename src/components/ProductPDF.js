@@ -14,6 +14,11 @@ const getCardWidth = (toggle) => {
     }
 };
 
+const fixImageUrl = (url) => {
+    if (!url) return "";
+    return url.replace(/\.webp$/, ".jpg");
+};
+
 const ProductPDF = ({ products, toggle }) => {
     const cardWidth = getCardWidth(toggle);
 
@@ -28,6 +33,7 @@ const ProductPDF = ({ products, toggle }) => {
         logo: { width: 50, height: 50, borderRadius: 5, objectFit: "contain" },
         companyName: { fontSize: 14, fontWeight: "bold" },
         companyInfo: { fontSize: 8, fontWeight: "medium", marginBottom: 5, marginTop: 2 },
+        dateInfo: { fontSize: 6, textAlign: "right", marginBottom: 5 },
         footer: {
             position: "absolute",
             bottom: 10,
@@ -54,7 +60,7 @@ const ProductPDF = ({ products, toggle }) => {
         },
         image: {
             width: "100%",
-            aspectRatio: 1, // Menjaga gambar tetap square
+            aspectRatio: 1,
             borderRadius: 6,
             objectFit: "cover",
         },
@@ -76,25 +82,23 @@ const ProductPDF = ({ products, toggle }) => {
             marginBottom: 8,
         },
         largeImage: {
-            width: "40%", // Menyesuaikan ukuran agar tidak memenuhi halaman
-            aspectRatio: 1, // Tetap square
+            width: "40%",
+            aspectRatio: 1,
             borderRadius: 6,
             objectFit: "cover",
         },
     });
+
+    const currentDate = new Date().toLocaleDateString("id-ID");
 
     return (
         <Document>
             <Page size="A4" style={styles.page}>
                 {/* Header */}
                 <View style={styles.header}>
-                    {/* <Image style={styles.logo} src="https://via.placeholder.com/100x100?text=LOGO" /> */}
-                    <Text style={styles.companyName}>
-                        Sinar Lotus
-                    </Text>
-                    <Text style={styles.companyInfo}>
-                        Product Showcase
-                    </Text>
+                    <Text style={styles.companyName}>Sinar Lotus</Text>
+                    <Text style={styles.companyInfo}>Product Showcase</Text>
+                    <Text style={styles.dateInfo}>Dicetak: {currentDate}</Text>
                 </View>
 
                 {/* Grid Produk */}
@@ -102,53 +106,53 @@ const ProductPDF = ({ products, toggle }) => {
                     {products
                         .filter((el) => el.variants?.length <= 10)
                         .map((el, idx) => (
-                            <View key={idx} style={styles.card}>
-                                <Image style={styles.image} src={el.thumbnailURL} />
+                            <View key={el.productName + idx} style={styles.card}>
+                                <Image style={styles.image} src={fixImageUrl(el.thumbnailURL)} />
                                 <Text style={styles.title}>{el.productName}</Text>
 
-                                {el.variants?.map((variant, vIdx) => (
-                                    <View key={vIdx} style={styles.variantWrapper}>
-                                        <Text style={styles.variant}>{variant.name}</Text>
-                                        <Text style={styles.price}>
-                                            {variant.price.toLocaleString("id-ID", {
-                                                style: "currency",
-                                                currency: "IDR",
-                                            })}
-                                        </Text>
-                                    </View>
-                                ))}
+                                {el.variants?.length === 0 ? (
+                                    <Text style={styles.variant}>Tidak ada varian tersedia</Text>
+                                ) : (
+                                    el.variants.map((variant, vIdx) => (
+                                        <View key={variant.name + vIdx} style={styles.variantWrapper}>
+                                            <Text style={styles.variant}>{variant.name}</Text>
+                                            <Text style={styles.price}>
+                                                {variant.price.toLocaleString("id-ID", {
+                                                    style: "currency",
+                                                    currency: "IDR",
+                                                })}
+                                            </Text>
+                                        </View>
+                                    ))
+                                )}
                             </View>
                         ))}
                 </View>
 
                 {/* Footer */}
-                <Text style={styles.footer}>Sinar Lotus - Jl. Contoh No. 123, Jakarta | Telp: (021) 12345678 | www.sinarlotus.com</Text>
+                <Text style={styles.footer}>
+                    Sinar Lotus - Jl. Contoh No. 123, Jakarta | Telp: (021) 12345678 | www.sinarlotus.com
+                </Text>
             </Page>
 
-            {/* Produk dengan variants banyak, pindahkan ke halaman baru */}
+            {/* Produk dengan banyak varian */}
             {products
-                .filter((el) => el.variants.length > 10)
+                .filter((el) => el.variants?.length > 10)
                 .map((el, idx) => (
-                    <Page key={idx} size="A4" style={styles.page} wrap={false}>
-                        {/* Header di setiap halaman */}
+                    <Page key={"large-" + el.productName + idx} size="A4" style={styles.page} wrap={false}>
                         <View style={styles.header}>
-                            {/* <Image style={styles.logo} src="https://via.placeholder.com/100x100?text=LOGO" /> */}
-                            <Text style={styles.companyName}>
-                                Sinar Lotus
-                            </Text>
-                            <Text style={styles.companyInfo}>
-                                Product Showcase
-                            </Text>
+                            <Text style={styles.companyName}>Sinar Lotus</Text>
+                            <Text style={styles.companyInfo}>Product Showcase</Text>
+                            <Text style={styles.dateInfo}>Dicetak: {currentDate}</Text>
                         </View>
 
-                        {/* Produk dengan banyak variant */}
                         <View style={styles.largeImageContainer}>
-                            <Image style={styles.largeImage} src={el.thumbnailURL} />
+                            <Image style={styles.image} src={fixImageUrl(el.thumbnailURL)} />
                             <Text style={styles.title}>{el.productName}</Text>
                         </View>
 
                         {el.variants.map((variant, vIdx) => (
-                            <View key={vIdx} style={styles.variantWrapper}>
+                            <View key={variant.name + vIdx} style={styles.variantWrapper}>
                                 <Text style={styles.variant}>{variant.name}</Text>
                                 <Text style={styles.price}>
                                     {variant.price.toLocaleString("id-ID", {
@@ -159,8 +163,9 @@ const ProductPDF = ({ products, toggle }) => {
                             </View>
                         ))}
 
-                        {/* Footer */}
-                        <Text style={styles.footer}>Sinar Lotus - Jl. Contoh No. 123, Jakarta | Telp: (021) 12345678 | www.sinarlotus.com</Text>
+                        <Text style={styles.footer}>
+                            Sinar Lotus - Jl. Contoh No. 123, Jakarta | Telp: (021) 12345678 | www.sinarlotus.com
+                        </Text>
                     </Page>
                 ))}
         </Document>

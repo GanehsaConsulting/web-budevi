@@ -45,10 +45,8 @@ export const Navbar = ({ children }) => {
 
     return (
         <>
-            <div className={`fixed z-[999] navbar2 h-[40px] md:h-[50px] duration-300 ease-in-out
-                            ${isExpanded && "translate-y-0"}
-                            ${visible ? "translate-y-0" : "-translate-y-full"}
-                            ${isScrolled ? "bg-white dark:bg-black dark:bg-opacity-80 bg-opacity-80 backdrop-blur-xl" : "bg-transparent"}
+            <div className={`z-[999] navbar2 h-[40px] md:h-[50px] duration-300 ease-in-out
+                      
                             `}>
                 <div className={`navbar-start md:ml-[30px] ml-[10px]`}>
                     <div className="dropdown md:block hidden">
